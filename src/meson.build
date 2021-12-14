@@ -1,5 +1,6 @@
-glib_deps = [dependency('glib-2.0')]
-gtk_deps = [dependency('gtk+-3.0')]
+glib_dep = [dependency('glib-2.0')]
+gtk_dep = [dependency('gtk+-3.0')]
+granite_dep = [dependency('granite')]
 
 executable (meson.project_name(),
 
@@ -7,5 +8,5 @@ executable (meson.project_name(),
             'Application.vala',
             'Window.vala',
             
-            dependencies : [glib_deps, gtk_deps]
+            dependencies : [glib_dep, gtk_dep, granite_dep]
             )
