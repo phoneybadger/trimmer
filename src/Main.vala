@@ -1,4 +1,6 @@
 public int main (string[] args) {
-    print ("something");
-    return 0;
+    var app = new Trimmer.Application ();
+    int status = app.run ();
+
+    return status;
 }
