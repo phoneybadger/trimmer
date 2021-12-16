@@ -1,9 +1,12 @@
 namespace Trimmer {
     public class WelcomeView : Granite.Widgets.Welcome {
-        public WelcomeView () {
+        public Trimmer.Window window {get; set;}
+
+        public WelcomeView (Trimmer.Window window) {
             Object (
                 title : "No videos open",
-                subtitle : "Open a video to trim it"
+                subtitle : "Open a video to trim it",
+                window : window
                 );
         }
 
@@ -13,7 +16,7 @@ namespace Trimmer {
             activated.connect((index)=>{
                 switch (index) {
                     case 0:
-                        print("something");
+                        window.actions.lookup_action (Window.ACTION_OPEN).activate (null);
                 }
             });
         }

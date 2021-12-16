@@ -11,12 +11,14 @@ namespace Trimmer {
         construct {
             var file_uri = "file:///home/adithyankv/Downloads/sprite_fright.mp4";
 
-            playback = new ClutterGst.Playback ();
+            playback = new ClutterGst.Playback () {
+                seek_flags = ClutterGst.SeekFlags.ACCURATE
+            };
+            // loop video
             playback.eos.connect (()=>{
                 playback.progress = 0;
                 playback.playing = true;
             });
-            playback.seek_flags = ClutterGst.SeekFlags.ACCURATE;
 
             var clutter = new GtkClutter.Embed ();
 
@@ -35,8 +37,12 @@ namespace Trimmer {
 
             stage.add_child (video_actor);
 
-            playback.uri = file_uri;
             add (clutter);
+        }
+
+        public void load_and_play_video (string uri) {
+            playback.uri = uri;
+            playback.playing = true;
         }
     }
 }
