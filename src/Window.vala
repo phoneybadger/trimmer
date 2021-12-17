@@ -72,7 +72,7 @@ namespace Trimmer {
             if (response == Gtk.ResponseType.ACCEPT) {
                 var uri = file_chooser.get_uri ();
                 content_stack.visible_child = trim_view;
-                trim_view.load_and_play_video (uri);
+                trim_view.video_player.load_and_play_video (uri);
             }
         }
     }

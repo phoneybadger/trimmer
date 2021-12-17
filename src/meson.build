@@ -10,6 +10,7 @@ executable (meson.project_name(),
             'Window.vala',
             'WelcomeView.vala',
             'TrimView.vala',
+            'VideoPlayer.vala',
             
             dependencies : [glib_dep, gtk_dep, granite_dep, gst_deps]
             )
