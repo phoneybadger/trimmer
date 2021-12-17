@@ -9,11 +9,13 @@ namespace Trimmer {
 
         public const string ACTION_PREFIX = "win.";
         public const string ACTION_OPEN = "action_open";
+        public const string ACTION_PLAY_PAUSE = "action_play_pause";
 
         public static Gee.MultiMap<string, string> action_accelerators = new Gee.HashMultiMap<string, string> ();
 
         public const ActionEntry[] ACTION_ENTRIES = {
             {ACTION_OPEN, action_open},
+            {ACTION_PLAY_PAUSE, action_play_pause, null, "false"},
         };
 
         public Window (Gtk.Application app) {
@@ -32,7 +34,7 @@ namespace Trimmer {
 
             content_stack = new Gtk.Stack ();
             welcome_view = new Trimmer.WelcomeView (this);
-            trim_view = new Trimmer.TrimView ();
+            trim_view = new Trimmer.TrimView (this);
 
             content_stack.add (welcome_view);
             content_stack.add (trim_view);
@@ -72,7 +74,17 @@ namespace Trimmer {
             if (response == Gtk.ResponseType.ACCEPT) {
                 var uri = file_chooser.get_uri ();
                 content_stack.visible_child = trim_view;
-                trim_view.video_player.load_and_play_video (uri);
+                trim_view.video_player.play_video (uri);
+            }
+        }
+
+        private void action_play_pause () {
+            trim_view.video_player.toggle_play_pause ();
+            var play_pause_action = actions.lookup_action (ACTION_PLAY_PAUSE);
+            if (play_pause_action.get_state ().get_boolean ()) {
+                print ("pause");
+            } else {
+                print ("play");
             }
         }
     }

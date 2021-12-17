@@ -2,6 +2,13 @@ namespace Trimmer {
     public class VideoPlayer : GtkClutter.Embed {
 
         public ClutterGst.Playback playback;
+        public unowned Trimmer.TrimView trim_view {get; set;}
+
+        public VideoPlayer (Trimmer.TrimView trim_view) {
+            Object (
+                trim_view : trim_view
+                );
+        }
 
         construct {
             playback = new ClutterGst.Playback () {
@@ -11,6 +18,14 @@ namespace Trimmer {
             playback.eos.connect (()=>{
                 playback.progress = 0;
                 playback.playing = true;
+            });
+
+            // update seek bar in sync with video progress
+            playback.notify ["duration"].connect (() => {
+                trim_view.seeker.playback_duration = playback.duration;
+            });
+            playback.notify ["progress"].connect(() => {
+                trim_view.seeker.playback_progress = playback.progress;
             });
 
             var stage = this.get_stage ();
@@ -29,9 +44,13 @@ namespace Trimmer {
             stage.add_child (video_actor);
         }
         
-        public void load_and_play_video (string uri) {
+        public void play_video (string uri) {
             playback.uri = uri;
             playback.playing = true;
+        }
+
+        public void toggle_play_pause () {
+            playback.playing = !playback.playing;
         }
     }
 }

@@ -1,8 +1,10 @@
 namespace Trimmer {
     public class TrimView : Gtk.Box {
+        public unowned Trimmer.Window window {get; set;}
         public Trimmer.VideoPlayer video_player;
+        public Granite.SeekBar seeker;
 
-        public TrimView () {
+        public TrimView (Trimmer.Window window) {
             Object (
                 orientation: Gtk.Orientation.VERTICAL,
                 spacing: 0
@@ -10,30 +12,17 @@ namespace Trimmer {
         }
 
         construct {
-            video_player = new VideoPlayer ();
+            video_player = new VideoPlayer (this);
 
-            var layout_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 20) {
-                margin = 10
-            };
-
-            var start_end_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 20) {
-                halign = Gtk.Align.CENTER
-            };
-
-            var frame_range = new Gtk.Adjustment (0, 0, 100, 10, 10, 10);
-            var start_frame_label = new Gtk.Label ("Start") {
-                halign = Gtk.Align.END
-            };
-            var end_frame_label = new Gtk.Label ("End") {
-                halign = Gtk.Align.END
-            };
-            var start_frame = new Gtk.SpinButton (frame_range, 10, 3);
-            var end_frame = new Gtk.SpinButton (frame_range, 10, 3);
-
-            start_end_box.pack_start (start_frame_label);
-            start_end_box.pack_start (start_frame);
-            start_end_box.pack_start (end_frame_label);
-            start_end_box.pack_start (end_frame);
+            var timeline_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            var play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic");
+            play_button.clicked.connect (() => {
+                window.actions.lookup_action (Window.ACTION_PLAY_PAUSE).activate (null);
+            });
+            // Initialize with 0 as no video will be loaded initially
+            seeker = new Granite.SeekBar (0.0);
+            timeline_box.pack_start (play_button, false, false, 0);
+            timeline_box.pack_start (seeker, false, true, 0);
 
             var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
                 layout_style = Gtk.ButtonBoxStyle.END
@@ -42,11 +31,9 @@ namespace Trimmer {
             trim_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             button_box.pack_end (trim_button);
 
-            layout_box.pack_start (start_end_box, false, false, 0);
-            layout_box.pack_start (button_box, false, false, 0);
-
-            pack_start (video_player);
-            pack_start (layout_box, false, false, 0);
+            pack_start (video_player, true, true, 0);
+            pack_start (timeline_box, false, false, 0);
+            pack_start (button_box, false, false, 0);
         }
     }
 }
