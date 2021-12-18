@@ -3,11 +3,13 @@ namespace Trimmer {
         public unowned Trimmer.Window window {get; set;}
         public Trimmer.VideoPlayer video_player;
         public Granite.SeekBar seeker;
+        private Gtk.Button play_button;
 
         public TrimView (Trimmer.Window window) {
             Object (
                 orientation: Gtk.Orientation.VERTICAL,
-                spacing: 0
+                spacing: 0,
+                window: window
             );
         }
 
@@ -15,10 +17,11 @@ namespace Trimmer {
             video_player = new VideoPlayer (this);
 
             var timeline_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            var play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic");
+            play_button = new Gtk.Button.from_icon_name ("media-playback-pause-symbolic");
             play_button.clicked.connect (() => {
                 window.actions.lookup_action (Window.ACTION_PLAY_PAUSE).activate (null);
             });
+
             // Initialize with 0 as no video will be loaded initially
             seeker = new Granite.SeekBar (0.0);
             timeline_box.pack_start (play_button, false, false, 0);
@@ -34,6 +37,14 @@ namespace Trimmer {
             pack_start (video_player, true, true, 0);
             pack_start (timeline_box, false, false, 0);
             pack_start (button_box, false, false, 0);
+        }
+
+        public void update_play_button_icon () {
+            if (video_player.playback.playing) {
+                ((Gtk.Image) play_button.image).icon_name = "media-playback-pause-symbolic";
+            } else {
+                ((Gtk.Image) play_button.image).icon_name = "media-playback-start-symbolic";
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Trimmer {
 
         public const ActionEntry[] ACTION_ENTRIES = {
             {ACTION_OPEN, action_open},
-            {ACTION_PLAY_PAUSE, action_play_pause, null, "false"},
+            {ACTION_PLAY_PAUSE, action_play_pause, null, "false"}, //false if video is playing
         };
 
         public Window (Gtk.Application app) {
@@ -80,12 +80,7 @@ namespace Trimmer {
 
         private void action_play_pause () {
             trim_view.video_player.toggle_play_pause ();
-            var play_pause_action = actions.lookup_action (ACTION_PLAY_PAUSE);
-            if (play_pause_action.get_state ().get_boolean ()) {
-                print ("pause");
-            } else {
-                print ("play");
-            }
+            trim_view.update_play_button_icon ();
         }
     }
 }
