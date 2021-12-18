@@ -10,11 +10,13 @@ namespace Trimmer {
         public const string ACTION_PREFIX = "win.";
         public const string ACTION_OPEN = "action_open";
         public const string ACTION_PLAY_PAUSE = "action_play_pause";
+        public const string ACTION_QUIT = "action_quit";
 
         public static Gee.MultiMap<string, string> action_accelerators = new Gee.HashMultiMap<string, string> ();
 
         public const ActionEntry[] ACTION_ENTRIES = {
             {ACTION_OPEN, action_open},
+            {ACTION_QUIT, action_quit},
             {ACTION_PLAY_PAUSE, action_play_pause, null, "false"}, //false if video is playing
         };
 
@@ -27,6 +29,7 @@ namespace Trimmer {
 
         static construct {
             action_accelerators.set(ACTION_OPEN, "<Ctrl>o");
+            action_accelerators.set(ACTION_QUIT, "<Ctrl>q");
         }
 
         construct {
@@ -81,6 +84,10 @@ namespace Trimmer {
         private void action_play_pause () {
             trim_view.video_player.toggle_play_pause ();
             trim_view.update_play_button_icon ();
+        }
+
+        private void action_quit () {
+            destroy ();
         }
     }
 }
