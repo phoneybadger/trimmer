@@ -35,6 +35,9 @@ namespace Trimmer {
         construct {
             set_up_actions ();
 
+            var header_bar = new Trimmer.HeaderBar (this);
+            set_titlebar (header_bar);
+
             content_stack = new Gtk.Stack ();
             welcome_view = new Trimmer.WelcomeView (this);
             trim_view = new Trimmer.TrimView (this);
