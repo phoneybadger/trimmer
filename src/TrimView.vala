@@ -4,6 +4,8 @@ namespace Trimmer {
         public Trimmer.VideoPlayer video_player;
         public Granite.SeekBar seeker;
         private Gtk.Button play_button;
+        public Trimmer.TimeStampEntry start_entry;
+        public Trimmer.TimeStampEntry end_entry;
 
         public TrimView (Trimmer.Window window) {
             Object (
@@ -34,8 +36,24 @@ namespace Trimmer {
             trim_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             button_box.pack_end (trim_button);
 
+            var start_end_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                halign = Gtk.Align.CENTER
+            };
+
+            var start_label = new Gtk.Label ("Start");
+            var end_label = new Gtk.Label ("End");
+
+            start_entry = new Trimmer.TimeStampEntry ();
+            end_entry = new Trimmer.TimeStampEntry ();
+
+            start_end_box.pack_start (start_label, false, false, 10);
+            start_end_box.pack_start (start_entry, false, false, 10);
+            start_end_box.pack_start (end_label, false, false, 10);
+            start_end_box.pack_start (end_entry, false, false, 10);
+
             pack_start (video_player, true, true, 0);
             pack_start (timeline_box, false, false, 0);
+            pack_start (start_end_box, false, false, 0);
             pack_start (button_box, false, false, 0);
         }
 

@@ -20,10 +20,14 @@ namespace Trimmer {
                 playback.playing = true;
             });
 
-            // update seek bar in sync with video progress
+            // when new video loaded
             playback.notify ["duration"].connect (() => {
                 trim_view.seeker.playback_duration = playback.duration;
+                // set end entry to end of clip duration by default
+                trim_view.end_entry.text = Granite.DateTime.seconds_to_time ((int) playback.duration);
             });
+
+            // update seek bar in sync with video progress
             playback.notify ["progress"].connect(() => {
                 trim_view.seeker.playback_progress = playback.progress;
             });
