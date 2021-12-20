@@ -46,6 +46,20 @@ namespace Trimmer {
             start_entry = new Trimmer.TimeStampEntry ();
             end_entry = new Trimmer.TimeStampEntry ();
 
+            // check if trim boundaries are within video clip duration and also
+            // ensure start comes before end.
+            start_entry.activate.connect (() => {
+                var min = 0;
+                var max = end_entry.timestamp_in_seconds ();
+                start_entry.check_bounds (min, max);
+            });
+            end_entry.activate.connect (() => {
+                var min = start_entry.timestamp_in_seconds ();
+                var max = video_player.playback.duration;
+                end_entry.check_bounds (min, max);
+            });
+
+
             start_end_box.pack_start (start_label, false, false, 10);
             start_end_box.pack_start (start_entry, false, false, 10);
             start_end_box.pack_start (end_label, false, false, 10);
