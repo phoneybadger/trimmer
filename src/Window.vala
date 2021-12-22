@@ -35,6 +35,8 @@ namespace Trimmer {
         construct {
             set_up_actions ();
 
+            set_size_request (640, 480);
+
             var header_bar = new Trimmer.HeaderBar (this);
             set_titlebar (header_bar);
 

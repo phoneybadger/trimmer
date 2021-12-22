@@ -1,5 +1,7 @@
 namespace Trimmer {
     public class VideoPlayer : GtkClutter.Embed {
+        /* TODO: port over to using a more straight forward implementation
+        using Gtk.Picture or Gtk.Video when elementary opens up for GTK 4*/
 
         public ClutterGst.Playback playback;
         public unowned Trimmer.TrimView trim_view {get; set;}

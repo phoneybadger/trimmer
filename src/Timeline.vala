@@ -9,6 +9,8 @@ namespace Trimmer {
         }
 
         construct {
+            /* The seek-bar scale is slightly modified with a custom style 
+               sheet so as to make interacting with the trimming UI easier */
             var style_context = get_style_context ();
             style_context.add_class ("timeline");
 
