@@ -20,6 +20,7 @@ namespace Trimmer {
                         window.actions.lookup_action (Window.ACTION_OPEN).activate (null);
                         break;
                     case 1:
+                        // Redirect to github page
                         try {
                             AppInfo.launch_default_for_uri_async.begin ("https://github.com/adithyankv/trimmer", null);
                         } catch (Error e) {

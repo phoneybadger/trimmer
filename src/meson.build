@@ -13,6 +13,7 @@ executable (meson.project_name(),
             'VideoPlayer.vala',
             'HeaderBar.vala',
             'TimeStampEntry.vala',
+            'Timeline.vala',
             
             dependencies : [glib_dep, gtk_dep, granite_dep, gst_deps]
             )
