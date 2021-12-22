@@ -1,18 +1,16 @@
 namespace Trimmer {
-    public class Timeline : Gtk.Box {
+    public class Timeline : Granite.SeekBar {
         private Gtk.CssProvider css_provider;
 
-        public Timeline () {
+        public Timeline (double playback_duration) {
             Object (
-                orientation : Gtk.Orientation.HORIZONTAL,
-                spacing : 0
-                );
+                playback_duration : playback_duration
+            );
         }
 
         construct {
             var style_context = get_style_context ();
             style_context.add_class ("timeline");
-            height_request = 24;
 
             css_provider = new Gtk.CssProvider ();
             try {
@@ -20,7 +18,11 @@ namespace Trimmer {
             } catch (Error e) {
                 critical (e.message);
             }
-            style_context.add_provider (css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            Gtk.StyleContext.add_provider_for_screen (
+                Gdk.Screen.get_default (),
+                css_provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            );
         }
     }
 }

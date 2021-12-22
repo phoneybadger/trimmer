@@ -25,7 +25,7 @@ namespace Trimmer {
             });
 
             // Initialize with 0 as no video will be loaded initially
-            seeker = new Granite.SeekBar (0.0);
+            seeker = new Trimmer.Timeline (0.0);
             timeline_box.pack_start (play_button, false, false, 0);
             timeline_box.pack_start (seeker, false, true, 0);
 
@@ -59,8 +59,6 @@ namespace Trimmer {
                 end_entry.check_bounds (min, max);
             });
 
-            var timeline = new Trimmer.Timeline ();
-
             start_end_box.pack_start (start_label, false, false, 10);
             start_end_box.pack_start (start_entry, false, false, 10);
             start_end_box.pack_start (end_label, false, false, 10);
@@ -69,7 +67,6 @@ namespace Trimmer {
             pack_start (video_player, true, true, 0);
             pack_start (timeline_box, false, false, 0);
             pack_start (start_end_box, false, false, 0);
-            pack_start (timeline, false, false, 0);
             pack_start (button_box, false, false, 0);
         }
 
