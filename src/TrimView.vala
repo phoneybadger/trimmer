@@ -29,6 +29,11 @@ namespace Trimmer {
             timeline_box.pack_start (play_button, false, false, 0);
             timeline_box.pack_start (seeker, false, true, 0);
 
+            seeker.button_release_event.connect ((event) => {
+                video_player.playback.progress = seeker.playback_progress;
+                return false;
+            });
+
             var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
                 layout_style = Gtk.ButtonBoxStyle.END
             };
