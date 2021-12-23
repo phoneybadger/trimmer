@@ -60,5 +60,10 @@ namespace Trimmer {
         public void toggle_play_pause () {
             playback.playing = !playback.playing;
         }
+
+        public void stop_and_destroy () {
+            playback.playing = false;
+            playback.uri = null;
+        }
     }
 }

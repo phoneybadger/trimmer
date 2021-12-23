@@ -47,6 +47,10 @@ namespace Trimmer {
             content_stack.add (welcome_view);
             content_stack.add (trim_view);
             add (content_stack);
+
+            destroy.connect (() => {
+                actions.lookup_action (ACTION_QUIT).activate (null);
+            });
         }
 
         private void set_up_actions () {
@@ -92,6 +96,7 @@ namespace Trimmer {
         }
 
         private void action_quit () {
+            trim_view.video_player.stop_and_destroy ();
             destroy ();
         }
     }
