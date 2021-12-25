@@ -6,7 +6,8 @@ namespace Trimmer {
 
         public TestTimeline () {
             add_events (Gdk.EventMask.POINTER_MOTION_MASK|
-                        Gdk.EventMask.ENTER_NOTIFY_MASK);
+                        Gdk.EventMask.ENTER_NOTIFY_MASK|
+                        Gdk.EventType.LEAVE_NOTIFY);
         }
         construct {
             var content_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
@@ -45,6 +46,10 @@ namespace Trimmer {
                 } else {
                     Gdk.get_default_root_window ().set_cursor (normal_cursor);
                 }
+            });
+
+            leave_notify_event.connect (() => {
+                Gdk.get_default_root_window ().set_cursor (normal_cursor);
             });
 
             track.size_allocate.connect (() => {
