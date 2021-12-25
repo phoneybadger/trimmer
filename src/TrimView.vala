@@ -37,7 +37,9 @@ namespace Trimmer {
             var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
                 layout_style = Gtk.ButtonBoxStyle.END
             };
-            var trim_button = new Gtk.Button.with_label ("Trim");
+            var trim_button = new Gtk.Button.with_label ("Trim") {
+                margin = 5
+            };
             trim_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             button_box.pack_end (trim_button);
 
