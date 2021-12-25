@@ -66,6 +66,8 @@ namespace Trimmer {
                 end_entry.check_bounds (min, max);
             });
 
+            var test = new TestTimeline ();
+
             start_end_box.pack_start (start_label, false, false, 10);
             start_end_box.pack_start (start_entry, false, false, 10);
             start_end_box.pack_start (end_label, false, false, 10);
@@ -74,6 +76,7 @@ namespace Trimmer {
             pack_start (video_player, true, true, 0);
             pack_start (timeline_box, false, false, 0);
             pack_start (start_end_box, false, false, 0);
+            pack_start (test, false, false, 0);
             pack_start (button_box, false, false, 0);
         }
 

@@ -6,3 +6,16 @@
 .timeline scale highlight {
 	border-radius: 4px;
 }
+
+.test {
+    background-color: @wm_shadow;
+    border: 1px solid @unfocused_borders;
+    border-radius: 4px;
+}
+
+.selection {
+    border-radius: 4px;
+    background-color: @selected_bg_color;
+    border: 1px solid @accent_color;
+}
+
