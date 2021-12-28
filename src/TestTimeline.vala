@@ -70,7 +70,8 @@ namespace Trimmer {
                         }
                     } else if (element_being_resized == trim_points.TRIM_END) {
                         if (mouse_x < track_end) {
-                            selection.width_request = (int) (mouse_x - track_start);
+                            allocation.width = (int) (mouse_x - track_start);
+                            selection.size_allocate (allocation);
                         }
                     }
                 }
