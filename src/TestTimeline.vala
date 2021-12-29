@@ -65,12 +65,15 @@ namespace Trimmer {
 
                 if (is_grabbing) {
                     if (element_being_resized == trim_points.TRIM_START) {
-                        if (mouse_x > track_start) {
-                            print ("resizing start");
+                        if (mouse_x > track_start && mouse_x < selection_end - 5) {
+                            var diff = (int) mouse_x - allocation.x;
+                            allocation.x = (int) (mouse_x);
+                            allocation.width -= diff;
+                            selection.size_allocate (allocation);
                         }
                     } else if (element_being_resized == trim_points.TRIM_END) {
-                        if (mouse_x < track_end) {
-                            allocation.width = (int) (mouse_x - track_start);
+                        if (mouse_x < track_end && mouse_x > selection_start + 5) {
+                            allocation.width = (int) (mouse_x - allocation.x);
                             selection.size_allocate (allocation);
                         }
                     }
