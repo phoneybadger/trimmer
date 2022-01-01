@@ -1,18 +1,18 @@
 namespace Trimmer {
     public class TestTimeline: Gtk.EventBox {
         private const int TIMELINE_HEIGHT = 24;
-        private const int HITBOX_THRESHOLD = 10;
 
         /* Using a fractional coordinate system. i.e. values normalized to the
            0-1 range within the width of the track. For ease of manipulation */
+        private const double HITBOX_THRESHOLD = 0.015;
 
         /* Initializing to points inside the track to give a visual hint to the 
            user that the points can be manipulated */
         private double selection_start = 1.0/4.0;
         private double selection_end = 3.0/4.0;
 
-        private int track_start = 0;
-        private int track_end = 1;
+        private double track_start = 0;
+        private double track_end = 1;
 
         private Gtk.Allocation selection_allocation;
         private Gtk.Allocation track_allocation;
@@ -27,6 +27,11 @@ namespace Trimmer {
         }
 
         construct {
+            var window = Gdk.get_default_root_window ();
+            var display = window.get_display ();
+            var default_cursor = new Gdk.Cursor.from_name (display, "default");
+            var resize_cursor = new Gdk.Cursor.from_name (display, "col-resize");
+
             var content_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
 
             var track = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
@@ -48,6 +53,21 @@ namespace Trimmer {
                 refresh_selection ();
             });
 
+            motion_notify_event.connect ((event) => {
+                var mouse_x = get_fractional_coordinate (event.x);
+
+                if (is_mouse_over_selection_start (mouse_x) ||
+                    is_mouse_over_selection_end (mouse_x)) {
+                    window.cursor = resize_cursor;
+                } else {
+                    window.cursor = default_cursor;
+                }
+            });
+
+            leave_notify_event.connect ((event) => {
+                window.cursor = default_cursor;
+            });
+
             track.add(selection);
             content_box.add(track);
 
@@ -66,6 +86,18 @@ namespace Trimmer {
             /* convert back from the 0-1 fractional coordinate system to the
                pixel locations on screen so as to draw the UI */
             return (int) (fractional_coordinate * (track_allocation.width - track_allocation.x));
+        }
+
+        private double get_fractional_coordinate (double pixel_coordinate) {
+            return (pixel_coordinate / (track_allocation.width - track_allocation.x));
+        }
+
+        private bool is_mouse_over_selection_start (double mouse_x) {
+            return (mouse_x - selection_start).abs () < HITBOX_THRESHOLD;
+        }
+
+        private bool is_mouse_over_selection_end (double mouse_x) {
+            return (mouse_x - selection_end).abs () < HITBOX_THRESHOLD;
         }
     }
 }
