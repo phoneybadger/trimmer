@@ -45,6 +45,8 @@ namespace Trimmer {
             var track = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 height_request = TIMELINE_HEIGHT,
                 hexpand = true,
+                margin_start = 10,
+                margin_end = 10
             };
 
             track.get_style_context ().add_class ("test");
@@ -57,7 +59,7 @@ namespace Trimmer {
             track.size_allocate.connect (() => {
                 track.get_allocation (out track_allocation);
                 track_start = get_fractional_coordinate (track_allocation.x);
-                track_end = get_fractional_coordinate (track_start + track_allocation.width);
+                track_end = get_fractional_coordinate (track_allocation.x + track_allocation.width);
 
                 refresh_selection ();
             });
@@ -146,7 +148,7 @@ namespace Trimmer {
         private int get_pixel_coordinate (double fractional_coordinate) {
             /* convert back from the 0-1 fractional coordinate system to the
                pixel locations on screen so as to draw the UI */
-            return (int) (fractional_coordinate * (track_allocation.width - track_allocation.x));
+            return (int) (fractional_coordinate * (track_allocation.width));
         }
 
         private double get_fractional_coordinate (double pixel_coordinate) {
