@@ -2,23 +2,22 @@ namespace Trimmer {
     public class TestTimeline: Gtk.EventBox {
         private const int TIMELINE_HEIGHT = 24;
         private const int HITBOX_THRESHOLD = 10;
-        private bool is_initialized = false;
 
-        private int selection_start;
-        private int selection_end;
+        /* Using a fractional coordinate system. i.e. values normalized to the
+           0-1 range within the width of the track. For ease of manipulation */
 
-        private int track_start;
-        private int track_end;
+        /* Initializing to points inside the track to give a visual hint to the 
+           user that the points can be manipulated */
+        private double selection_start = 1.0/4.0;
+        private double selection_end = 3.0/4.0;
+
+        private int track_start = 0;
+        private int track_end = 1;
 
         private Gtk.Allocation selection_allocation;
         private Gtk.Allocation track_allocation;
 
         private Gtk.Box selection;
-
-        private enum trim_points{
-            TRIM_START,
-            TRIM_END
-        }
 
         public TestTimeline () {
             add_events (Gdk.EventMask.POINTER_MOTION_MASK|
@@ -45,12 +44,6 @@ namespace Trimmer {
 
             track.size_allocate.connect (() => {
                 track.get_allocation (out track_allocation);
-                track_start = track_allocation.x;
-                track_end = track_start + track_allocation.width;
-
-                if (! is_initialized) {
-                    initialize_selection ();
-                }
 
                 refresh_selection ();
             });
@@ -61,22 +54,18 @@ namespace Trimmer {
             add(content_box);
         }
 
-        private void initialize_selection () {
-            /* Initializing the selection to 1/4 and 3/4 of the track to hint 
-               at the user that the points can be manipulated */
-            var track_width = track_end - track_start;
-            selection_start = (int) (1/4.0 * track_width);
-            selection_end = (int) (3/4.0 * track_width);
-            refresh_selection ();
-            is_initialized = true;
-        }
-
         private void refresh_selection () {
             selection_allocation.y = track_allocation.y;
             selection_allocation.height = track_allocation.height;
-            selection_allocation.x = selection_start;
-            selection_allocation.width = selection_end - selection_start;
+            selection_allocation.x = get_pixel_coordinate (selection_start);
+            selection_allocation.width = get_pixel_coordinate (selection_end - selection_start);
             selection.size_allocate (selection_allocation);
+        }
+
+        private int get_pixel_coordinate (double fractional_coordinate) {
+            /* convert back from the 0-1 fractional coordinate system to the
+               pixel locations on screen so as to draw the UI */
+            return (int) (fractional_coordinate * (track_allocation.width - track_allocation.x));
         }
     }
 }
