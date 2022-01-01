@@ -11,13 +11,21 @@ namespace Trimmer {
         private double selection_start = 1.0/4.0;
         private double selection_end = 3.0/4.0;
 
-        private double track_start = 0;
-        private double track_end = 1;
+        private double track_start;
+        private double track_end;
+
+        private bool is_grabbing = false;
 
         private Gtk.Allocation selection_allocation;
         private Gtk.Allocation track_allocation;
 
         private Gtk.Box selection;
+
+        private enum end_points {
+            SELECTION_START,
+            SELECTION_END
+        }
+        private end_points grabbed_point;
 
         public TestTimeline () {
             add_events (Gdk.EventMask.POINTER_MOTION_MASK|
@@ -37,9 +45,8 @@ namespace Trimmer {
             var track = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 height_request = TIMELINE_HEIGHT,
                 hexpand = true,
-                margin_start = 10,
-                margin_end = 10,
             };
+
             track.get_style_context ().add_class ("test");
 
             selection = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
@@ -49,18 +56,23 @@ namespace Trimmer {
 
             track.size_allocate.connect (() => {
                 track.get_allocation (out track_allocation);
+                track_start = get_fractional_coordinate (track_allocation.x);
+                track_end = get_fractional_coordinate (track_start + track_allocation.width);
 
                 refresh_selection ();
             });
 
             motion_notify_event.connect ((event) => {
                 var mouse_x = get_fractional_coordinate (event.x);
-
                 if (is_mouse_over_selection_start (mouse_x) ||
                     is_mouse_over_selection_end (mouse_x)) {
                     window.cursor = resize_cursor;
                 } else {
                     window.cursor = default_cursor;
+                }
+
+                if (is_grabbing) {
+                    move_point (grabbed_point, mouse_x);
                 }
             });
 
@@ -68,10 +80,59 @@ namespace Trimmer {
                 window.cursor = default_cursor;
             });
 
+            button_press_event.connect ((event) => {
+                var mouse_x = get_fractional_coordinate (event.x);
+                if (is_mouse_over_selection_start (mouse_x) ||
+                    is_mouse_over_selection_end (mouse_x)) {
+                    is_grabbing = true;
+                    grab_point (mouse_x);
+                }
+            });
+
+            button_release_event.connect (() => {
+                is_grabbing = false;
+            });
+
             track.add(selection);
-            content_box.add(track);
+            content_box.pack_start (track);
 
             add(content_box);
+        }
+
+        private void move_point (end_points grabbed_point, double mouse_x) {
+            // TODO: adjust min seperation to correspond to minimum unit of time
+            var min_seperation = get_fractional_coordinate (5);
+            if (grabbed_point == end_points.SELECTION_START) {
+                if (mouse_x < track_start) {
+                    selection_start = track_start;
+                } else if (mouse_x >= selection_end - min_seperation){
+                    selection_start = selection_end - min_seperation;
+                } else {
+                    selection_start = mouse_x;
+                }
+            } else {
+                if (mouse_x > track_end) {
+                    selection_end = track_end;
+                } else if (mouse_x < selection_start + min_seperation) {
+                    selection_end = selection_start + min_seperation;
+                } else {
+                    selection_end = mouse_x;
+                }
+            }
+            refresh_selection ();
+        }
+
+        private void grab_point (double mouse_x) {
+            /* comparing distances instead of just checking hover
+               to handle the case where the points are really
+               close together */
+            var distance_to_start = (mouse_x - selection_start).abs ();
+            var distance_to_end = (mouse_x - selection_end).abs ();
+            if (distance_to_start < distance_to_end) {
+                grabbed_point = end_points.SELECTION_START;
+            } else {
+                grabbed_point = end_points.SELECTION_END;
+            }
         }
 
         private void refresh_selection () {
@@ -89,7 +150,7 @@ namespace Trimmer {
         }
 
         private double get_fractional_coordinate (double pixel_coordinate) {
-            return (pixel_coordinate / (track_allocation.width - track_allocation.x));
+            return (pixel_coordinate / (track_allocation.width));
         }
 
         private bool is_mouse_over_selection_start (double mouse_x) {
