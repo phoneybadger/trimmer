@@ -2,8 +2,8 @@ namespace Trimmer {
     public class TestTimeline: Gtk.EventBox {
         private const int TIMELINE_HEIGHT = 24;
 
-        /* Using a fractional coordinate system. i.e. values normalized to the
-           0-1 range within the width of the track. For ease of manipulation */
+        /* Using a fractional coordinate system. i.e. normalized between 0-1.
+           For ease of manipulation */
         private const double HITBOX_THRESHOLD = 0.015;
 
         /* Initializing to points inside the track to give a visual hint to the 
@@ -11,8 +11,8 @@ namespace Trimmer {
         private double selection_start = 1.0/4.0;
         private double selection_end = 3.0/4.0;
 
-        private double track_start;
-        private double track_end;
+        private double track_start = 0;
+        private double track_end = 1;
 
         private bool is_grabbing = false;
 
@@ -58,9 +58,6 @@ namespace Trimmer {
 
             track.size_allocate.connect (() => {
                 track.get_allocation (out track_allocation);
-                track_start = get_fractional_coordinate (track_allocation.x);
-                track_end = get_fractional_coordinate (track_allocation.x + track_allocation.width);
-
                 refresh_selection ();
             });
 
@@ -103,7 +100,7 @@ namespace Trimmer {
 
         private void move_point (end_points grabbed_point, double mouse_x) {
             // TODO: adjust min seperation to correspond to minimum unit of time
-            var min_seperation = get_fractional_coordinate (5);
+            var min_seperation = 0.01;
             if (grabbed_point == end_points.SELECTION_START) {
                 if (mouse_x < track_start) {
                     selection_start = track_start;
@@ -138,21 +135,28 @@ namespace Trimmer {
         }
 
         private void refresh_selection () {
+            var offset = track_allocation.x;
             selection_allocation.y = track_allocation.y;
             selection_allocation.height = track_allocation.height;
             selection_allocation.x = get_pixel_coordinate (selection_start);
-            selection_allocation.width = get_pixel_coordinate (selection_end - selection_start);
+            selection_allocation.width = get_pixel_coordinate (
+                selection_end - selection_start) - offset;
             selection.size_allocate (selection_allocation);
         }
 
         private int get_pixel_coordinate (double fractional_coordinate) {
             /* convert back from the 0-1 fractional coordinate system to the
                pixel locations on screen so as to draw the UI */
-            return (int) (fractional_coordinate * (track_allocation.width));
+            var offset = track_allocation.x;
+            return (int) (offset + (fractional_coordinate * track_allocation.width));
         }
 
         private double get_fractional_coordinate (double pixel_coordinate) {
-            return (pixel_coordinate / (track_allocation.width));
+            /* convert from pixel location inside the windows coordinate system
+               to a 0-1 coordinate system where 0 is beginning of track and 1 is
+               the end */
+            var offset = track_allocation.x;
+            return (pixel_coordinate - offset)/track_allocation.width;
         }
 
         private bool is_mouse_over_selection_start (double mouse_x) {
