@@ -1,6 +1,7 @@
 namespace Trimmer {
     public class TrimView : Gtk.Box {
         public unowned Trimmer.Window window {get; set;}
+        public Trimmer.TestTimeline test_timeline {get; set;}
         public Trimmer.VideoPlayer video_player;
         public Granite.SeekBar seeker;
         private Gtk.Button play_button;
@@ -66,7 +67,7 @@ namespace Trimmer {
                 end_entry.check_bounds (min, max);
             });
 
-            var test = new TestTimeline ();
+            test_timeline = new TestTimeline (0.0);
 
             start_end_box.pack_start (start_label, false, false, 10);
             start_end_box.pack_start (start_entry, false, false, 10);
@@ -76,7 +77,7 @@ namespace Trimmer {
             pack_start (video_player, true, true, 0);
             pack_start (timeline_box, false, false, 0);
             pack_start (start_end_box, false, false, 0);
-            pack_start (test, false, false, 0);
+            pack_start (test_timeline, false, false, 0);
             pack_start (button_box, false, false, 0);
         }
 

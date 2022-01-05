@@ -1,7 +1,46 @@
 namespace Trimmer {
     public class TestTimeline: Gtk.EventBox {
-        private const int TIMELINE_HEIGHT = 24;
+        private double _playback_duration;
+        private double _playback_progress;
 
+        public Gtk.Label duration_label {get; construct set;}
+        public Gtk.Label progress_label {get; construct set;}
+
+        public double playback_duration {
+            get {
+                return _playback_duration;
+            }
+            set {
+                double duration = value;
+                if (duration < 0.0) {
+                    debug ("Duration value less than zero, duration set to 0.0");
+                    duration = 0.0;
+                }
+
+                _playback_duration = duration;
+                duration_label.label = Granite.DateTime.seconds_to_time ((int) duration);
+                }
+        }
+
+        public double playback_progress {
+            get {
+                return _playback_progress;
+            }
+            set {
+                double progress = value;
+                if (progress < 0.0) {
+                    debug ("Progress value less than 0.0, progress set to 0.0");
+                    progress = 0.0;
+                } else if (progress > 1.0) {
+                    debug ("Progress value greater than 1.0, progress set to 1.0");
+                    progress = 1.0;
+                }
+
+                _playback_progress = progress;
+                progress_label.label = Granite.DateTime.seconds_to_time (
+                    (int) (progress * playback_duration));
+            }
+        }
         /* Using a fractional coordinate system. i.e. normalized between 0-1.
            For ease of manipulation */
         private const double HITBOX_THRESHOLD = 0.015;
@@ -21,13 +60,19 @@ namespace Trimmer {
 
         private Gtk.Box selection;
 
+        private const int TIMELINE_HEIGHT = 20;
+
         private enum end_points {
             SELECTION_START,
             SELECTION_END
         }
         private end_points grabbed_point;
 
-        public TestTimeline () {
+        public TestTimeline (double playback_duration) {
+            Object (
+                playback_duration : playback_duration
+            );
+
             add_events (Gdk.EventMask.POINTER_MOTION_MASK|
                         Gdk.EventMask.ENTER_NOTIFY_MASK|
                         Gdk.EventMask.BUTTON_PRESS_MASK|
@@ -40,13 +85,17 @@ namespace Trimmer {
             var default_cursor = new Gdk.Cursor.from_name (display, "default");
             var resize_cursor = new Gdk.Cursor.from_name (display, "col-resize");
 
-            var content_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            var content_grid = new Gtk.Grid () {
+                column_spacing = 5,
+                margin_start = 2,
+                margin_end = 2
+            };
+            duration_label = new Gtk.Label (null);
+            progress_label = new Gtk.Label (null);
 
             var track = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 height_request = TIMELINE_HEIGHT,
                 hexpand = true,
-                margin_start = 10,
-                margin_end = 10
             };
 
             track.get_style_context ().add_class ("test");
@@ -93,9 +142,11 @@ namespace Trimmer {
             });
 
             track.add(selection);
-            content_box.pack_start (track);
+            content_grid.attach (progress_label, 0, 0);
+            content_grid.attach (track, 1, 0);
+            content_grid.attach (duration_label, 2, 0);
 
-            add(content_box);
+            add(content_grid);
         }
 
         private void move_point (end_points grabbed_point, double mouse_x) {

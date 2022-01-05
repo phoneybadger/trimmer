@@ -25,6 +25,7 @@ namespace Trimmer {
             // when new video loaded
             playback.notify ["duration"].connect (() => {
                 trim_view.seeker.playback_duration = playback.duration;
+                trim_view.test_timeline.playback_duration = playback.duration;
                 // set end entry to end of clip duration by default
                 trim_view.end_entry.text = Granite.DateTime.seconds_to_time ((int) playback.duration);
             });
@@ -34,6 +35,7 @@ namespace Trimmer {
                 if (!trim_view.seeker.is_grabbing) {
                     trim_view.seeker.playback_progress = playback.progress;
                 }
+                trim_view.test_timeline.playback_progress = playback.progress;
             });
 
             var stage = this.get_stage ();
