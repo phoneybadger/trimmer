@@ -35,7 +35,9 @@ namespace Trimmer {
                 if (!trim_view.seeker.is_grabbing) {
                     trim_view.seeker.playback_progress = playback.progress;
                 }
-                trim_view.test_timeline.playback_progress = playback.progress;
+                if (!trim_view.test_timeline.is_grabbing) {
+                    trim_view.test_timeline.playback_progress = playback.progress;
+                }
             });
 
             var stage = this.get_stage ();

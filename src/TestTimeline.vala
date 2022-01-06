@@ -56,7 +56,7 @@ namespace Trimmer {
         private double track_end = 1;
 
 
-        private bool is_grabbing = false;
+        public bool is_grabbing = false;
 
         private Gtk.Allocation selection_allocation;
         private Gtk.Allocation track_allocation;
@@ -134,6 +134,13 @@ namespace Trimmer {
 
                 if (is_grabbing) {
                     move_point (grabbed_point, mouse_x);
+                    if (grabbed_point == end_points.SELECTION_START) {
+                        playback_progress = selection_start;
+                        player.playback.progress = selection_start;
+                    } else {
+                        playback_progress = selection_end;
+                        player.playback.progress = selection_end;
+                    }
                 }
             });
 
