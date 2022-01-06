@@ -6,6 +6,7 @@ namespace Trimmer {
         public Gtk.Label duration_label {get; construct set;}
         public Gtk.Label progress_label {get; construct set;}
 
+        // total length of the clip
         public double playback_duration {
             get {
                 return _playback_duration;
@@ -37,10 +38,10 @@ namespace Trimmer {
                 }
 
                 _playback_progress = progress;
-                progress_label.label = Granite.DateTime.seconds_to_time (
-                    (int) (progress * playback_duration));
+                update_progress ();
             }
         }
+
         /* Using a fractional coordinate system. i.e. normalized between 0-1.
            For ease of manipulation */
         private const double HITBOX_THRESHOLD = 0.015;
@@ -53,14 +54,17 @@ namespace Trimmer {
         private double track_start = 0;
         private double track_end = 1;
 
+
         private bool is_grabbing = false;
 
         private Gtk.Allocation selection_allocation;
         private Gtk.Allocation track_allocation;
+        private Gtk.Allocation progressbar_allocation;
 
         private Gtk.Box selection;
+        private Gtk.Box progressbar;
 
-        private const int TIMELINE_HEIGHT = 20;
+        private const int TIMELINE_HEIGHT = 18;
 
         private enum end_points {
             SELECTION_START,
@@ -92,6 +96,7 @@ namespace Trimmer {
             };
             duration_label = new Gtk.Label (null);
             progress_label = new Gtk.Label (null);
+            duration_label.margin_end = progress_label.margin_start = 3;
 
             var track = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 height_request = TIMELINE_HEIGHT,
@@ -105,9 +110,15 @@ namespace Trimmer {
             };
             selection.get_style_context ().add_class ("selection");
 
+            progressbar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                height_request = TIMELINE_HEIGHT,
+            };
+            progressbar.get_style_context ().add_class ("progress");
+
             track.size_allocate.connect (() => {
                 track.get_allocation (out track_allocation);
                 refresh_selection ();
+                update_progress ();
             });
 
             motion_notify_event.connect ((event) => {
@@ -141,7 +152,8 @@ namespace Trimmer {
                 is_grabbing = false;
             });
 
-            track.add(selection);
+            track.add (progressbar);
+            track.add (selection);
             content_grid.attach (progress_label, 0, 0);
             content_grid.attach (track, 1, 0);
             content_grid.attach (duration_label, 2, 0);
@@ -193,6 +205,25 @@ namespace Trimmer {
             selection_allocation.width = get_pixel_coordinate (
                 selection_end - selection_start) - offset;
             selection.size_allocate (selection_allocation);
+        }
+
+        private void update_progress () {
+            /* change progress timestamp label and also progressbar */
+            progress_label.label = Granite.DateTime.seconds_to_time (
+                    (int) (playback_progress * playback_duration));
+            
+            /* To prevent the progressbar from glitching out for near zero 
+               progress. Chosen to be twice the border radius as this seems
+               to look nice. There must be a better way to do this.*/
+            int min_width = 6;
+            progressbar_allocation = track_allocation;
+            var width = (int) (playback_progress * track_allocation.width);
+            if (width > min_width) {
+                progressbar_allocation.width = width;
+            } else {
+                progressbar_allocation.width = min_width;
+            }
+            progressbar.size_allocate (progressbar_allocation);
         }
 
         private int get_pixel_coordinate (double fractional_coordinate) {

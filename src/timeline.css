@@ -10,12 +10,19 @@
 .test {
     background-color: @wm_shadow;
     border: 1px solid @unfocused_borders;
-    border-radius: 4px;
+    border-radius: 3px;
 }
 
 .selection {
-    border-radius: 4px;
+    border-radius: 3px;
     background-color: @selected_bg_color;
     border: 1px solid @accent_color;
+    /* opacity: 0; */
+}
+
+.progress {
+    border-radius: 3px;
+    background-color: @highlight_color;
+    /* opacity: 0.4; */
 }
 
