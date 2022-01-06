@@ -2,6 +2,7 @@ namespace Trimmer {
     public class TestTimeline: Gtk.EventBox {
         private double _playback_duration;
         private double _playback_progress;
+        public unowned Trimmer.VideoPlayer player {get; set construct;}
 
         public Gtk.Label duration_label {get; construct set;}
         public Gtk.Label progress_label {get; construct set;}
@@ -72,11 +73,12 @@ namespace Trimmer {
         }
         private end_points grabbed_point;
 
-        public TestTimeline (double playback_duration) {
+        public TestTimeline (Trimmer.VideoPlayer player) {
             Object (
-                playback_duration : playback_duration
+                player : player
             );
 
+            playback_duration = player.playback.duration;
             add_events (Gdk.EventMask.POINTER_MOTION_MASK|
                         Gdk.EventMask.ENTER_NOTIFY_MASK|
                         Gdk.EventMask.BUTTON_PRESS_MASK|
@@ -146,6 +148,8 @@ namespace Trimmer {
                     is_grabbing = true;
                     grab_point (mouse_x);
                 }
+                playback_progress = mouse_x;
+                player.playback.progress = playback_progress;
             });
 
             button_release_event.connect (() => {

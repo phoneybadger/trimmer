@@ -67,7 +67,7 @@ namespace Trimmer {
                 end_entry.check_bounds (min, max);
             });
 
-            test_timeline = new TestTimeline (0.0);
+            test_timeline = new TestTimeline (video_player);
 
             start_end_box.pack_start (start_label, false, false, 10);
             start_end_box.pack_start (start_entry, false, false, 10);
