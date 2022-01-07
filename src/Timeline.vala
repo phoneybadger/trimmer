@@ -1,5 +1,5 @@
 namespace Trimmer {
-    public class Timeline: Gtk.EventBox {
+    public class Timeline: Gtk.Grid {
         private double _playback_duration;
         private double _playback_progress;
         public unowned Trimmer.VideoPlayer player {get; set construct;}
@@ -86,6 +86,7 @@ namespace Trimmer {
         }
 
         construct {
+            column_spacing = 5;
             var style_context = get_style_context ();
 
             var css_provider = new Gtk.CssProvider ();
@@ -105,11 +106,8 @@ namespace Trimmer {
             var default_cursor = new Gdk.Cursor.from_name (display, "default");
             var resize_cursor = new Gdk.Cursor.from_name (display, "col-resize");
 
-            var content_grid = new Gtk.Grid () {
-                column_spacing = 5,
-                margin_start = 2,
-                margin_end = 2
-            };
+            var eventbox = new Gtk.EventBox ();
+
             duration_label = new Gtk.Label (null);
             progress_label = new Gtk.Label (null);
             duration_label.margin_end = progress_label.margin_start = 3;
@@ -137,7 +135,7 @@ namespace Trimmer {
                 update_progress ();
             });
 
-            motion_notify_event.connect ((event) => {
+            eventbox.motion_notify_event.connect ((event) => {
                 var mouse_x = get_fractional_coordinate (event.x);
                 if (is_mouse_over_selection_start (mouse_x) ||
                     is_mouse_over_selection_end (mouse_x)) {
@@ -158,11 +156,11 @@ namespace Trimmer {
                 }
             });
 
-            leave_notify_event.connect ((event) => {
+            eventbox.leave_notify_event.connect ((event) => {
                 window.cursor = default_cursor;
             });
 
-            button_press_event.connect ((event) => {
+            eventbox.button_press_event.connect ((event) => {
                 var mouse_x = get_fractional_coordinate (event.x);
                 if (is_mouse_over_selection_start (mouse_x) ||
                     is_mouse_over_selection_end (mouse_x)) {
@@ -173,17 +171,18 @@ namespace Trimmer {
                 player.playback.progress = playback_progress;
             });
 
-            button_release_event.connect (() => {
+            eventbox.button_release_event.connect (() => {
                 is_grabbing = false;
             });
 
             track.add (progressbar);
             track.add (selection);
-            content_grid.attach (progress_label, 0, 0);
-            content_grid.attach (track, 1, 0);
-            content_grid.attach (duration_label, 2, 0);
 
-            add(content_grid);
+            eventbox.add (track);
+
+            attach (progress_label, 0, 0);
+            attach (eventbox, 1, 0);
+            attach (duration_label, 2, 0);
         }
 
         private void move_point (end_points grabbed_point, double mouse_x) {

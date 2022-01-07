@@ -1,7 +1,7 @@
 namespace Trimmer {
     public class TrimView : Gtk.Box {
         public unowned Trimmer.Window window {get; set;}
-        public Trimmer.Timeline test_timeline {get; set;}
+        public Trimmer.Timeline timeline {get; set;}
         public Trimmer.VideoPlayer video_player;
         public Granite.SeekBar seeker;
         private Gtk.Button play_button;
@@ -19,16 +19,18 @@ namespace Trimmer {
         construct {
             video_player = new VideoPlayer (this);
 
-            var timeline_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            var timeline_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                valign = Gtk.Align.CENTER
+            };
             play_button = new Gtk.Button.from_icon_name ("media-playback-pause-symbolic");
             play_button.clicked.connect (() => {
                 window.actions.lookup_action (Window.ACTION_PLAY_PAUSE).activate (null);
             });
 
             // Initialize with 0 as no video will be loaded initially
-            // seeker = new Trimmer.Timeline (0.0);
+            timeline = new Timeline (video_player);
             timeline_box.pack_start (play_button, false, false, 0);
-            timeline_box.pack_start (test_timeline, false, true, 0);
+            timeline_box.pack_start (timeline, false, true, 0);
 
             var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
                 layout_style = Gtk.ButtonBoxStyle.END
@@ -62,7 +64,6 @@ namespace Trimmer {
                 end_entry.check_bounds (min, max);
             });
 
-            test_timeline = new Timeline (video_player);
 
             start_end_box.pack_start (start_label, false, false, 10);
             start_end_box.pack_start (start_entry, false, false, 10);
@@ -72,7 +73,6 @@ namespace Trimmer {
             pack_start (video_player, true, true, 0);
             pack_start (timeline_box, false, false, 0);
             pack_start (start_end_box, false, false, 0);
-            pack_start (test_timeline, false, false, 0);
             pack_start (button_box, false, false, 0);
         }
 
