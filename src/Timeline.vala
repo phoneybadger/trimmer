@@ -79,14 +79,11 @@ namespace Trimmer {
             );
 
             playback_duration = player.playback.duration;
-            add_events (Gdk.EventMask.POINTER_MOTION_MASK|
-                        Gdk.EventMask.ENTER_NOTIFY_MASK|
-                        Gdk.EventMask.BUTTON_PRESS_MASK|
-                        Gdk.EventType.LEAVE_NOTIFY);
         }
 
         construct {
             column_spacing = 5;
+            valign = Gtk.Align.CENTER;
             var style_context = get_style_context ();
 
             var css_provider = new Gtk.CssProvider ();
@@ -105,8 +102,13 @@ namespace Trimmer {
             var display = window.get_display ();
             var default_cursor = new Gdk.Cursor.from_name (display, "default");
             var resize_cursor = new Gdk.Cursor.from_name (display, "col-resize");
+            window.cursor = default_cursor;
 
             var eventbox = new Gtk.EventBox ();
+            eventbox.add_events (Gdk.EventMask.POINTER_MOTION_MASK|
+                Gdk.EventMask.ENTER_NOTIFY_MASK|
+                Gdk.EventMask.BUTTON_PRESS_MASK|
+                Gdk.EventType.LEAVE_NOTIFY);
 
             duration_label = new Gtk.Label (null);
             progress_label = new Gtk.Label (null);
