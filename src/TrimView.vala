@@ -1,7 +1,7 @@
 namespace Trimmer {
     public class TrimView : Gtk.Box {
         public unowned Trimmer.Window window {get; set;}
-        public Trimmer.TestTimeline test_timeline {get; set;}
+        public Trimmer.Timeline test_timeline {get; set;}
         public Trimmer.VideoPlayer video_player;
         public Granite.SeekBar seeker;
         private Gtk.Button play_button;
@@ -26,14 +26,9 @@ namespace Trimmer {
             });
 
             // Initialize with 0 as no video will be loaded initially
-            seeker = new Trimmer.Timeline (0.0);
+            // seeker = new Trimmer.Timeline (0.0);
             timeline_box.pack_start (play_button, false, false, 0);
-            timeline_box.pack_start (seeker, false, true, 0);
-
-            seeker.button_release_event.connect ((event) => {
-                video_player.playback.progress = seeker.playback_progress;
-                return false;
-            });
+            timeline_box.pack_start (test_timeline, false, true, 0);
 
             var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
                 layout_style = Gtk.ButtonBoxStyle.END
@@ -67,7 +62,7 @@ namespace Trimmer {
                 end_entry.check_bounds (min, max);
             });
 
-            test_timeline = new TestTimeline (video_player);
+            test_timeline = new Timeline (video_player);
 
             start_end_box.pack_start (start_label, false, false, 10);
             start_end_box.pack_start (start_entry, false, false, 10);

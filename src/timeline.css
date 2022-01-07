@@ -1,12 +1,3 @@
-.timeline scale trough {
-	min-height: 18px;
-	border-radius: 4px;
-}
-
-.timeline scale highlight {
-	border-radius: 4px;
-}
-
 .test {
     background-color: @wm_shadow;
     border: 1px solid @unfocused_borders;

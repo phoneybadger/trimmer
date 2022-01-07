@@ -14,7 +14,6 @@ executable (meson.project_name(),
             'HeaderBar.vala',
             'TimeStampEntry.vala',
             'Timeline.vala',
-            'TestTimeline.vala',
             
             dependencies : [glib_dep, gtk_dep, granite_dep, gst_deps]
             )

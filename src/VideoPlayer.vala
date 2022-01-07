@@ -24,7 +24,6 @@ namespace Trimmer {
 
             // when new video loaded
             playback.notify ["duration"].connect (() => {
-                trim_view.seeker.playback_duration = playback.duration;
                 trim_view.test_timeline.playback_duration = playback.duration;
                 // set end entry to end of clip duration by default
                 trim_view.end_entry.text = Granite.DateTime.seconds_to_time ((int) playback.duration);
@@ -32,9 +31,6 @@ namespace Trimmer {
 
             // update seek bar in sync with video progress
             playback.notify ["progress"].connect(() => {
-                if (!trim_view.seeker.is_grabbing) {
-                    trim_view.seeker.playback_progress = playback.progress;
-                }
                 if (!trim_view.test_timeline.is_grabbing) {
                     trim_view.test_timeline.playback_progress = playback.progress;
                 }
