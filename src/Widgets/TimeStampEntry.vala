@@ -1,12 +1,14 @@
 namespace Trimmer {
     public class TimeStampEntry : Granite.ValidatedEntry {
+        private int _time;
         private Regex timestamp_regex = null;
-
-        public TimeStampEntry () {
-            Object (
-                // initially set to 00:00:00
-                text : Granite.DateTime.seconds_to_time (0)
-                );
+        public int time {
+            get {
+                return _time;
+            }
+            set {
+                _time = value;
+            }
         }
 
         construct {
@@ -29,22 +31,21 @@ namespace Trimmer {
             }
 
             regex = timestamp_regex;
+
+            notify ["time"].connect (() => {
+                text = Granite.DateTime.seconds_to_time (time);
+            });
+
+            activate.connect (() => {
+                if (is_valid) {
+                    time = convert_timestamp_to_seconds (text);
+                }
+            });
         }
 
-        public void check_bounds (double min, double max) {
-            var time = timestamp_in_seconds ();
-            // snap back to within bounds if out of bounds
-            if (time < min) {
-                text = Granite.DateTime.seconds_to_time ((int) min);
-            } else if (time > max) {
-                text = Granite.DateTime.seconds_to_time ((int) max);
-            }
-        }
-
-
-        public int timestamp_in_seconds () {
+        public int convert_timestamp_to_seconds (string timestamp) {
             
-            var parsed_time = text.split (":");
+            var parsed_time = timestamp.split (":");
             var hours = 0;
             var minutes = 0;
             var seconds = 0;

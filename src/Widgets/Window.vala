@@ -3,6 +3,7 @@ namespace Trimmer {
         public Gtk.Stack content_stack;
         private Trimmer.WelcomeView welcome_view;
         public Trimmer.TrimView trim_view;
+        public Trimmer.Controllers.TrimController trim_controller{get; set;}
         public Gtk.Application app {get; set construct;}
 
         public SimpleActionGroup actions;
@@ -41,6 +42,7 @@ namespace Trimmer {
             set_titlebar (header_bar);
 
             content_stack = new Gtk.Stack ();
+            trim_controller = new Trimmer.Controllers.TrimController ();
             welcome_view = new Trimmer.WelcomeView (this);
             trim_view = new Trimmer.TrimView (this);
 

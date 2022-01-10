@@ -5,8 +5,6 @@ namespace Trimmer {
         public Trimmer.VideoPlayer video_player;
         public Granite.SeekBar seeker;
         private Gtk.Button play_button;
-        public Trimmer.TimeStampEntry start_entry;
-        public Trimmer.TimeStampEntry end_entry;
 
         public TrimView (Trimmer.Window window) {
             Object (
@@ -48,22 +46,25 @@ namespace Trimmer {
             var start_label = new Gtk.Label ("Start");
             var end_label = new Gtk.Label ("End");
 
-            start_entry = new Trimmer.TimeStampEntry ();
-            end_entry = new Trimmer.TimeStampEntry ();
+            var start_entry = new Trimmer.TimeStampEntry ();
+            var end_entry = new Trimmer.TimeStampEntry ();
 
-            /* check if trim boundaries are within video clip duration and also
-             ensure start comes before end. */
-            start_entry.activate.connect (() => {
-                var min = 0;
-                var max = end_entry.timestamp_in_seconds ();
-                start_entry.check_bounds (min, max);
-            });
-            end_entry.activate.connect (() => {
-                var min = start_entry.timestamp_in_seconds ();
-                var max = video_player.playback.duration;
-                end_entry.check_bounds (min, max);
-            });
+            realize.connect (() => {
+                start_entry.bind_property (
+                    "time",
+                    window.trim_controller,
+                    "trim_start",
+                    BindingFlags.BIDIRECTIONAL
+                );
 
+                end_entry.bind_property (
+                    "time",
+                    window.trim_controller,
+                    "trim_end",
+                    BindingFlags.BIDIRECTIONAL
+                );
+
+            });
 
             start_end_box.pack_start (start_label, false, false, 10);
             start_end_box.pack_start (start_entry, false, false, 10);
