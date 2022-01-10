@@ -7,13 +7,14 @@ executable (meson.project_name(),
 
             'Main.vala',
             'Application.vala',
-            'Window.vala',
-            'WelcomeView.vala',
-            'TrimView.vala',
-            'VideoPlayer.vala',
-            'HeaderBar.vala',
-            'TimeStampEntry.vala',
-            'Timeline.vala',
+            'Widgets/Window.vala',
+            'Widgets/WelcomeView.vala',
+            'Widgets/TrimView.vala',
+            'Widgets/VideoPlayer.vala',
+            'Widgets/HeaderBar.vala',
+            'Widgets/TimeStampEntry.vala',
+            'Widgets/Timeline.vala',
+            'Controllers/TrimController.vala',
             
             dependencies : [glib_dep, gtk_dep, granite_dep, gst_deps]
             )
