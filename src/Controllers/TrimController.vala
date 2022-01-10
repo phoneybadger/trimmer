@@ -1,7 +1,7 @@
 namespace Trimmer.Controllers {
     public class TrimController : GLib.Object {
-        private const double DEFAULT_START = 1.0/3.0;
-        private const double DEFAULT_END = 2.0/3.0;
+        private const double DEFAULT_START = 1.0/4.0;
+        private const double DEFAULT_END = 3.0/4.0;
 
         private int _trim_start;
         private int _trim_end;
@@ -41,10 +41,6 @@ namespace Trimmer.Controllers {
             notify ["duration"].connect (() => {
                 trim_start = (int) (DEFAULT_START * duration);
                 trim_end = (int) (DEFAULT_END * duration);
-            });
-
-            notify ["trim-start"].connect (() => {
-                print ("%d\n", trim_start);
             });
         }
     }

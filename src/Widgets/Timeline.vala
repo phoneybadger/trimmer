@@ -49,8 +49,36 @@ namespace Trimmer {
 
         /* Initializing to points inside the track to give a visual hint to the 
            user that the points can be manipulated */
-        private double selection_start = 1.0/4.0;
-        private double selection_end = 3.0/4.0;
+        private int _trim_start;
+        private int _trim_end;
+
+        private double selection_start;
+        private double selection_end;
+
+        public int trim_start {
+            get {
+                return _trim_start;
+            }
+            set {
+                _trim_start = value;
+                if (playback_duration != 0) {
+                    selection_start = _trim_start/playback_duration;
+                }
+            }
+        }
+
+        public int trim_end {
+            get {
+                return _trim_end;
+            }
+            set {
+                _trim_end = value;
+                if (playback_duration != 0) {
+                    selection_end = _trim_end/playback_duration;
+                }
+            }
+        }
+
 
         private double track_start = 0;
         private double track_end = 1;
@@ -198,6 +226,7 @@ namespace Trimmer {
                 } else {
                     selection_start = mouse_x;
                 }
+                trim_start = (int) (selection_start * playback_duration);
             } else {
                 if (mouse_x > track_end) {
                     selection_end = track_end;
@@ -206,6 +235,7 @@ namespace Trimmer {
                 } else {
                     selection_end = mouse_x;
                 }
+                trim_end = (int) (selection_end * playback_duration);
             }
             refresh_selection ();
         }

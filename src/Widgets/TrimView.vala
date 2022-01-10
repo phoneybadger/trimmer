@@ -64,6 +64,20 @@ namespace Trimmer {
                     BindingFlags.BIDIRECTIONAL
                 );
 
+                timeline.bind_property (
+                    "trim_start",
+                    window.trim_controller,
+                    "trim_start",
+                    BindingFlags.BIDIRECTIONAL
+                );
+
+                timeline.bind_property (
+                    "trim_end",
+                    window.trim_controller,
+                    "trim_end",
+                    BindingFlags.BIDIRECTIONAL
+                );
+
             });
 
             start_end_box.pack_start (start_label, false, false, 10);
