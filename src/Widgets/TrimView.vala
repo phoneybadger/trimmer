@@ -81,6 +81,19 @@ namespace Trimmer {
 
             });
 
+            /* making sure the values are within bounds */
+            start_entry.activate.connect (() => {
+                if (start_entry.time < 0) {
+                    start_entry.time = 0;
+                }
+            });
+
+            end_entry.activate.connect (() => {
+                if (end_entry.time > window.trim_controller.duration) {
+                    end_entry.time = (int) window.trim_controller.duration;
+                }
+            });
+
             start_end_box.pack_start (start_label, false, false, 10);
             start_end_box.pack_start (start_entry, false, false, 10);
             start_end_box.pack_start (end_label, false, false, 10);
