@@ -6,14 +6,13 @@
 
 .selection {
     border-radius: 3px;
-    background-color: @selected_bg_color;
-    border: 1px solid @accent_color;
-    /* opacity: 0; */
+    background-color: @success_color;
+    opacity: 0.8;
 }
 
 .progress {
     border-radius: 3px;
-    background-color: @highlight_color;
+    background-color: @fg_color;
     /* opacity: 0.4; */
 }
 

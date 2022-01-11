@@ -40,6 +40,7 @@ namespace Trimmer {
             button_box.pack_end (trim_button);
 
             var start_end_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                margin_top = 10,
                 halign = Gtk.Align.CENTER
             };
 
