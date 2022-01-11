@@ -205,6 +205,14 @@ namespace Trimmer {
                 is_grabbing = false;
             });
 
+            notify ["trim-start"].connect (() => {
+                refresh_selection ();
+            });
+
+            notify ["trim-end"].connect (() => {
+                refresh_selection ();
+            });
+
             track.add (progressbar);
             track.add (selection);
 
