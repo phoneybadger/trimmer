@@ -89,6 +89,7 @@ namespace Trimmer {
                 var uri = file_chooser.get_uri ();
                 content_stack.visible_child = trim_view;
                 trim_view.video_player.play_video (uri);
+                trim_controller.video_uri = uri;
             }
         }
 

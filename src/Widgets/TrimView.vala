@@ -39,6 +39,10 @@ namespace Trimmer {
             trim_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             button_box.pack_end (trim_button);
 
+            trim_button.clicked.connect (() => {
+                window.trim_controller.trim_video ();
+            });
+
             var start_end_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 margin_top = 10,
                 halign = Gtk.Align.CENTER

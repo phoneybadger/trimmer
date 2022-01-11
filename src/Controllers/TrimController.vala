@@ -43,5 +43,27 @@ namespace Trimmer.Controllers {
                 trim_end = (int) (DEFAULT_END * duration);
             });
         }
+
+        public void trim_video () {
+            var output_uri = "file:///home/adithyankv/Videos/test.mp4";
+            string[] cmd_args = {
+                "ffmpeg",
+                "-i",   //input
+                video_uri,
+                "-ss",
+                Granite.DateTime.seconds_to_time (trim_start),
+                "-to",
+                Granite.DateTime.seconds_to_time (trim_end),
+                "-c:v copy",        // copy video without reencoding
+                "-c:a copy",        // copy audio without reencoding
+                output_uri
+            };
+
+            try {
+                Process.spawn_command_line_async (string.joinv (" ", cmd_args));
+            } catch (SpawnError e) {
+                print ("Error:%s", e.message);
+            }
+        }
     }
 }

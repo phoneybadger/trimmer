@@ -1,7 +1,8 @@
 glib_dep = [dependency('glib-2.0')]
 gtk_dep = [dependency('gtk+-3.0')]
 granite_dep = [dependency('granite')]
-gst_deps = [dependency('clutter-gst-3.0'), dependency('clutter-gtk-1.0')]
+gst_deps = [dependency('clutter-gst-3.0'),
+            dependency('clutter-gtk-1.0')]
 
 executable (meson.project_name(),
 
