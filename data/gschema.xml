@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema path="/com/github/adithyankv/trimmer/" id="com.github.adithyankv.trimmer">
+    <key name="position" type="(ii)">
+      <default>(-1,-1)</default>
+      <summary>Window position</summary>
+      <description>The last saved window position (x,y)</description>
+    </key>
+    <key name="dimensions" type="(ii)">
+      <default>(640,480)</default>
+      <summary>Window dimensions</summary>
+      <description>The last saved dimensions of the window (width, height)</description>
+    </key>
+  </schema>
+</schemalist>

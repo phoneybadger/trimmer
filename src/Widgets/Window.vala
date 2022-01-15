@@ -6,6 +6,8 @@ namespace Trimmer {
         public Trimmer.Controllers.TrimController trim_controller{get; set;}
         public Gtk.Application app {get; set construct;}
 
+        private GLib.Settings settings;
+
         public SimpleActionGroup actions;
 
         public const string ACTION_PREFIX = "win.";
@@ -34,10 +36,23 @@ namespace Trimmer {
         }
 
         construct {
+            default_width = 640;
+            default_height = 480;
+
             set_up_actions ();
+            init_layout ();
+            load_config_from_schema ();
 
-            set_size_request (640, 480);
+            delete_event.connect (() => {
+                save_config_to_schema ();
+            });
 
+            destroy.connect (() => {
+                actions.lookup_action (ACTION_QUIT).activate (null);
+            });
+        }
+
+        private void init_layout () {
             var header_bar = new Trimmer.HeaderBar (this);
             set_titlebar (header_bar);
 
@@ -49,10 +64,26 @@ namespace Trimmer {
             content_stack.add (welcome_view);
             content_stack.add (trim_view);
             add (content_stack);
+        }
 
-            destroy.connect (() => {
-                actions.lookup_action (ACTION_QUIT).activate (null);
-            });
+        private void load_config_from_schema () {
+            settings = new Settings ("com.github.adithyankv.trimmer");
+            int pos_x, pos_y;
+            settings.get ("position", "(ii)", out pos_x, out pos_y);
+            move (pos_x, pos_y);
+            
+            int win_width, win_height;
+            settings.get ("dimensions", "(ii)", out win_width, out win_height);
+            resize (win_width, win_height);
+        }
+
+        private void save_config_to_schema () {
+            int width, height, x, y;
+            get_size (out width, out height);
+            get_position (out x, out y);
+
+            settings.set ("position", "(ii)", x, y);
+            settings.set ("dimensions", "(ii)", width, height);
         }
 
         private void set_up_actions () {
