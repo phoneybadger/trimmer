@@ -116,7 +116,8 @@ namespace Trimmer {
 
             var css_provider = new Gtk.CssProvider ();
             try {
-                css_provider.load_from_path ("/home/adithyankv/Code/personal_projects/trimmer/src/timeline.css");
+                // TODO: Change hardcoded path
+                css_provider.load_from_path ("/home/adithyankv/Code/trimmer/src/timeline.css");
             } catch (Error e) {
                 critical (e.message);
             }
