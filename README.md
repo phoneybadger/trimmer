@@ -20,5 +20,11 @@ meson build
 cd build
 ninja
 ```
+To install use `ninja install`, then execute with `com.github.adithyankv.trimmer`
+```
+sudo ninja install
+com.github.adithyankv.trimmer
+```
 # Credits
-Directly inspired by Ivan Molodetskikh's [Video Trimmer](https://gitlab.gnome.org/YaLTeR/video-trimmer) for GNOME.
+- Directly inspired by Ivan Molodetskikh's [Video Trimmer](https://gitlab.gnome.org/YaLTeR/video-trimmer) for GNOME.
+- Video used in screenshots is Blender open movie [Sprite fright](https://studio.blender.org/films/sprite-fright/)

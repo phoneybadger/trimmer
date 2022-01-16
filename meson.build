@@ -1,4 +1,4 @@
-project('trimmer', 'c', 'vala')
+project('com.github.adithyankv.trimmer', 'c', 'vala')
 
 subdir('src')
 subdir('data')
@@ -19,7 +19,8 @@ executable (
     meson.project_name(),
     trimmer_resources,
     sources,
-    dependencies : [glib_dep, gtk_dep, granite_dep, gst_deps]
+    dependencies : [glib_dep, gtk_dep, granite_dep, gst_deps],
+    install: true
 )
 
 meson.add_install_script('meson/post_install.py')
