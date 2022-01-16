@@ -1,8 +1,8 @@
 # trimmer
-**trimmer is still a work in progress**
 A video trimming utility designed for elementary OS.
 
-**tentative screenshots for in-progress UI**
+**trimmer is still a work in progress**
+
 ![Welcome screen screenshot](data/screenshot-welcome.png)
 ![Trimming screen screenshot](data/screenshot-trim.png)
 
