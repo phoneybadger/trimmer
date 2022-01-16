@@ -115,12 +115,8 @@ namespace Trimmer {
             var style_context = get_style_context ();
 
             var css_provider = new Gtk.CssProvider ();
-            try {
-                // TODO: Change hardcoded path
-                css_provider.load_from_path ("/home/adithyankv/Code/trimmer/src/timeline.css");
-            } catch (Error e) {
-                critical (e.message);
-            }
+            css_provider.load_from_resource ("/com/github/adithyankv/trimmer/timeline.css");
+
             Gtk.StyleContext.add_provider_for_screen (
                 Gdk.Screen.get_default (),
                 css_provider,
