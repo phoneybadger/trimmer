@@ -18,7 +18,7 @@ You'll need the following dependencies
 
 Run `meson` to configure the build environment and then use `ninja` to build
 ```
-meson build
+meson build --prefix=/usr
 cd build
 ninja
 ```
