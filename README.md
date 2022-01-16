@@ -8,11 +8,13 @@ A video trimming utility designed for elementary OS.
 
 # Building, testing and installation
 You'll need the following dependencies
-- meson
-- libgranite-dev
 - valac
+- meson
+- libgtk3-dev
+- libgranite-dev
 - libclutter-gst-3.0-dev
 - libclutter-gtk-1.0-dev
+- libgstreamer-1.0-dev
 
 Run `meson` to configure the build environment and then use `ninja` to build
 ```
