@@ -40,7 +40,7 @@ namespace Trimmer {
             button_box.pack_end (trim_button);
 
             trim_button.clicked.connect (() => {
-                window.trim_controller.trim_video ();
+                window.actions.lookup_action (Window.ACTION_TRIM).activate (null);
             });
 
             var start_end_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {

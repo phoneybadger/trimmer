@@ -7,6 +7,8 @@ namespace Trimmer.Controllers {
         private int _trim_end;
         private double _duration;
 
+        public string output_uri;
+
         public int trim_start {
             get {
                 return _trim_start;
@@ -45,7 +47,6 @@ namespace Trimmer.Controllers {
         }
 
         public void trim_video () {
-            var output_uri = "file:///home/adithyankv/Videos/test.mp4";
             string[] cmd_args = {
                 "ffmpeg",
                 "-i",   //input

@@ -14,6 +14,7 @@ namespace Trimmer {
         public const string ACTION_OPEN = "action_open";
         public const string ACTION_PLAY_PAUSE = "action_play_pause";
         public const string ACTION_QUIT = "action_quit";
+        public const string ACTION_TRIM = "action_trim";
 
         public static Gee.MultiMap<string, string> action_accelerators = new Gee.HashMultiMap<string, string> ();
 
@@ -21,6 +22,7 @@ namespace Trimmer {
             {ACTION_OPEN, action_open},
             {ACTION_QUIT, action_quit},
             {ACTION_PLAY_PAUSE, action_play_pause, null, "false"}, //false if video is playing
+            {ACTION_TRIM, action_trim},
         };
 
         public Window (Gtk.Application app) {
@@ -151,6 +153,27 @@ namespace Trimmer {
         private void action_quit () {
             trim_view.video_player.stop_and_destroy ();
             destroy ();
+        }
+
+        private void action_trim () {
+            var file_chooser = new Gtk.FileChooserNative (
+                "Save video",
+                this,
+                Gtk.FileChooserAction.SAVE,
+                "Save",
+                "Cancel"
+            );
+
+            file_chooser.set_current_name ("trimmed.mp4");
+            var response = file_chooser.run ();
+            file_chooser.destroy ();
+
+            if (response == Gtk.ResponseType.ACCEPT) {
+                var uri = file_chooser.get_uri ();
+                trim_controller.output_uri = uri;
+                trim_controller.trim_video ();
+            }
+
         }
     }
 }
