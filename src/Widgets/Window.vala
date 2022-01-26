@@ -145,7 +145,6 @@ namespace Trimmer {
 
         private void action_play_pause () {
             trim_view.video_player.toggle_play_pause ();
-            trim_view.update_play_button_icon ();
         }
 
         private void action_quit () {

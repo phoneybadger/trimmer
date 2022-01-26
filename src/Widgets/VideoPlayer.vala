@@ -28,6 +28,10 @@ namespace Trimmer {
                 trim_view.window.trim_controller.duration = playback.duration;
             });
 
+            playback.notify ["playing"].connect (() => {
+                trim_view.update_play_button_icon ();
+            });
+
             // update seek bar in sync with video progress
             playback.notify ["progress"].connect(() => {
                 trim_view.timeline.playback_progress = playback.progress;
