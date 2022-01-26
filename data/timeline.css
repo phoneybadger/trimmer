@@ -1,17 +1,17 @@
-.test {
+.timeline {
     background-color: @wm_shadow;
     border: 1px solid @unfocused_borders;
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 .selection {
-    border-radius: 3px;
+    border-radius: 2px;
     background-color: @success_color;
     opacity: 0.8;
 }
 
 .progress {
-    border-radius: 3px;
+    border-radius: 2px;
     background-color: @fg_color;
     /* opacity: 0.4; */
 }

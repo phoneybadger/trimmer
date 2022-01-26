@@ -39,10 +39,6 @@ namespace Trimmer {
             trim_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             button_box.pack_end (trim_button);
 
-            trim_button.clicked.connect (() => {
-                window.actions.lookup_action (Window.ACTION_TRIM).activate (null);
-            });
-
             var start_end_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 margin_top = 10,
                 halign = Gtk.Align.CENTER
@@ -58,31 +54,24 @@ namespace Trimmer {
                 start_entry.bind_property (
                     "time",
                     window.trim_controller,
-                    "trim_start",
+                    "trim_start_time",
                     BindingFlags.BIDIRECTIONAL
                 );
 
                 end_entry.bind_property (
                     "time",
                     window.trim_controller,
-                    "trim_end",
+                    "trim_end_time",
                     BindingFlags.BIDIRECTIONAL
                 );
 
+                // Pause playback when seeking/scrubbing the timeline
                 timeline.bind_property (
-                    "trim_start",
-                    window.trim_controller,
-                    "trim_start",
-                    BindingFlags.BIDIRECTIONAL
+                    "is_grabbing",
+                    video_player.playback,
+                    "playing",
+                    BindingFlags.INVERT_BOOLEAN
                 );
-
-                timeline.bind_property (
-                    "trim_end",
-                    window.trim_controller,
-                    "trim_end",
-                    BindingFlags.BIDIRECTIONAL
-                );
-
             });
 
             /* making sure the values are within bounds */

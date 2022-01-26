@@ -30,9 +30,7 @@ namespace Trimmer {
 
             // update seek bar in sync with video progress
             playback.notify ["progress"].connect(() => {
-                if (!trim_view.timeline.is_grabbing) {
-                    trim_view.timeline.playback_progress = playback.progress;
-                }
+                trim_view.timeline.playback_progress = playback.progress;
             });
 
             var stage = this.get_stage ();
