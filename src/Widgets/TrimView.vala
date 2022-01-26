@@ -64,14 +64,6 @@ namespace Trimmer {
                     "trim_end_time",
                     BindingFlags.BIDIRECTIONAL
                 );
-
-                // Pause playback when seeking/scrubbing the timeline
-                timeline.bind_property (
-                    "is_grabbing",
-                    video_player.playback,
-                    "playing",
-                    BindingFlags.INVERT_BOOLEAN
-                );
             });
 
             /* making sure the values are within bounds */

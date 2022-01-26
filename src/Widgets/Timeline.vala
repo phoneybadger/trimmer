@@ -114,8 +114,15 @@ namespace Trimmer {
                 update_progress ();
             });
 
-            track.add (progressbar);
+            // Pause the video when seeking/scrubbing
+            bind_property (
+                "is_grabbing",
+                player.playback,
+                "playing",
+                BindingFlags.INVERT_BOOLEAN
+            );
 
+            track.add (progressbar);
             eventbox.add (track);
 
             attach (progress_label, 0, 0);
@@ -124,9 +131,8 @@ namespace Trimmer {
         }
 
         private void seek_timeline (double mouse_x) {
-                player.playback.playing = false;
-                playback_progress = get_timeline_coordinate (mouse_x);
-                player.playback.progress = playback_progress;
+            playback_progress = get_timeline_coordinate (mouse_x);
+            player.playback.progress = playback_progress;
         }
 
         private void update_progress () {
