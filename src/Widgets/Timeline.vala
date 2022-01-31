@@ -88,15 +88,16 @@ namespace Trimmer {
                 height_request = TIMELINE_HEIGHT,
                 hexpand = true,
             };
-            track.get_style_context ().add_class ("timeline");
+            track.get_style_context ().add_class (Gtk.STYLE_CLASS_TROUGH);
 
             progressbar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 height_request = TIMELINE_HEIGHT,
             };
-            progressbar.get_style_context ().add_class ("progress");
+            progressbar.get_style_context ().add_class (Gtk.STYLE_CLASS_SCALE);
 
             eventbox.button_press_event.connect ((event) => {
                 is_grabbing = true;
+                player.playback.playing = false;
                 seek_timeline (event.x);
             });
 
@@ -132,7 +133,7 @@ namespace Trimmer {
         }
 
         private void seek_timeline (double mouse_x) {
-            playback_progress = get_timeline_coordinate (mouse_x);
+            playback_progress = get_position_on_timeline (mouse_x);
             player.playback.progress = playback_progress;
         }
 
@@ -148,7 +149,7 @@ namespace Trimmer {
             progressbar.size_allocate (progressbar_allocation);
         }
 
-        private double get_timeline_coordinate (double pixel_coordinate) {
+        private double get_position_on_timeline (double pixel_coordinate) {
             /* convert from pixel location inside the window's coordinate system
                to a 0-1 coordinate system where 0 is beginning of track and 1 is
                the end */

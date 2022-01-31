@@ -6,9 +6,9 @@
  the colors will mirror upstream changes to the elementary stylesheet. The
  disadvantage could be that using external themes can break the style
 */
-.timeline {
+.trough {
 	background-color: @color_primary;
-	box-shadow: inset 0 0 0 1px @wm_shadow;
+	box-shadow: inset 0 0 0 0.5px @wm_shadow;
 	border: 1px solid @menu_separator;
 	border-radius: 2px;
 }
@@ -19,9 +19,8 @@
     opacity: 0.8;
 }
 
-.progress {
+.scale {
     border-radius: 2px;
     background-color: @fg_color;
-    /* opacity: 0.4; */
 }
 
