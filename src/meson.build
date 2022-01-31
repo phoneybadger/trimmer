@@ -9,4 +9,5 @@ sources = files(
     'Widgets/TimeStampEntry.vala',
     'Widgets/Timeline.vala',
     'Controllers/TrimController.vala',
+    'Utils/Utils.vala'
 )

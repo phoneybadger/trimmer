@@ -42,6 +42,7 @@ namespace Trimmer {
         private Gtk.Box progressbar;
 
         private const int TIMELINE_HEIGHT = 18;
+        private const int TIMELINE_BORDER = 1;
 
         public bool is_grabbing {get; set;}
 
@@ -139,9 +140,11 @@ namespace Trimmer {
             /* change progress timestamp label and also the progress ui */
             progress_label.label = Granite.DateTime.seconds_to_time (
                     (int) (playback_progress * playback_duration));
-            progressbar_allocation = track_allocation;
+            progressbar_allocation.x = track_allocation.x + TIMELINE_BORDER;
+            progressbar_allocation.y = track_allocation.y + TIMELINE_BORDER;
+            progressbar_allocation.height = Utils.max(0, track_allocation.height - 2 * TIMELINE_BORDER);
             var width = (int) (playback_progress * track_allocation.width);
-            progressbar_allocation.width = width;
+            progressbar_allocation.width = Utils.max(0, width - 2 * TIMELINE_BORDER);
             progressbar.size_allocate (progressbar_allocation);
         }
 
