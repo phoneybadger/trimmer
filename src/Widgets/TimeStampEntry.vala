@@ -1,7 +1,28 @@
 namespace Trimmer {
     public class TimeStampEntry : Granite.ValidatedEntry {
+        private Regex timestamp_regex;
+
+        public int _min_time;
+        public int min_time {
+            get {
+                return _min_time;
+            }
+            set {
+                _min_time = value;
+            }
+        }
+
+        private int _max_time;
+        public int max_time {
+            get {
+                return _max_time;
+            }
+            set {
+                _max_time = value;
+            }
+        }
+
         private int _time;
-        private Regex timestamp_regex = null;
         public int time {
             get {
                 return _time;
@@ -12,6 +33,33 @@ namespace Trimmer {
         }
 
         construct {
+            notify ["time"].connect (() => {
+                text = Granite.DateTime.seconds_to_time (time);
+            });
+
+            changed.connect (() => {
+                validate ();
+            });
+
+            activate.connect (() => {
+                if (is_valid) {
+                    time = convert_timestamp_to_seconds(text);
+                    // formatting it better
+                    text = Granite.DateTime.seconds_to_time(time);
+                }
+            });
+        }
+
+        private bool is_valid_timestamp(string timestamp) {
+            return timestamp_regex.match(text);
+        }
+
+        private bool is_within_bounds(string timestamp) {
+            var time = convert_timestamp_to_seconds(timestamp);
+            return (time >= min_time && time <= max_time);
+        }
+
+        private void validate() {
             try {
                 // Regex for HH:MM:SS taken from
                 // https://stackoverflow.com/questions/8318236/regex-pattern-for-hhmmss-time-string
@@ -30,21 +78,20 @@ namespace Trimmer {
                 critical (e.message);
             }
 
-            regex = timestamp_regex;
-
-            notify ["time"].connect (() => {
-                text = Granite.DateTime.seconds_to_time (time);
-            });
-
-            activate.connect (() => {
-                if (is_valid) {
-                    time = convert_timestamp_to_seconds (text);
+            if (is_valid_timestamp(text)) {
+                if (is_within_bounds(text)) {
+                    is_valid = true;
+                } else {
+                    print("time:%d min:%d max:%d\n", time, min_time, max_time);
+                    is_valid = false;
                 }
-            });
+            } else {
+               is_valid = false;
+            }
+
         }
 
-        public int convert_timestamp_to_seconds (string timestamp) {
-            
+        private int convert_timestamp_to_seconds (string timestamp) {
             var parsed_time = timestamp.split (":");
             var hours = 0;
             var minutes = 0;
