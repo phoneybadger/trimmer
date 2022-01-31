@@ -1,7 +1,16 @@
+/* Using elementary specific GTK CSS variables. Using only values that are
+ regarded as public API in the elementary stylesheets as specified in
+ https://github.com/elementary/stylesheet/blob/master/src/gtk-3.0/_exported.scss
+
+ The advantage of this is that dark/light mode are automatically handled and
+ the colors will mirror upstream changes to the elementary stylesheet. The
+ disadvantage could be that using external themes can break the style
+*/
 .timeline {
-    background-color: @wm_shadow;
-    border: 1px solid @unfocused_borders;
-    border-radius: 2px;
+	background-color: @color_primary;
+	box-shadow: inset 0 0 0 1px @wm_shadow;
+	border: 1px solid @menu_separator;
+	border-radius: 2px;
 }
 
 .selection {
