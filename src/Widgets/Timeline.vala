@@ -94,6 +94,12 @@ namespace Trimmer {
             playback_duration = player.playback.duration;
         }
 
+        private enum SelectionPoints {
+            SELECTION_START,
+            SELECTION_END
+        }
+        private SelectionPoints grabbed_point;
+
         construct {
             column_spacing = 5;
             valign = Gtk.Align.CENTER;
@@ -144,6 +150,10 @@ namespace Trimmer {
                 is_grabbing = true;
                 player.playback.playing = false;
                 seek_timeline (event.x);
+
+                if (is_mouse_over_selection (event.x)) {
+                    grab_nearest_point (event.x);
+                }
             });
 
             eventbox.button_release_event.connect (() => {
@@ -153,6 +163,7 @@ namespace Trimmer {
             eventbox.motion_notify_event.connect ((event) => {
                 if (is_grabbing) {
                     seek_timeline (event.x);
+                    move_point (grabbed_point, event.x);
                 }
 
                 if (!is_grabbing) {
@@ -218,6 +229,32 @@ namespace Trimmer {
             progressbar.size_allocate (progressbar_allocation);
         }
 
+        private void move_point (SelectionPoints grabbed_point, double mouse_x) {
+            // TODO: adjust min seperation to correspond to minimum unit of time
+            var min_separation = 0.01;
+            var mouse_timeline_pos = get_position_on_timeline (mouse_x);
+            if (grabbed_point == SelectionPoints.SELECTION_START) {
+                if (mouse_timeline_pos < 0) {
+                    selection_start = 0;
+                } else if (mouse_timeline_pos >= selection_end - min_separation) {
+                    selection_start = selection_end - min_separation;
+                } else {
+                    selection_start = mouse_timeline_pos;
+                }
+                start_time = (int) (selection_start * playback_duration);
+            } else {
+                if (mouse_timeline_pos > 1) {
+                    selection_end = 1;
+                } else if (mouse_timeline_pos < selection_start + min_separation) {
+                    selection_end = selection_start + min_separation;
+                } else {
+                    selection_end = mouse_timeline_pos;
+                }
+                end_time = (int) (selection_end * playback_duration);
+            }
+            refresh_selection ();
+        }
+
         private double get_position_on_timeline (double pixel_coordinate) {
             /* convert from pixel location inside the window's coordinate system
                to a 0-1 coordinate system where 0 is beginning of track and 1 is
@@ -248,6 +285,20 @@ namespace Trimmer {
             var distance_end = (mouse_timeline_pos - selection_end).abs ();
             return (distance_start < HITBOX_THRESHOLD ||
                     distance_end < HITBOX_THRESHOLD);
+        }
+
+        private void grab_nearest_point (double mouse_x) {
+            var mouse_timeline_pos = get_position_on_timeline (mouse_x);
+            var distance_start = (mouse_timeline_pos - selection_start).abs ();
+            var distance_end = (mouse_timeline_pos - selection_end).abs ();
+            /* checking for nearest point instead of just distances with some
+               threshold to account for the case where start and end are close
+               together */
+            if (distance_start < distance_end) {
+                grabbed_point = SelectionPoints.SELECTION_START;
+            } else {
+                grabbed_point = SelectionPoints.SELECTION_END;
+            }
         }
     }
 }
