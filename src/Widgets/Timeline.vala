@@ -36,10 +36,50 @@ namespace Trimmer {
             }
         }
 
+        private int _start_time;
+        private int _end_time;
+
+        public int start_time {
+            get {
+                return _start_time;
+            } set {
+                _start_time = value;
+            }
+        }
+
+        public int end_time {
+            get {
+                return _end_time;
+            } set {
+                _end_time = value;
+            }
+        }
+
+        private double _selection_start;
+        private double _selection_end;
+
+        public double selection_start {
+            get {
+                return _selection_start;
+            } set {
+                _selection_start = value;
+            }
+        }
+
+        public double selection_end {
+            get {
+                return _selection_end;
+            } set {
+                _selection_end = value;
+            }
+        }
+
         private Gtk.Allocation track_allocation;
         private Gtk.Allocation progressbar_allocation;
+        private Gtk.Allocation selection_allocation;
 
         private Gtk.Box progressbar;
+        private Gtk.Box selection;
 
         private const int TIMELINE_HEIGHT = 18;
         private const int TIMELINE_BORDER = 1;
@@ -50,7 +90,6 @@ namespace Trimmer {
             Object (
                 player : player
             );
-
             playback_duration = player.playback.duration;
         }
 
@@ -95,6 +134,11 @@ namespace Trimmer {
             };
             progressbar.get_style_context ().add_class (Gtk.STYLE_CLASS_SCALE);
 
+            selection = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                height_request = TIMELINE_HEIGHT,
+            };
+            selection.get_style_context ().add_class ("selection");
+
             eventbox.button_press_event.connect ((event) => {
                 is_grabbing = true;
                 player.playback.playing = false;
@@ -113,6 +157,7 @@ namespace Trimmer {
 
             track.size_allocate.connect (() => {
                 track.get_allocation (out track_allocation);
+                refresh_selection ();
                 update_progress ();
             });
 
@@ -124,7 +169,18 @@ namespace Trimmer {
                 BindingFlags.INVERT_BOOLEAN
             );
 
+            notify ["start-time"].connect (() => {
+                selection_start = start_time/playback_duration;
+                refresh_selection ();
+            });
+
+            notify ["end-time"].connect (() => {
+                selection_end = end_time/playback_duration;
+                refresh_selection ();
+            });
+
             track.add (progressbar);
+            track.add (selection);
             eventbox.add (track);
 
             attach (progress_label, 0, 0);
@@ -155,6 +211,22 @@ namespace Trimmer {
                the end */
             var offset = track_allocation.x;
             return (pixel_coordinate - offset)/track_allocation.width;
+        }
+
+        private int get_pixel_coordinate (double timeline_position) {
+            var offset = track_allocation.x;
+            return (offset + (int)(timeline_position * track_allocation.width));
+        }
+
+        private void refresh_selection () {
+            selection_allocation.x = get_pixel_coordinate (selection_start);
+            selection_allocation.y = track_allocation.y;
+            selection_allocation.height = track_allocation.height;
+            selection_allocation.width = get_pixel_coordinate (selection_end - selection_start);
+            if (selection_allocation.width < 0) {
+                selection_allocation.width = 0;
+            }
+            selection.size_allocate (selection_allocation);
         }
     }
 }
