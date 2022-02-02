@@ -15,8 +15,10 @@
 
 .selection {
     border-radius: 2px;
-    background-color: @success_color;
-    opacity: 0.8;
+    /* using color based on elementary accent color for better integration */
+    background-color: alpha(@selected_bg_color, 1.5);
+    /* border: 1px solid @selected_bg_color; */
+    opacity: 1;
 }
 
 .scale {
