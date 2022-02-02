@@ -21,6 +21,8 @@ namespace Trimmer {
         }
 
         construct {
+            placeholder_text = "HH:MM:SS";
+
             setup_timestamp_regex ();
 
             notify ["is-valid"].connect (() => {
@@ -36,6 +38,10 @@ namespace Trimmer {
                     time = convert_timestamp_to_seconds (text);
                     text = Granite.DateTime.seconds_to_time (time); // better formatting
                 }
+            });
+
+            focus_out_event.connect (() => {
+                activate ();
             });
 
             changed.connect (validate);
