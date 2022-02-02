@@ -3,7 +3,6 @@ namespace Trimmer {
         public Gtk.Stack content_stack;
         private Trimmer.WelcomeView welcome_view;
         public Trimmer.TrimView trim_view;
-        public Trimmer.Controllers.TrimController trim_controller{get; set;}
         public Gtk.Application app {get; set construct;}
 
         private GLib.Settings settings;
@@ -57,18 +56,6 @@ namespace Trimmer {
         private void setup_drag_and_drop () {
             Gtk.TargetEntry target = {"text/uri-list", 0, 0};
             Gtk.drag_dest_set (this, Gtk.DestDefaults.ALL, {target}, Gdk.DragAction.COPY);
-
-            drag_data_received.connect ((context, x, y, data, info, time) => {
-                // consider only last uri in case of multiple dropped uris
-                var uris = data.get_uris ();
-                var uri = uris [uris.length - 1];
-                debug ("Recieved drag data uri: %s", uri);
-                content_stack.visible_child = trim_view;
-                trim_view.video_player.play_video (uri);
-                trim_controller.video_uri = uri;
-
-                Gtk.drag_finish (context, true, false, time);
-            });
         }
 
         private void init_layout () {
@@ -76,7 +63,6 @@ namespace Trimmer {
             set_titlebar (header_bar);
 
             content_stack = new Gtk.Stack ();
-            trim_controller = new Trimmer.Controllers.TrimController ();
             welcome_view = new Trimmer.WelcomeView (this);
             trim_view = new Trimmer.TrimView (this);
 
@@ -139,7 +125,6 @@ namespace Trimmer {
                 var uri = file_chooser.get_uri ();
                 content_stack.visible_child = trim_view;
                 trim_view.video_player.play_video (uri);
-                trim_controller.video_uri = uri;
             }
         }
 

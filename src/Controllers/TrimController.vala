@@ -34,6 +34,15 @@ namespace Trimmer.Controllers {
             }
         }
 
+        private bool _is_valid_trim;
+        public bool is_valid_trim {
+            get {
+                return _is_valid_trim;
+            } set {
+                _is_valid_trim = value;
+            }
+        }
+
         public string video_uri;
 
         construct {
@@ -41,6 +50,21 @@ namespace Trimmer.Controllers {
                 trim_start_time = (int) (DEFAULT_START * duration);
                 trim_end_time = (int) (DEFAULT_END * duration);
             });
+
+            notify ["trim-start-time"].connect (validate_trim);
+            notify ["trim-end-time"].connect (validate_trim);
+        }
+
+        private void validate_trim () {
+            if (
+                trim_start_time < trim_end_time &&
+                trim_start_time >= 0 &&
+                trim_end_time <= duration
+            ) {
+                is_valid_trim = true;
+            } else {
+                is_valid_trim = false;
+            }
         }
     }
 }

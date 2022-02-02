@@ -1,24 +1,13 @@
 namespace Trimmer {
-    public class TimeStampEntry : Granite.ValidatedEntry {
+    public class TimeStampEntry : Gtk.Entry {
         private Regex timestamp_regex;
 
-        public int _min_time;
-        public int min_time {
+        private bool _is_valid;
+        public bool is_valid {
             get {
-                return _min_time;
-            }
-            set {
-                _min_time = value;
-            }
-        }
-
-        private int _max_time;
-        public int max_time {
-            get {
-                return _max_time;
-            }
-            set {
-                _max_time = value;
+                return _is_valid;
+            } set {
+                _is_valid = value;
             }
         }
 
@@ -26,44 +15,57 @@ namespace Trimmer {
         public int time {
             get {
                 return _time;
-            }
-            set {
+            } set {
                 _time = value;
             }
         }
 
         construct {
+            setup_timestamp_regex ();
+
+            notify ["is-valid"].connect (() => {
+                update_style ();
+            });
+
             notify ["time"].connect (() => {
                 text = Granite.DateTime.seconds_to_time (time);
             });
 
-            changed.connect (() => {
-                validate ();
-            });
-
             activate.connect (() => {
                 if (is_valid) {
-                    time = convert_timestamp_to_seconds(text);
-                    // formatting it better
-                    text = Granite.DateTime.seconds_to_time(time);
+                    time = convert_timestamp_to_seconds (text);
+                    text = Granite.DateTime.seconds_to_time (time); // better formatting
                 }
             });
+
+            changed.connect (validate);
         }
 
-        private bool is_valid_timestamp(string timestamp) {
-            return timestamp_regex.match(text);
+        public void validate () {
+            if (timestamp_regex.match (text)) {
+                is_valid = true;
+            } else {
+                is_valid = false;
+            }
         }
 
-        private bool is_within_bounds(string timestamp) {
-            var time = convert_timestamp_to_seconds(timestamp);
-            return (time >= min_time && time <= max_time);
+        public void update_style () {
+            /* change UI style to invalid or valid styles depending on state */
+            var style_context = get_style_context ();
+            if (is_valid) {
+                secondary_icon_name = "process-completed-symbolic";
+                style_context.remove_class (Gtk.STYLE_CLASS_ERROR);
+            } else {
+                secondary_icon_name = "process-error-symbolic";
+                style_context.add_class (Gtk.STYLE_CLASS_ERROR);
+            }
         }
 
-        private void validate() {
+        private void setup_timestamp_regex () {
             try {
                 // Regex for HH:MM:SS taken from
                 // https://stackoverflow.com/questions/8318236/regex-pattern-for-hhmmss-time-string
-                //
+                // 
                 // ^                   # Start of string
                 // (?:                 # Try to match...
                 //  (?:                #  Try to match...
@@ -77,20 +79,8 @@ namespace Trimmer {
             } catch (RegexError e) {
                 critical (e.message);
             }
-
-            if (is_valid_timestamp(text)) {
-                if (is_within_bounds(text)) {
-                    is_valid = true;
-                } else {
-                    print("time:%d min:%d max:%d\n", time, min_time, max_time);
-                    is_valid = false;
-                }
-            } else {
-               is_valid = false;
-            }
-
         }
-
+        
         private int convert_timestamp_to_seconds (string timestamp) {
             var parsed_time = timestamp.split (":");
             var hours = 0;

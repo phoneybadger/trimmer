@@ -5,6 +5,7 @@ namespace Trimmer {
         public Trimmer.VideoPlayer video_player;
         public Granite.SeekBar seeker;
         private Gtk.Button play_button;
+        public Trimmer.Controllers.TrimController trim_controller;
 
         public TrimView (Trimmer.Window window) {
             Object (
@@ -16,6 +17,7 @@ namespace Trimmer {
 
         construct {
             video_player = new VideoPlayer (this);
+            trim_controller = new Controllers.TrimController ();
 
             var timeline_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 valign = Gtk.Align.CENTER
@@ -25,7 +27,6 @@ namespace Trimmer {
                 window.actions.lookup_action (Window.ACTION_PLAY_PAUSE).activate (null);
             });
 
-            // Initialize with 0 as no video will be loaded initially
             timeline = new Timeline (video_player);
             timeline_box.pack_start (play_button, false, false, 0);
             timeline_box.pack_start (timeline, false, true, 0);
@@ -50,43 +51,47 @@ namespace Trimmer {
             var start_entry = new Trimmer.TimeStampEntry ();
             var end_entry = new Trimmer.TimeStampEntry ();
 
+            // clamp values to within clip bounds if user enters values outside range
+            start_entry.notify ["time"].connect (() => {
+                if (start_entry.time < 0) {
+                    start_entry.time = 0;
+                }
+            });
+
+            end_entry.notify ["time"].connect (() => {
+                if (end_entry.time > trim_controller.duration) {
+                    end_entry.time = (int) trim_controller.duration;
+                }
+            });
+
+            video_player.video_loaded.connect((duration) => {
+                timeline.playback_duration = duration;
+                trim_controller.duration = duration;
+            });
+
+            // Change UI to show if trim can be performed
+            trim_controller.notify ["is-valid-trim"].connect(() => {
+                trim_button.sensitive = trim_controller.is_valid_trim;
+                start_entry.is_valid = trim_controller.is_valid_trim;
+                end_entry.is_valid = trim_controller.is_valid_trim;
+            });
+
+            // Keep UI in sync with controller
             realize.connect (() => {
                 start_entry.bind_property (
                     "time",
-                    window.trim_controller,
+                    trim_controller,
                     "trim_start_time",
                     BindingFlags.BIDIRECTIONAL
                 );
 
                 end_entry.bind_property (
                     "time",
-                    window.trim_controller,
+                    trim_controller,
                     "trim_end_time",
                     BindingFlags.BIDIRECTIONAL
                 );
-
-                // Values for bounds checking
-                start_entry.min_time = 0;
-                window.trim_controller.notify["duration"].connect (() => {
-                    print("duration:%f\n", window.trim_controller.duration);
-                    end_entry.max_time = (int) window.trim_controller.duration;
-                });
-
-                start_entry.bind_property (
-                    "max_time",
-                    end_entry,
-                    "time",
-                    BindingFlags.BIDIRECTIONAL
-                );
-
-                end_entry.bind_property (
-                    "min_time",
-                    start_entry,
-                    "time",
-                    BindingFlags.BIDIRECTIONAL
-                );
             });
-
 
             start_end_box.pack_start (start_label, false, false, 10);
             start_end_box.pack_start (start_entry, false, false, 10);
