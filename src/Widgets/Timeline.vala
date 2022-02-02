@@ -83,6 +83,7 @@ namespace Trimmer {
 
         private const int TIMELINE_HEIGHT = 18;
         private const int TIMELINE_BORDER = 1;
+        private const double HITBOX_THRESHOLD = 0.015;
 
         public bool is_grabbing {get; set;}
 
@@ -153,6 +154,18 @@ namespace Trimmer {
                 if (is_grabbing) {
                     seek_timeline (event.x);
                 }
+
+                if (!is_grabbing) {
+                    if (is_mouse_over_selection (event.x)) {
+                        window.cursor = resize_cursor;
+                    } else {
+                        window.cursor = default_cursor;
+                    }
+                }
+            });
+
+            eventbox.leave_notify_event.connect (() => {
+                window.cursor = default_cursor;
             });
 
             track.size_allocate.connect (() => {
@@ -227,6 +240,14 @@ namespace Trimmer {
                 selection_allocation.width = 0;
             }
             selection.size_allocate (selection_allocation);
+        }
+
+        private bool is_mouse_over_selection (double mouse_x) {
+            var mouse_timeline_pos = get_position_on_timeline (mouse_x);
+            var distance_start = (mouse_timeline_pos - selection_start).abs ();
+            var distance_end = (mouse_timeline_pos - selection_end).abs ();
+            return (distance_start < HITBOX_THRESHOLD ||
+                    distance_end < HITBOX_THRESHOLD);
         }
     }
 }
