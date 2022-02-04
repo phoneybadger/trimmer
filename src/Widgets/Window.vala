@@ -80,6 +80,12 @@ namespace Trimmer {
             int win_width, win_height;
             settings.get ("dimensions", "(ii)", out win_width, out win_height);
             resize (win_width, win_height);
+
+            bool maximized;
+            settings.get ("maximized", "b", out maximized);
+            if (maximized) {
+                maximize ();
+            }
         }
 
         private void save_config_to_schema () {
@@ -89,6 +95,7 @@ namespace Trimmer {
 
             settings.set ("position", "(ii)", x, y);
             settings.set ("dimensions", "(ii)", width, height);
+            settings.set ("maximized", "b", is_maximized);
         }
 
         private void set_up_actions () {

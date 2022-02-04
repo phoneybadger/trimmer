@@ -11,5 +11,10 @@
       <summary>Window dimensions</summary>
       <description>The last saved dimensions of the window (width, height)</description>
     </key>
+    <key name="maximized" type="b">
+      <default>false</default>
+      <summary>Maximized</summary>
+      <description>Whether the window was maximized</description>
+    </key>
   </schema>
 </schemalist>
