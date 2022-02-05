@@ -21,7 +21,7 @@ namespace Trimmer {
         }
 
         construct {
-            placeholder_text = "HH:MM:SS";
+            placeholder_text = "00:00:00";
 
             setup_timestamp_regex ();
 

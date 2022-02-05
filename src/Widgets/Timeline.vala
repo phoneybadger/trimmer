@@ -12,10 +12,8 @@ namespace Trimmer {
                 return _playback_duration;
             }
             set {
-                double duration = value;
-                _playback_duration = duration;
-                duration_label.label = Granite.DateTime.seconds_to_time ((int) duration);
-                }
+                _playback_duration = value;
+            }
         }
 
         public double playback_progress {
@@ -201,6 +199,12 @@ namespace Trimmer {
             notify ["end-time"].connect (() => {
                 selection_end = end_time/playback_duration;
                 refresh_selection ();
+            });
+
+            notify ["playback-duration"].connect (() => {
+                duration_label.label = Granite.DateTime.seconds_to_time (
+                    (int) playback_duration
+                    );
             });
 
             track.add (progressbar);
