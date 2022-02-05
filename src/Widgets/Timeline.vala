@@ -12,7 +12,11 @@ namespace Trimmer {
                 return _playback_duration;
             }
             set {
-                _playback_duration = value;
+                /* using only the integer part of duration as this is all that
+                   is necessary and the extra decimal points can lead to 
+                   to slight mismatches in the UI */
+                var duration = value;
+                _playback_duration = (int) duration;
             }
         }
 
@@ -115,7 +119,6 @@ namespace Trimmer {
                 seek_timeline (event.x);
 
                 if (is_mouse_over_selection (event.x)) {
-                    print ("how?");
                     grab_nearest_point (event.x);
                 }
             });
