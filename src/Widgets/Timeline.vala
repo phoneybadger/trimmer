@@ -95,9 +95,10 @@ namespace Trimmer {
 
         private enum SelectionPoints {
             SELECTION_START,
-            SELECTION_END
+            SELECTION_END,
+            NONE
         }
-        private SelectionPoints grabbed_point;
+        private SelectionPoints grabbed_point = SelectionPoints.NONE;
 
         construct {
             create_layout ();
@@ -114,12 +115,14 @@ namespace Trimmer {
                 seek_timeline (event.x);
 
                 if (is_mouse_over_selection (event.x)) {
+                    print ("how?");
                     grab_nearest_point (event.x);
                 }
             });
 
             eventbox.button_release_event.connect (() => {
                 is_grabbing = false;
+                grabbed_point = SelectionPoints.NONE;
             });
 
             eventbox.motion_notify_event.connect ((event) => {
@@ -220,7 +223,6 @@ namespace Trimmer {
             attach (progress_label, 0, 0);
             attach (eventbox, 1, 0);
             attach (duration_label, 2, 0);
-
         }
 
         private void seek_timeline (double mouse_x) {
@@ -253,7 +255,7 @@ namespace Trimmer {
                     selection_start = mouse_timeline_pos;
                 }
                 start_time = (int) (selection_start * playback_duration);
-            } else {
+            } else if (grabbed_point == SelectionPoints.SELECTION_END) {
                 if (mouse_timeline_pos > 1) {
                     selection_end = 1;
                 } else if (mouse_timeline_pos < selection_start + min_separation) {
