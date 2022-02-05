@@ -30,7 +30,6 @@ namespace Trimmer {
                     progress = 1.0;
                 }
                 _playback_progress = progress;
-                update_progress ();
             }
         }
 
@@ -76,8 +75,10 @@ namespace Trimmer {
         private Gtk.Allocation progressbar_allocation;
         private Gtk.Allocation selection_allocation;
 
+        private Gtk.Box track;
         private Gtk.Box progressbar;
         private Gtk.Box selection;
+        private Gtk.EventBox eventbox;
 
         private const int TIMELINE_HEIGHT = 18;
         private const int TIMELINE_BORDER = 1;
@@ -99,50 +100,13 @@ namespace Trimmer {
         private SelectionPoints grabbed_point;
 
         construct {
-            column_spacing = 5;
-            valign = Gtk.Align.CENTER;
-            var style_context = get_style_context ();
-
-            var css_provider = new Gtk.CssProvider ();
-            css_provider.load_from_resource ("/com/github/adithyankv/trimmer/timeline.css");
-
-            Gtk.StyleContext.add_provider_for_screen (
-                Gdk.Screen.get_default (),
-                css_provider,
-                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-            );
+            create_layout ();
 
             var window = Gdk.get_default_root_window ();
             var display = window.get_display ();
             var default_cursor = new Gdk.Cursor.from_name (display, "default");
             var resize_cursor = new Gdk.Cursor.from_name (display, "col-resize");
             window.cursor = default_cursor;
-
-            var eventbox = new Gtk.EventBox ();
-            eventbox.add_events (Gdk.EventMask.POINTER_MOTION_MASK|
-                Gdk.EventMask.ENTER_NOTIFY_MASK|
-                Gdk.EventMask.BUTTON_PRESS_MASK|
-                Gdk.EventType.LEAVE_NOTIFY);
-
-            duration_label = new Gtk.Label (null);
-            progress_label = new Gtk.Label (null);
-            duration_label.margin_end = progress_label.margin_start = 3;
-
-            var track = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
-                height_request = TIMELINE_HEIGHT,
-                hexpand = true,
-            };
-            track.get_style_context ().add_class (Gtk.STYLE_CLASS_TROUGH);
-
-            progressbar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
-                height_request = TIMELINE_HEIGHT,
-            };
-            progressbar.get_style_context ().add_class (Gtk.STYLE_CLASS_SCALE);
-
-            selection = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
-                height_request = TIMELINE_HEIGHT,
-            };
-            selection.get_style_context ().add_class ("selection");
 
             eventbox.button_press_event.connect ((event) => {
                 is_grabbing = true;
@@ -207,6 +171,48 @@ namespace Trimmer {
                     );
             });
 
+            notify ["playback-progress"].connect (update_progress);
+        }
+
+        private void create_layout () {
+            column_spacing = 5;
+            valign = Gtk.Align.CENTER;
+
+            var css_provider = new Gtk.CssProvider ();
+            css_provider.load_from_resource ("/com/github/adithyankv/trimmer/timeline.css");
+
+            Gtk.StyleContext.add_provider_for_screen (
+                Gdk.Screen.get_default (),
+                css_provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            );
+
+            eventbox = new Gtk.EventBox ();
+            eventbox.add_events (Gdk.EventMask.POINTER_MOTION_MASK|
+                Gdk.EventMask.ENTER_NOTIFY_MASK|
+                Gdk.EventMask.BUTTON_PRESS_MASK|
+                Gdk.EventType.LEAVE_NOTIFY);
+
+            duration_label = new Gtk.Label (null);
+            progress_label = new Gtk.Label (null);
+            duration_label.margin_end = progress_label.margin_start = 3;
+
+            track = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                height_request = TIMELINE_HEIGHT,
+                hexpand = true,
+            };
+            track.get_style_context ().add_class (Gtk.STYLE_CLASS_TROUGH);
+
+            progressbar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                height_request = TIMELINE_HEIGHT,
+            };
+            progressbar.get_style_context ().add_class (Gtk.STYLE_CLASS_SCALE);
+
+            selection = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                height_request = TIMELINE_HEIGHT,
+            };
+            selection.get_style_context ().add_class ("selection");
+
             track.add (progressbar);
             track.add (selection);
             eventbox.add (track);
@@ -214,6 +220,7 @@ namespace Trimmer {
             attach (progress_label, 0, 0);
             attach (eventbox, 1, 0);
             attach (duration_label, 2, 0);
+
         }
 
         private void seek_timeline (double mouse_x) {
