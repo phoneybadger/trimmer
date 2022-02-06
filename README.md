@@ -15,6 +15,7 @@ You'll need the following dependencies
 - libclutter-gst-3.0-dev
 - libclutter-gtk-1.0-dev
 - libgstreamer-1.0-dev
+- ffmpeg
 
 Run `meson` to configure the build environment and then use `ninja` to build
 ```
@@ -30,3 +31,4 @@ com.github.adithyankv.trimmer
 # Credits
 - Directly inspired by Ivan Molodetskikh's [Video Trimmer](https://gitlab.gnome.org/YaLTeR/video-trimmer) for GNOME.
 - Video used in screenshots is Blender open movie [Sprite fright](https://studio.blender.org/films/sprite-fright/)
+- [Resizer](https://github.com/peteruithoven/resizer) and [Videos](https://github.com/elementary/videos) for code reference.
