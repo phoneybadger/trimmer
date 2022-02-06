@@ -29,7 +29,7 @@ namespace Trimmer.Utils{
                     seconds = int.parse (parsed_time [0]);
                     break;
                 default:
-                    critical ("Error parsing timestamp");
+                    critical ("Error parsing timestamp, timestamp:%s", timestamp);
                     break;
             }
             return hours * 60 + minutes * 60 + seconds;

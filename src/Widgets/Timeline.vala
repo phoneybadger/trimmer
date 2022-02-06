@@ -7,6 +7,8 @@ namespace Trimmer {
         public Gtk.Label duration_label {get; construct set;}
         public Gtk.Label progress_label {get; construct set;}
 
+        public signal void selection_changed (double start, double end);
+
         public double playback_duration {
             get {
                 return _playback_duration;
@@ -36,29 +38,8 @@ namespace Trimmer {
                 _playback_progress = progress;
             }
         }
-
-        private int _start_time;
-        private int _end_time;
-
-        public int start_time {
-            get {
-                return _start_time;
-            } set {
-                _start_time = value;
-            }
-        }
-
-        public int end_time {
-            get {
-                return _end_time;
-            } set {
-                _end_time = value;
-            }
-        }
-
         private double _selection_start;
         private double _selection_end;
-
         public double selection_start {
             get {
                 return _selection_start;
@@ -66,7 +47,6 @@ namespace Trimmer {
                 _selection_start = value;
             }
         }
-
         public double selection_end {
             get {
                 return _selection_end;
@@ -106,12 +86,15 @@ namespace Trimmer {
 
         construct {
             create_layout ();
-
+            
             var window = Gdk.get_default_root_window ();
             var display = window.get_display ();
             var default_cursor = new Gdk.Cursor.from_name (display, "default");
             var resize_cursor = new Gdk.Cursor.from_name (display, "col-resize");
             window.cursor = default_cursor;
+
+            notify ["selection-start"].connect (refresh_selection);
+            notify ["selection-end"].connect (refresh_selection);
 
             eventbox.button_press_event.connect ((event) => {
                 is_grabbing = true;
@@ -160,16 +143,6 @@ namespace Trimmer {
                 "playing",
                 BindingFlags.INVERT_BOOLEAN
             );
-
-            notify ["start-time"].connect (() => {
-                selection_start = start_time/playback_duration;
-                refresh_selection ();
-            });
-
-            notify ["end-time"].connect (() => {
-                selection_end = end_time/playback_duration;
-                refresh_selection ();
-            });
 
             notify ["playback-duration"].connect (() => {
                 duration_label.label = Granite.DateTime.seconds_to_time (
@@ -228,6 +201,16 @@ namespace Trimmer {
             attach (duration_label, 2, 0);
         }
 
+        public void initialize_selection () {
+            /*
+                setting default selection to inside the full bounds so as to give
+                the user a visual hint that the points can be manipulated
+            */
+            selection_start = 1.0/4.0;
+            selection_end = 3.0/4.0;
+            selection_changed (selection_start, selection_end);
+        }
+
         private void seek_timeline (double mouse_x) {
             playback_progress = get_position_on_timeline (mouse_x);
             player.playback.progress = playback_progress;
@@ -257,7 +240,7 @@ namespace Trimmer {
                 } else {
                     selection_start = mouse_timeline_pos;
                 }
-                start_time = (int) (selection_start * playback_duration);
+                selection_changed (selection_start, selection_end);
             } else if (grabbed_point == SelectionPoints.SELECTION_END) {
                 if (mouse_timeline_pos > 1) {
                     selection_end = 1;
@@ -266,9 +249,8 @@ namespace Trimmer {
                 } else {
                     selection_end = mouse_timeline_pos;
                 }
-                end_time = (int) (selection_end * playback_duration);
+                selection_changed (selection_start, selection_end);
             }
-            refresh_selection ();
         }
 
         private double get_position_on_timeline (double pixel_coordinate) {

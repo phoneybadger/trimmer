@@ -11,46 +11,34 @@ namespace Trimmer {
             }
         }
 
-        private int _time;
-        public int time {
-            get {
-                return _time;
-            } set {
-                _time = value;
-            }
-        }
-
         construct {
-            placeholder_text = "00:00:00";
-
             setup_timestamp_regex ();
 
             notify ["is-valid"].connect (() => {
                 update_style ();
             });
 
-            notify ["time"].connect (() => {
-                text = Granite.DateTime.seconds_to_time (time);
-            });
-
             activate.connect (() => {
-                if (is_valid) {
-                    time = Utils.convert_timestamp_to_seconds (text);
+                if (is_valid_timestamp ()) {
+                    text = format_timestamp (text);
                 }
             });
 
             focus_out_event.connect (() => {
                 activate ();
             });
-
-            changed.connect (validate);
         }
 
-        public void validate () {
+        private string format_timestamp (string timestamp) {
+            var time = Utils.convert_timestamp_to_seconds (timestamp);
+            return Granite.DateTime.seconds_to_time (time);
+        }
+
+        public bool is_valid_timestamp () {
             if (timestamp_regex.match (text)) {
-                is_valid = true;
+                return true;
             } else {
-                is_valid = false;
+                return false;
             }
         }
 

@@ -26,61 +26,28 @@ namespace Trimmer {
                 window.actions.lookup_action (Window.ACTION_PLAY_PAUSE).activate (null);
             });
 
-            // clamp values to within clip bounds if user enters values outside range
-            start_entry.notify ["time"].connect (() => {
-                if (start_entry.time < 0) {
-                    start_entry.time = 0;
-                }
-            });
-
-            end_entry.notify ["time"].connect (() => {
-                if (end_entry.time > trim_controller.duration) {
-                    end_entry.time = (int) trim_controller.duration;
-                }
-            });
-
             video_player.video_loaded.connect((duration) => {
-                timeline.playback_duration = duration;
                 trim_controller.duration = duration;
+                timeline.playback_duration = duration;
+                timeline.initialize_selection ();
             });
 
-            // Change UI to show if trim can be performed
+            timeline.selection_changed.connect ((start, end) => {
+                var start_time = (int) (start * trim_controller.duration);
+                var end_time = (int) (end *  trim_controller.duration);
+                start_entry.text = Granite.DateTime.seconds_to_time (start_time);
+                end_entry.text = Granite.DateTime.seconds_to_time (end_time);
+            });
+
             trim_controller.notify ["is-valid-trim"].connect(() => {
-                trim_button.sensitive = trim_controller.is_valid_trim;
-                start_entry.is_valid = trim_controller.is_valid_trim;
-                end_entry.is_valid = trim_controller.is_valid_trim;
+                var is_valid_trim = trim_controller.is_valid_trim;
+                start_entry.is_valid = is_valid_trim;
+                end_entry.is_valid = is_valid_trim;
+                trim_button.sensitive = is_valid_trim;
             });
 
-            // Keep UI in sync with controller
-            realize.connect (() => {
-                start_entry.bind_property (
-                    "time",
-                    trim_controller,
-                    "trim-start-time",
-                    BindingFlags.BIDIRECTIONAL
-                );
-
-                end_entry.bind_property (
-                    "time",
-                    trim_controller,
-                    "trim-end-time",
-                    BindingFlags.BIDIRECTIONAL
-                );
-
-                timeline.bind_property (
-                    "start-time",
-                    trim_controller,
-                    "trim-start-time",
-                    BindingFlags.BIDIRECTIONAL
-                );
-
-                timeline.bind_property (
-                    "end-time",
-                    trim_controller,
-                    "trim-end-time",
-                    BindingFlags.BIDIRECTIONAL
-                );
-            });
+            start_entry.changed.connect (on_entry_changed);
+            end_entry.changed.connect (on_entry_changed);
         }
 
         private void create_layout () {
@@ -126,6 +93,47 @@ namespace Trimmer {
             pack_start (timeline_box, false, false, 0);
             pack_start (start_end_box, false, false, 0);
             pack_start (button_box, false, false, 0);
+        }
+        
+        private void on_entry_changed () {
+            if (start_entry.is_valid_timestamp ()) {
+                var start_time = Utils.convert_timestamp_to_seconds (start_entry.text);
+                // clamp to bounds
+                if (start_time > trim_controller.duration) {
+                    start_time = (int) trim_controller.duration;
+                    start_entry.text = Granite.DateTime.seconds_to_time (start_time);
+                }
+                trim_controller.trim_start_time = start_time;
+                timeline.selection_start = start_time/trim_controller.duration;
+            }
+            if (end_entry.is_valid_timestamp ()) {
+                var end_time = Utils.convert_timestamp_to_seconds (end_entry.text);
+                // clamp to bounds
+                if (end_time > trim_controller.duration) {
+                    end_time = (int) trim_controller.duration;
+                    end_entry.text = Granite.DateTime.seconds_to_time (end_time);
+                }
+                trim_controller.trim_end_time = end_time;
+                timeline.selection_end = end_time/trim_controller.duration;
+            }
+
+            if (start_entry.is_valid_timestamp () && is_valid_trim ()) {
+                start_entry.is_valid = true;
+            } else {
+                start_entry.is_valid = false;
+            }
+
+            if (end_entry.is_valid_timestamp () && is_valid_trim ()) {
+                end_entry.is_valid = true;
+            } else {
+                end_entry.is_valid = false;
+            }
+        }
+
+        private bool is_valid_trim () {
+            var start = trim_controller.trim_start_time;
+            var end = trim_controller.trim_end_time;
+            return (start < end);
         }
 
         public void update_play_button_icon () {
