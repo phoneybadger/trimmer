@@ -5,7 +5,7 @@ namespace Trimmer {
 
         public ClutterGst.Playback playback;
         public unowned Trimmer.TrimView trim_view {get; set;}
-        public signal void video_loaded (double video_duration);
+        public signal void video_loaded (double video_duration, string uri);
 
         public VideoPlayer (Trimmer.TrimView trim_view) {
             Object (
@@ -27,7 +27,7 @@ namespace Trimmer {
             playback.notify ["duration"].connect (() => {
                 // the duration seems to momentarily becomes zero before the video is loaded
                 if (playback.duration != 0) {
-                    video_loaded (playback.duration);
+                    video_loaded (playback.duration, playback.uri);
                 }
             });
 

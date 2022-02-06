@@ -26,8 +26,9 @@ namespace Trimmer {
                 window.actions.lookup_action (Window.ACTION_PLAY_PAUSE).activate (null);
             });
 
-            video_player.video_loaded.connect((duration) => {
+            video_player.video_loaded.connect((duration, uri) => {
                 trim_controller.duration = duration;
+                trim_controller.video_uri = uri;
                 timeline.playback_duration = duration;
                 timeline.initialize_selection ();
             });
@@ -38,6 +39,8 @@ namespace Trimmer {
                 start_entry.text = Granite.DateTime.seconds_to_time (start_time);
                 end_entry.text = Granite.DateTime.seconds_to_time (end_time);
             });
+
+            trim_button.clicked.connect (trim_controller.trim);
 
             start_entry.changed.connect (on_entry_changed);
             end_entry.changed.connect (on_entry_changed);
