@@ -39,13 +39,6 @@ namespace Trimmer {
                 end_entry.text = Granite.DateTime.seconds_to_time (end_time);
             });
 
-            trim_controller.notify ["is-valid-trim"].connect(() => {
-                var is_valid_trim = trim_controller.is_valid_trim;
-                start_entry.is_valid = is_valid_trim;
-                end_entry.is_valid = is_valid_trim;
-                trim_button.sensitive = is_valid_trim;
-            });
-
             start_entry.changed.connect (on_entry_changed);
             end_entry.changed.connect (on_entry_changed);
         }
@@ -128,6 +121,8 @@ namespace Trimmer {
             } else {
                 end_entry.is_valid = false;
             }
+            
+            trim_button.sensitive = (start_entry.is_valid && end_entry.is_valid);
         }
 
         private bool is_valid_trim () {
