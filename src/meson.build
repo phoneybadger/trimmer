@@ -8,6 +8,7 @@ sources = files(
     'Widgets/HeaderBar.vala',
     'Widgets/TimeStampEntry.vala',
     'Widgets/Timeline.vala',
+    'Widgets/MessageArea.vala',
     'Controllers/TrimController.vala',
     'Utils/Utils.vala'
 )

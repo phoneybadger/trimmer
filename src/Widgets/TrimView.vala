@@ -2,6 +2,7 @@ namespace Trimmer {
     public class TrimView : Gtk.Box {
         public unowned Trimmer.Window window {get; set;}
         public Trimmer.Timeline timeline {get; set;}
+        private Trimmer.MessageArea message_area;
         public Trimmer.VideoPlayer video_player;
         public Granite.SeekBar seeker;
         public Trimmer.Controllers.TrimController trim_controller;
@@ -40,6 +41,10 @@ namespace Trimmer {
                 end_entry.text = Granite.DateTime.seconds_to_time (end_time);
             });
 
+            trim_controller.trim_failed.connect ((message) => {
+                message_area.add_message (Gtk.MessageType.ERROR, message);
+            });
+
             trim_button.clicked.connect (trim_controller.trim);
 
             start_entry.changed.connect (on_entry_changed);
@@ -47,6 +52,7 @@ namespace Trimmer {
         }
 
         private void create_layout () {
+            message_area = new MessageArea ();
             video_player = new VideoPlayer (this);
             trim_controller = new Controllers.TrimController ();
 
@@ -85,6 +91,7 @@ namespace Trimmer {
             start_end_box.pack_start (end_label, false, false, 10);
             start_end_box.pack_start (end_entry, false, false, 10);
 
+            pack_start (message_area, false, false, 0);
             pack_start (video_player, true, true, 0);
             pack_start (timeline_box, false, false, 0);
             pack_start (start_end_box, false, false, 0);

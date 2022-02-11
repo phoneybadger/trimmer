@@ -13,6 +13,9 @@ namespace Trimmer.Controllers {
             }
         }
 
+        public signal void trim_failed (string error_message);
+        public signal void trim_success (string success_message);
+
         public string video_uri;
         private string input_uri;
         private string output_uri;
@@ -53,10 +56,15 @@ namespace Trimmer.Controllers {
                         SubprocessFlags.STDOUT_SILENCE
                     );
                     if (subprocess.wait_check ()) {
-                        debug ("Succesfully trimmed %s, saved as %s\n", input_uri, output_uri);
+                        var success_message = "Succesfully trimmed %s, saved as %s\n"
+                            .printf(input_uri, output_uri);
+                        debug (success_message);
+                        trim_success (success_message);
                     }
                 } catch (Error e) {
-                    critical ("Trim failed %s\n", e.message);
+                    var error_message = "Trim failed. %s\n".printf(e.message);
+                    critical (error_message);
+                    trim_failed (error_message);
                 }
             }
         }
@@ -138,8 +146,9 @@ namespace Trimmer.Controllers {
                     return true;
                 }
             } catch (Error e) {
-                var message = "Trimmer requires ffmpeg";
+                var message = "ffmpeg not found. Trimmer requires ffmpeg.";
                 critical ("Error:%s", message);
+                trim_failed (message);
             }
             return false;
         }
