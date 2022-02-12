@@ -38,22 +38,9 @@ namespace Trimmer {
                 _playback_progress = progress;
             }
         }
-        private double _selection_start;
-        private double _selection_end;
-        public double selection_start {
-            get {
-                return _selection_start;
-            } set {
-                _selection_start = value;
-            }
-        }
-        public double selection_end {
-            get {
-                return _selection_end;
-            } set {
-                _selection_end = value;
-            }
-        }
+        
+        public double selection_start;
+        public double selection_end;
 
         private Gtk.Allocation track_allocation;
         private Gtk.Allocation progressbar_allocation;

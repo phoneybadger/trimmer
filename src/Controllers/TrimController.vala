@@ -3,15 +3,7 @@ namespace Trimmer.Controllers {
         // all values in seconds
         public int trim_start_time;
         public int trim_end_time;
-        private double _duration;
-
-        public double duration {
-            get {
-                return _duration;
-            } set {
-                _duration = value;
-            }
-        }
+        public double duration;
 
         public signal void trim_failed (string error_message);
         public signal void trim_success (string success_message);

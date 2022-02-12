@@ -2,14 +2,7 @@ namespace Trimmer {
     public class TimeStampEntry : Gtk.Entry {
         private Regex timestamp_regex;
 
-        private bool _is_valid;
-        public bool is_valid {
-            get {
-                return _is_valid;
-            } set {
-                _is_valid = value;
-            }
-        }
+        public bool is_valid {get; set;}
 
         construct {
             setup_timestamp_regex ();
