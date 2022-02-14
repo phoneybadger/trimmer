@@ -1,0 +1,24 @@
+/* 
+only the background color for the selection is different in this from the
+light theme. The color in the light theme stylesheet doesn't have enough
+contrast 
+*/
+.trough {
+	background-color: @color_primary;
+	box-shadow: inset 0 0 0 0.5px @wm_shadow;
+	border: 1px solid @menu_separator;
+	border-radius: 2px;
+}
+
+.selection {
+    border-radius: 2px;
+    /* THIS VALUE IS DIFFERENT BETWEEN LIGHT AND DARK THEMES */
+    background-color: alpha(@selected_bg_color, 1.5);
+    opacity: 1;
+}
+
+.scale {
+    border-radius: 2px;
+    background-color: @fg_color;
+}
+

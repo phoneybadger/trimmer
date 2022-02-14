@@ -2,5 +2,6 @@
 <gresources>
   <gresource prefix="/com/github/adithyankv/trimmer">
     <file alias="timeline.css">timeline.css</file>
+    <file alias="timeline-dark.css">timeline-dark.css</file>
   </gresource>
 </gresources>

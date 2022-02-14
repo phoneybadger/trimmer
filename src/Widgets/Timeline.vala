@@ -58,6 +58,8 @@ namespace Trimmer {
         private const int TIMELINE_BORDER = 1;
         private const double HITBOX_THRESHOLD = 0.015;
 
+        private Granite.Settings.ColorScheme theme;
+
         public bool is_grabbing {get; set;}
 
         public Timeline (Trimmer.VideoPlayer player) {
@@ -167,17 +169,9 @@ namespace Trimmer {
         }
 
         private void create_layout () {
+            set_timeline_theme ();
             column_spacing = 5;
             valign = Gtk.Align.CENTER;
-
-            var css_provider = new Gtk.CssProvider ();
-            css_provider.load_from_resource ("/com/github/adithyankv/trimmer/timeline.css");
-
-            Gtk.StyleContext.add_provider_for_screen (
-                Gdk.Screen.get_default (),
-                css_provider,
-                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-            );
 
             eventbox = new Gtk.EventBox () {
                 can_focus = true
@@ -215,6 +209,38 @@ namespace Trimmer {
             attach (progress_label, 0, 0);
             attach (eventbox, 1, 0);
             attach (duration_label, 2, 0);
+        }
+
+        private void set_timeline_theme () {
+            // Load appropriate style theme depending on whether it is light or dark
+            // TODO: there could be a more elegant way to do this
+            var granite_settings = Granite.Settings.get_default ();
+            theme = granite_settings.prefers_color_scheme;
+            load_stylesheet (theme);
+            // hot reload as theme changes
+            granite_settings.notify["prefers-color-scheme"].connect (() => {
+                theme = granite_settings.prefers_color_scheme;
+                load_stylesheet (theme);
+            });
+        }
+
+        private void load_stylesheet (Granite.Settings.ColorScheme theme) {
+            var css_provider = new Gtk.CssProvider ();
+            if (theme == Granite.Settings.ColorScheme.DARK) {
+                css_provider.load_from_resource (
+                    "/com/github/adithyankv/trimmer/timeline-dark.css"
+                );
+            } else {
+                css_provider.load_from_resource (
+                    "/com/github/adithyankv/trimmer/timeline.css"
+                );
+            }
+
+            Gtk.StyleContext.add_provider_for_screen (
+                Gdk.Screen.get_default (),
+                css_provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            );
         }
 
         private void seek_timeline (double mouse_x) {
