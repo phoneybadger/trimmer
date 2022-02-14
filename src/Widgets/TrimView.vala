@@ -61,11 +61,8 @@ namespace Trimmer {
                 BindingFlags.BIDIRECTIONAL
             );
 
-            trim_controller.notify ["is-valid-trim"].connect (() => {
-                start_entry.is_valid = trim_controller.is_valid_trim;
-                end_entry.is_valid = trim_controller.is_valid_trim;
-                trim_button.sensitive = trim_controller.is_valid_trim;
-            });
+            start_entry.changed.connect(check_trim_validity);
+            end_entry.changed.connect(check_trim_validity);
 
             trim_controller.trim_failed.connect ((message) => {
                 message_area.add_message (Gtk.MessageType.ERROR, message);
@@ -124,6 +121,26 @@ namespace Trimmer {
             pack_start (timeline_box, false, false, 0);
             pack_start (start_end_box, false, false, 0);
             pack_start (button_box, false, false, 0);
+        }
+
+        private void check_trim_validity() {
+            bool is_valid_trim;
+            if (start_entry.is_valid_timestamp() &&
+                end_entry.is_valid_timestamp() &&
+                is_start_before_end()) {
+                is_valid_trim = true;
+            } else {
+                is_valid_trim = false;
+            }
+            start_entry.is_valid = is_valid_trim;
+            end_entry.is_valid = is_valid_trim;
+            trim_button.sensitive = is_valid_trim;
+        }
+
+        private bool is_start_before_end() {
+            var start_time = Utils.convert_timestamp_to_seconds(start_entry.text);
+            var end_time = Utils.convert_timestamp_to_seconds(end_entry.text);
+            return start_time < end_time;
         }
         
         public void update_play_button_icon () {
