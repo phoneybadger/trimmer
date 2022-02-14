@@ -1,9 +1,13 @@
 namespace Trimmer.Controllers {
     public class TrimController : GLib.Object {
         // all values in seconds
-        public int trim_start_time;
-        public int trim_end_time;
-        public double duration;
+        public int trim_start_time {get; set;}
+        public int trim_end_time {get; set;}
+        public bool is_valid_trim {get; set;}
+        public double duration {get; set;}
+
+        private const double DEFAULT_START = 1.0/4.0;
+        private const double DEFAULT_END = 3.0/4.0;
 
         public signal void trim_failed (string error_message);
         public signal void trim_success (string success_message);
@@ -13,6 +17,29 @@ namespace Trimmer.Controllers {
         private string output_uri;
         /* ffmpeg requires a file extension in the output path */
         private string file_extension;
+
+        construct {
+            notify ["duration"].connect (() => {
+                trim_start_time = (int) (DEFAULT_START * duration);
+                trim_end_time = (int) (DEFAULT_END * duration);
+            });
+
+            notify ["trim-start-time"].connect (() => {
+                validate_trim ();
+            });
+
+            notify ["trim-end-time"].connect (() => {
+                validate_trim ();
+            });
+        }
+
+        private void validate_trim () {
+            if (trim_start_time < trim_end_time) {
+                is_valid_trim = true;
+            } else {
+                is_valid_trim = false;
+            }
+        }
 
         public void trim () {
             input_uri = sanitize (video_uri);

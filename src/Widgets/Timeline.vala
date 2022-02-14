@@ -7,6 +7,9 @@ namespace Trimmer {
         public Gtk.Label duration_label {get; construct set;}
         public Gtk.Label progress_label {get; construct set;}
 
+        public int start_time {get; set;}
+        public int end_time {get; set;}
+
         public signal void selection_changed (double start, double end);
 
         public double playback_duration {
@@ -39,8 +42,8 @@ namespace Trimmer {
             }
         }
         
-        public double selection_start;
-        public double selection_end;
+        public double selection_start {get; set;}
+        public double selection_end {get; set;}
 
         private Gtk.Allocation track_allocation;
         private Gtk.Allocation progressbar_allocation;
@@ -84,6 +87,7 @@ namespace Trimmer {
             notify ["selection-end"].connect (refresh_selection);
 
             eventbox.button_press_event.connect ((event) => {
+                eventbox.grab_focus ();
                 is_grabbing = true;
                 player.playback.playing = false;
                 seek_timeline (event.x);
@@ -138,6 +142,28 @@ namespace Trimmer {
             });
 
             notify ["playback-progress"].connect (update_progress);
+
+            notify ["selection-start"].connect (() => {
+                start_time = (int) (selection_start * playback_duration);
+            });
+
+            notify ["selection-end"].connect (() => {
+                end_time = (int) (selection_end * playback_duration);
+            });
+
+            notify ["start-time"].connect (() => {
+                if (playback_duration != 0) {
+                    selection_start = start_time/playback_duration;
+                    refresh_selection ();
+                }
+            });
+
+            notify ["end-time"].connect (() => {
+                if (playback_duration != 0) {
+                    selection_end = end_time/playback_duration;
+                    refresh_selection ();
+                }
+            });
         }
 
         private void create_layout () {
@@ -153,7 +179,10 @@ namespace Trimmer {
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
             );
 
-            eventbox = new Gtk.EventBox ();
+            eventbox = new Gtk.EventBox () {
+                can_focus = true
+            };
+
             eventbox.add_events (Gdk.EventMask.POINTER_MOTION_MASK|
                 Gdk.EventMask.ENTER_NOTIFY_MASK|
                 Gdk.EventMask.BUTTON_PRESS_MASK|
@@ -186,16 +215,6 @@ namespace Trimmer {
             attach (progress_label, 0, 0);
             attach (eventbox, 1, 0);
             attach (duration_label, 2, 0);
-        }
-
-        public void initialize_selection () {
-            /*
-                setting default selection to inside the full bounds so as to give
-                the user a visual hint that the points can be manipulated
-            */
-            selection_start = 1.0/4.0;
-            selection_end = 3.0/4.0;
-            selection_changed (selection_start, selection_end);
         }
 
         private void seek_timeline (double mouse_x) {

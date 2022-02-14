@@ -3,6 +3,7 @@ namespace Trimmer {
         private Regex timestamp_regex;
 
         public bool is_valid {get; set;}
+        public int time {get; set;}
 
         construct {
             setup_timestamp_regex ();
@@ -19,6 +20,24 @@ namespace Trimmer {
 
             focus_out_event.connect (() => {
                 activate ();
+            });
+
+            changed.connect (() => {
+                if (is_valid_timestamp()) {
+                    is_valid = true;
+                    time = Utils.convert_timestamp_to_seconds (text);
+                } else {
+                    is_valid = false;
+                }
+            });
+            
+            notify ["time"].connect (() => {
+                /* only change the text if the user is not actively typing.
+                This prevents the text from changing under the user on every
+                keystroke */
+                if (!has_focus) {
+                    text = Granite.DateTime.seconds_to_time (time);
+                }
             });
         }
 
