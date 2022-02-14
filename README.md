@@ -39,5 +39,6 @@ The code generally follows the [elementary code style guidelines](https://docs.e
 
 ## Credits
 - Directly inspired by Ivan Molodetskikh's [Video Trimmer](https://gitlab.gnome.org/YaLTeR/video-trimmer) for GNOME.
-- Video used in screenshots is Blender open movie [Sprite fright](https://studio.blender.org/films/sprite-fright/)
+- Video used in screenshots is Blender open movie [Sprite fright](https://studio.blender.org/films/sprite-fright/).
 - [Resizer](https://github.com/peteruithoven/resizer) and [Videos](https://github.com/elementary/videos) for code reference.
+- Article on [Vala reactive programming](https://dev.to/igordsm/vala-reactive-programming-2pf4) by Igor Montagner.
