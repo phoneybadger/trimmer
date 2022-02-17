@@ -74,6 +74,13 @@ namespace Trimmer {
             });
 
             trim_button.clicked.connect (trim_controller.trim);
+
+            end_entry.notify ["time"].connect (() => {
+                if (end_entry.time > trim_controller.duration) {
+                    end_entry.time = (int) trim_controller.duration;
+                    end_entry.text = Granite.DateTime.seconds_to_time(end_entry.time);
+                }
+            });
         }
 
         private void create_layout () {
@@ -124,23 +131,22 @@ namespace Trimmer {
         }
 
         private void check_trim_validity() {
-            bool is_valid_trim;
             if (start_entry.is_valid_timestamp() &&
-                end_entry.is_valid_timestamp() &&
-                is_start_before_end()) {
-                is_valid_trim = true;
-            } else {
-                is_valid_trim = false;
-            }
-            start_entry.is_valid = is_valid_trim;
-            end_entry.is_valid = is_valid_trim;
-            trim_button.sensitive = is_valid_trim;
-        }
+                end_entry.is_valid_timestamp()) {
 
-        private bool is_start_before_end() {
-            var start_time = Utils.convert_timestamp_to_seconds(start_entry.text);
-            var end_time = Utils.convert_timestamp_to_seconds(end_entry.text);
-            return start_time < end_time;
+                /* both entries being marked as invalid to distinguish this from
+                the case where a timestamp is invalid, in which case only the
+                entry with invalid timestamp will be marked invalid */
+                var start_time = Utils.convert_timestamp_to_seconds(start_entry.text);
+                var end_time = Utils.convert_timestamp_to_seconds(end_entry.text);
+                bool is_start_before_end = (start_time < end_time);
+                start_entry.is_valid = is_start_before_end;
+                end_entry.is_valid = is_start_before_end;
+                trim_button.sensitive = is_start_before_end;
+
+            } else {
+                trim_button.sensitive = false;
+            }
         }
         
         public void update_play_button_icon () {

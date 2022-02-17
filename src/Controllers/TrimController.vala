@@ -1,9 +1,19 @@
 namespace Trimmer.Controllers {
     public class TrimController : GLib.Object {
         // all values in seconds
+        private int _trim_end_time;
         public int trim_start_time {get; set;}
-        public int trim_end_time {get; set;}
-        public bool is_valid_trim {get; set;}
+        public int trim_end_time {
+            get {
+                return _trim_end_time;
+            } set{
+                if (value > duration) {
+                    _trim_end_time = (int) duration;
+                } else {
+                    _trim_end_time = value;
+                }
+            }
+        }
         public double duration {get; set;}
 
         private const double DEFAULT_START = 1.0/4.0;
