@@ -13,7 +13,7 @@ contrast
 .selection {
     border-radius: 2px;
     /* THIS VALUE IS DIFFERENT BETWEEN LIGHT AND DARK THEMES */
-    background-color: alpha(@selected_bg_color, 1.5);
+    background-color: alpha(@selected_bg_color, 1.6);
     opacity: 1;
 }
 
