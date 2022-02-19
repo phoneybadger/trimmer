@@ -101,7 +101,7 @@ namespace Trimmer {
                 layout_style = Gtk.ButtonBoxStyle.END
             };
 
-            trim_button = new Gtk.Button.with_label ("Trim") {
+            trim_button = new Gtk.Button.with_label (_("Trim")) {
                 margin = 5
             };
             trim_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
@@ -112,8 +112,10 @@ namespace Trimmer {
                 halign = Gtk.Align.CENTER
             };
 
-            var start_label = new Gtk.Label ("Start");
-            var end_label = new Gtk.Label ("End");
+            /// TRANSLATORS: these are the labels for entries representing
+            /// timestamps from where the trim should start and end
+            var start_label = new Gtk.Label (_("Start"));
+            var end_label = new Gtk.Label (_("End"));
 
             start_entry = new Trimmer.TimeStampEntry ();
             end_entry = new Trimmer.TimeStampEntry ();

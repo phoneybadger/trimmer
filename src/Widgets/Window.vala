@@ -113,15 +113,16 @@ namespace Trimmer {
 
         private void action_open () {
             var file_chooser = new Gtk.FileChooserNative (
-                "Open video",
+                _("Open video"),
                 this,
                 Gtk.FileChooserAction.OPEN,
-                "Open",
-                "Cancel");
+                _("Open"),
+                _("Cancel")
+            );
 
             // show only video files
             var video_files_filter = new Gtk.FileFilter ();
-            video_files_filter.set_filter_name ("Video files");
+            video_files_filter.set_filter_name (_("Video files"));
             video_files_filter.add_mime_type ("video/*");
             file_chooser.add_filter (video_files_filter);
 

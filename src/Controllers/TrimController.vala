@@ -69,13 +69,16 @@ namespace Trimmer.Controllers {
                         SubprocessFlags.STDOUT_SILENCE
                     );
                     if (subprocess.wait_check ()) {
-                        var success_message = "Succesfully trimmed %s, saved as %s\n"
+                        /// TRANSLATORS: first %s represents the original file
+                        /// name and the second one is the output file name
+                        var success_message = _("Succesfully trimmed %s, saved as %s\n")
                             .printf(input_uri, output_uri);
                         debug (success_message);
                         trim_success (success_message);
                     }
                 } catch (Error e) {
-                    var error_message = "Trim failed. %s\n".printf(e.message);
+                    /// TRANSLATORS: %s in an error message
+                    var error_message = _("Trim failed. %s\n").printf(e.message);
                     critical (error_message);
                     trim_failed (error_message);
                 }
@@ -84,14 +87,14 @@ namespace Trimmer.Controllers {
 
         private void select_output_uri_with_filechooser () {
                 var file_chooser = new Gtk.FileChooserNative (
-                    "Save video",
+                    _("Save video"),
                     null,
                     Gtk.FileChooserAction.SAVE,
-                    "Save",
-                    "Cancel"
+                    _("Save"),
+                    _("Cancel")
                 );
                 var video_files_filter = new Gtk.FileFilter ();
-                video_files_filter.set_filter_name ("Video files");
+                video_files_filter.set_filter_name (_("Video files"));
                 video_files_filter.add_mime_type ("video/*");
                 file_chooser.add_filter (video_files_filter);
 
@@ -111,7 +114,11 @@ namespace Trimmer.Controllers {
                        mimetype of file to guess file extension */
                     file_extension = ".mp4";
                 }
-                var suggested_filename = "%s-trimmed.%s".printf(filename, file_extension);
+                /// TRANSLATORS: This is the default suggested file name when
+                /// the user tries to save a trimmed video file. The first %s
+                /// represents the original file name before trim and the 
+                /// second one is the file extension
+                var suggested_filename = _("%s-trimmed.%s").printf(filename, file_extension);
                 file_chooser.set_current_name (suggested_filename);
 
                 var response = file_chooser.run ();
@@ -159,7 +166,7 @@ namespace Trimmer.Controllers {
                     return true;
                 }
             } catch (Error e) {
-                var message = "ffmpeg not found. Trimmer requires ffmpeg.";
+                var message = _("ffmpeg not found. Trimmer requires ffmpeg.");
                 critical ("Error:%s", message);
                 trim_failed (message);
             }

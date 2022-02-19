@@ -4,15 +4,15 @@ namespace Trimmer {
 
         public WelcomeView (Trimmer.Window window) {
             Object (
-                title : "No videos open",
-                subtitle : "Open a video to trim it",
+                title : _("No videos open"),
+                subtitle : _("Open a video to trim it"),
                 window : window
                 );
         }
 
         construct {
-            append ("folder-videos", "Open video", "Open a video file");
-            append ("system-help", "Help", "Having trouble? Get help and report issues");
+            append ("folder-videos", _("Open video"), _("Open a video file"));
+            append ("system-help", _("Help"), _("Having trouble? Get help and report issues"));
 
             activated.connect((index)=>{
                 switch (index) {

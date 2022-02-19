@@ -8,12 +8,12 @@ namespace Trimmer {
             );
         }
         construct {
-            title = "Trimmer";
+            title = _("Trimmer");
             show_close_button = true;
 
             var open_button = new Gtk.Button.from_icon_name ("document-open", 
                                                              Gtk.IconSize.LARGE_TOOLBAR) {
-                tooltip_text = "Open video"
+                tooltip_text = _("Open video")
             };
             open_button.clicked.connect (() => {
                 window.actions.lookup_action (Window.ACTION_OPEN).activate (null);
