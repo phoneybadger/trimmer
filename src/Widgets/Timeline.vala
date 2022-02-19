@@ -261,7 +261,6 @@ namespace Trimmer {
         }
 
         private void move_point (SelectionPoints grabbed_point, double mouse_x) {
-            // TODO: adjust min seperation to correspond to minimum unit of time
             var unit_time_width = (track_allocation.width/(int) playback_duration);
             var min_separation = get_position_on_timeline (unit_time_width);
             var mouse_timeline_pos = get_position_on_timeline (mouse_x);

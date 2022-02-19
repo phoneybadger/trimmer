@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=Trimmer
+Comment=Video trimming utility
+Categories=AudioVideo;AudioVideoEditing;
+
+Icon=trimmer
+Exec=com.github.adithyankv.trimmer
+Terminal=false

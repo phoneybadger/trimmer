@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.github.adithyankv.trimmer</id>
+  
+  <name>Trimmer</name>
+  <summary>Video trimming utility</summary>
+  
+  <metadata_license>CC-BY-4.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  
+  <description>
+    <p>
+      Trimmer lets you quickly trim videos given start and end timestamps.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">com.github.adithyankv.trimmer.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://github.com/adithyankv/trimmer/blob/main/data/screenshot-trim.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1" />
+</component>
