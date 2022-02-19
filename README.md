@@ -1,7 +1,16 @@
-# trimmer
-A video trimming utility designed for elementary OS.
+<div align="center">
+  <div align="center">
+    <img src="data/icons/trimmer-128.png" width="64">
+  </div>
+  <h1 align="center">Trimmer</h1>
+  <div align="center">A video trimming utility for elementary OS. </div>
+</div>
 
-**trimmer is still a work in progress**
+## Usage
+
+Quickly trim videos using start and end timestamps. Trimmer doesn't re-encode any videos so the process should be very fast.
+
+## Screenshots
 
 ![Welcome screen screenshot](data/screenshot-welcome.png)
 ![Trimming screen screenshot](data/screenshot-trim.png)
