@@ -1,0 +1,8 @@
+src/Widgets/Window.vala
+src/Widgets/WelcomeView.vala
+src/Widgets/TrimView.vala
+src/Widgets/TrimView.vala
+src/Widgets/HeaderBar.vala
+src/Controllers/TrimController.vala
+data/trimmer.desktop.in
+data/trimmer.metainfo.xml.in

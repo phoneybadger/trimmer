@@ -1,0 +1,121 @@
+# Spanish translations for com.github.adithyankv.trimmer package.
+# Copyright (C) 2022 THE com.github.adithyankv.trimmer'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.adithyankv.trimmer package.
+# Automatically generated, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.adithyankv.trimmer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-19 21:38+0530\n"
+"PO-Revision-Date: 2022-02-19 21:38+0530\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/Widgets/Window.vala:116 src/Widgets/WelcomeView.vala:14
+#: src/Widgets/HeaderBar.vala:16
+msgid "Open video"
+msgstr ""
+
+#: src/Widgets/Window.vala:119
+msgid "Open"
+msgstr ""
+
+#: src/Widgets/Window.vala:120 src/Controllers/TrimController.vala:94
+msgid "Cancel"
+msgstr ""
+
+#. show only video files
+#: src/Widgets/Window.vala:125 src/Controllers/TrimController.vala:97
+msgid "Video files"
+msgstr ""
+
+#: src/Widgets/WelcomeView.vala:7
+msgid "No videos open"
+msgstr ""
+
+#: src/Widgets/WelcomeView.vala:8
+msgid "Open a video to trim it"
+msgstr ""
+
+#: src/Widgets/WelcomeView.vala:14
+msgid "Open a video file"
+msgstr ""
+
+#: src/Widgets/WelcomeView.vala:15
+msgid "Help"
+msgstr ""
+
+#: src/Widgets/WelcomeView.vala:15
+msgid "Having trouble? Get help and report issues"
+msgstr ""
+
+#: src/Widgets/TrimView.vala:104
+msgid "Trim"
+msgstr ""
+
+#. / TRANSLATORS: these are the labels for entries representing
+#. / timestamps from where the trim should start and end
+#: src/Widgets/TrimView.vala:117
+msgid "Start"
+msgstr ""
+
+#: src/Widgets/TrimView.vala:118
+msgid "End"
+msgstr ""
+
+#: src/Widgets/HeaderBar.vala:11 data/trimmer.desktop.in:6
+#: data/trimmer.metainfo.xml.in:5
+msgid "Trimmer"
+msgstr ""
+
+#. / TRANSLATORS: first %s represents the original file
+#. / name and the second one is the output file name
+#: src/Controllers/TrimController.vala:74
+#, c-format
+msgid "Succesfully trimmed %s, saved as %s\n"
+msgstr ""
+
+#. / TRANSLATORS: %s in an error message
+#: src/Controllers/TrimController.vala:81
+#, c-format
+msgid "Trim failed. %s\n"
+msgstr ""
+
+#: src/Controllers/TrimController.vala:90
+msgid "Save video"
+msgstr ""
+
+#: src/Controllers/TrimController.vala:93
+msgid "Save"
+msgstr ""
+
+#. / TRANSLATORS: This is the default suggested file name when
+#. / the user tries to save a trimmed video file. The first %s
+#. / represents the original file name before trim and the
+#. / second one is the file extension
+#: src/Controllers/TrimController.vala:121
+#, c-format
+msgid "%s-trimmed.%s"
+msgstr ""
+
+#: src/Controllers/TrimController.vala:169
+msgid "ffmpeg not found. Trimmer requires ffmpeg."
+msgstr ""
+
+#: data/trimmer.desktop.in:7 data/trimmer.metainfo.xml.in:6
+msgid "Video trimming utility"
+msgstr ""
+
+#: data/trimmer.desktop.in:10
+msgid "trimmer"
+msgstr ""
+
+#: data/trimmer.metainfo.xml.in:12
+msgid "Trimmer lets you quickly trim videos given start and end timestamps."
+msgstr ""

@@ -37,6 +37,17 @@ the code and pick up one of those or go through the github issues.
 
 The code generally follows the [elementary code style guidelines](https://docs.elementary.io/develop/writing-apps/code-style)
 
+### Translations
+Generate `.pot` translation template file using `po/LINGUAS` and `po/POTFILES`.
+```
+ninja com.github.adithyankv.trimmer-pot
+```
+then use the template file to generate/update `.po` files for each of the 
+languages listed in `LINGUAS`
+```
+ninja com.github.adithyankv.trimmer-update-po
+```
+
 ## Credits
 - Directly inspired by Ivan Molodetskikh's [Video Trimmer](https://gitlab.gnome.org/YaLTeR/video-trimmer) for GNOME.
 - Video used in screenshots is Blender open movie [Sprite fright](https://studio.blender.org/films/sprite-fright/).

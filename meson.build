@@ -2,6 +2,7 @@ project('com.github.adithyankv.trimmer', 'c', 'vala')
 
 subdir('src')
 subdir('data')
+subdir('po')
 
 glib_dep = [dependency('glib-2.0')]
 gtk_dep = [dependency('gtk+-3.0')]
