@@ -1,6 +1,6 @@
 <div align="center">
   <div align="center">
-    <img src="data/icons/trimmer-64.svg" width="64">
+    <img src="data/icons/64.svg" width="64">
   </div>
   <h1 align="center">Trimmer</h1>
   <div align="center">A video trimming utility for elementary OS. </div>
