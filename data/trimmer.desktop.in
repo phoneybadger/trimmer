@@ -6,6 +6,6 @@ Name=Trimmer
 Comment=Video trimming utility
 Categories=AudioVideo;AudioVideoEditing;
 
-Icon=trimmer
+Icon=com.github.adithyankv.trimmer
 Exec=com.github.adithyankv.trimmer
 Terminal=false
