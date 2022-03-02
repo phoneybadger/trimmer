@@ -12,7 +12,6 @@ finish-args:
   - '--socket=wayland'
   - '--socket=pulseaudio'
   - '--device=dri'
-  - '--filesystem=host'
 
 modules:
   - name: trimmer
