@@ -16,6 +16,23 @@ Quickly trim videos using start and end timestamps. Trimmer doesn't re-encode an
 ![Trimming screen screenshot](data/screenshot-trim.png)
 
 ## Building, testing and installation
+
+### Flatpak
+Flatpak is the recommended method of installation. Download or clone the repo,
+```
+git clone https://github.com/adithyankv/trimmer.git
+cd trimmer
+```
+then run
+```
+flatpak-builder build com.github.adithyankv.trimmer.yml --user --install --force-clean
+```
+the program should now be installed and can be launched using
+```
+flatpak run com.github.adithyankv.trimmer
+```
+
+### Build from source
 You'll need the following dependencies
 - valac
 - meson
