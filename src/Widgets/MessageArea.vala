@@ -17,7 +17,7 @@ namespace Trimmer {
                 message_bar.hide ();
                 remove (message_bar);
             });
-            
+
             add (message_bar);
             show_all ();
         }

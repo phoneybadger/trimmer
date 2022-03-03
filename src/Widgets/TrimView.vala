@@ -27,7 +27,7 @@ namespace Trimmer {
                 window.actions.lookup_action (Window.ACTION_PLAY_PAUSE).activate (null);
             });
 
-            video_player.video_loaded.connect((duration, uri) => {
+            video_player.video_loaded.connect ((duration, uri) => {
                 timeline.playback_duration = duration;
                 trim_controller.duration = duration;
                 trim_controller.video_uri = uri;
@@ -61,8 +61,8 @@ namespace Trimmer {
                 BindingFlags.BIDIRECTIONAL
             );
 
-            start_entry.changed.connect(check_trim_validity);
-            end_entry.changed.connect(check_trim_validity);
+            start_entry.changed.connect (check_trim_validity);
+            end_entry.changed.connect (check_trim_validity);
 
             trim_controller.trim_failed.connect ((message) => {
                 message_area.add_message (Gtk.MessageType.ERROR, message);
@@ -78,7 +78,7 @@ namespace Trimmer {
             end_entry.notify ["time"].connect (() => {
                 if (end_entry.time > trim_controller.duration) {
                     end_entry.time = (int) trim_controller.duration;
-                    end_entry.text = Granite.DateTime.seconds_to_time(end_entry.time);
+                    end_entry.text = Granite.DateTime.seconds_to_time (end_entry.time);
                 }
             });
         }
@@ -132,15 +132,15 @@ namespace Trimmer {
             pack_start (button_box, false, false, 0);
         }
 
-        private void check_trim_validity() {
-            if (start_entry.is_valid_timestamp() &&
-                end_entry.is_valid_timestamp()) {
+        private void check_trim_validity () {
+            if (start_entry.is_valid_timestamp () &&
+                end_entry.is_valid_timestamp ()) {
 
                 /* both entries being marked as invalid to distinguish this from
                 the case where a timestamp is invalid, in which case only the
                 entry with invalid timestamp will be marked invalid */
-                var start_time = Utils.convert_timestamp_to_seconds(start_entry.text);
-                var end_time = Utils.convert_timestamp_to_seconds(end_entry.text);
+                var start_time = Utils.convert_timestamp_to_seconds (start_entry.text);
+                var end_time = Utils.convert_timestamp_to_seconds (end_entry.text);
                 bool is_start_before_end = (start_time < end_time);
                 start_entry.is_valid = is_start_before_end;
                 end_entry.is_valid = is_start_before_end;
@@ -150,7 +150,7 @@ namespace Trimmer {
                 trim_button.sensitive = false;
             }
         }
-        
+
         public void update_play_button_icon () {
             if (video_player.playback.playing) {
                 ((Gtk.Image) play_button.image).icon_name = "media-playback-pause-symbolic";

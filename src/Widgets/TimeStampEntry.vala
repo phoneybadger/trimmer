@@ -23,14 +23,14 @@ namespace Trimmer {
             });
 
             changed.connect (() => {
-                if (is_valid_timestamp()) {
+                if (is_valid_timestamp ()) {
                     is_valid = true;
                     time = Utils.convert_timestamp_to_seconds (text);
                 } else {
                     is_valid = false;
                 }
             });
-            
+
             notify ["time"].connect (() => {
                 /* only change the text if the user is not actively typing.
                 This prevents the text from changing under the user on every

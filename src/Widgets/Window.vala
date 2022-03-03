@@ -30,8 +30,8 @@ namespace Trimmer {
         }
 
         static construct {
-            action_accelerators.set(ACTION_OPEN, "<Ctrl>o");
-            action_accelerators.set(ACTION_QUIT, "<Ctrl>q");
+            action_accelerators.set (ACTION_OPEN, "<Ctrl>o");
+            action_accelerators.set (ACTION_QUIT, "<Ctrl>q");
         }
 
         construct {
@@ -76,7 +76,7 @@ namespace Trimmer {
             int pos_x, pos_y;
             settings.get ("position", "(ii)", out pos_x, out pos_y);
             move (pos_x, pos_y);
-            
+
             int win_width, win_height;
             settings.get ("dimensions", "(ii)", out win_width, out win_height);
             resize (win_width, win_height);

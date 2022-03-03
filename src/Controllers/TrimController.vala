@@ -6,7 +6,7 @@ namespace Trimmer.Controllers {
         public int trim_end_time {
             get {
                 return _trim_end_time;
-            } set{
+            } set {
                 if (value > duration) {
                     _trim_end_time = (int) duration;
                 } else {
@@ -16,8 +16,8 @@ namespace Trimmer.Controllers {
         }
         public double duration {get; set;}
 
-        private const double DEFAULT_START = 1.0/4.0;
-        private const double DEFAULT_END = 3.0/4.0;
+        private const double DEFAULT_START = 1.0 / 4.0;
+        private const double DEFAULT_END = 3.0 / 4.0;
 
         public signal void trim_failed (string error_message);
         public signal void trim_success (string success_message);
@@ -64,7 +64,7 @@ namespace Trimmer.Controllers {
             if (is_ffmpeg_available ()) {
                 debug ("trimming %s to output: %s", input_uri, output_uri);
                 try {
-                    var subprocess = new Subprocess.newv(
+                    var subprocess = new Subprocess.newv (
                         cmd_args,
                         SubprocessFlags.STDOUT_SILENCE
                     );
@@ -72,13 +72,13 @@ namespace Trimmer.Controllers {
                         /// TRANSLATORS: first %s represents the original file
                         /// name and the second one is the output file name
                         var success_message = _("Succesfully trimmed %s, saved as %s\n")
-                            .printf(input_uri, output_uri);
+                            .printf (input_uri, output_uri);
                         debug (success_message);
                         trim_success (success_message);
                     }
                 } catch (Error e) {
                     /// TRANSLATORS: %s in an error message
-                    var error_message = _("Trim failed. %s\n").printf(e.message);
+                    var error_message = _("Trim failed. %s\n").printf (e.message);
                     critical (error_message);
                     trim_failed (error_message);
                 }
@@ -118,7 +118,7 @@ namespace Trimmer.Controllers {
                 /// the user tries to save a trimmed video file. The first %s
                 /// represents the original file name before trim and the 
                 /// second one is the file extension
-                var suggested_filename = _("%s-trimmed.%s").printf(filename, file_extension);
+                var suggested_filename = _("%s-trimmed.%s").printf (filename, file_extension);
                 file_chooser.set_current_name (suggested_filename);
 
                 var response = file_chooser.run ();
@@ -139,7 +139,7 @@ namespace Trimmer.Controllers {
                         Utils.get_file_extension (uri);
                     } catch (Utils.NoExtensionError e) {
                         debug ("User inputed no extension. Adding extension");
-                        uri = "%s.%s".printf(uri, file_extension);
+                        uri = "%s.%s".printf (uri, file_extension);
                     }
                     output_uri = sanitize (uri);
                 }

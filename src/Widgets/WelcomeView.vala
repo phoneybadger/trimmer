@@ -14,7 +14,7 @@ namespace Trimmer {
             append ("folder-videos", _("Open video"), _("Open a video file"));
             append ("system-help", _("Help"), _("Having trouble? Get help and report issues"));
 
-            activated.connect((index)=>{
+            activated.connect ((index)=>{
                 switch (index) {
                     case 0:
                         window.actions.lookup_action (Window.ACTION_OPEN).activate (null);

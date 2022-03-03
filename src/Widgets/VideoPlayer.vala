@@ -36,7 +36,7 @@ namespace Trimmer {
             });
 
             // update seek bar in sync with video progress
-            playback.notify ["progress"].connect(() => {
+            playback.notify ["progress"].connect (() => {
                 trim_view.timeline.playback_progress = playback.progress;
             });
 
@@ -55,7 +55,7 @@ namespace Trimmer {
 
             stage.add_child (video_actor);
         }
-        
+
         public void play_video (string uri) {
             playback.uri = uri;
             playback.playing = true;

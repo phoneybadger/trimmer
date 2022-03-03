@@ -1,5 +1,5 @@
-namespace Trimmer.Utils{
-    int max(int a, int b) {
+namespace Trimmer.Utils {
+    int max (int a, int b) {
         if (a > b) {
             return a;
         }
@@ -58,7 +58,7 @@ namespace Trimmer.Utils{
         var file = File.new_for_uri (uri);
         var basename = file.get_basename ();
         var name_parts = basename.split (".");
-        var filename = string.joinv(".", name_parts [0:name_parts.length - 1]);
+        var filename = string.joinv (".", name_parts [0:name_parts.length - 1]);
         return filename;
     }
 }

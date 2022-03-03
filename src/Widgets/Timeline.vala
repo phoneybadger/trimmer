@@ -41,7 +41,7 @@ namespace Trimmer {
                 _playback_progress = progress;
             }
         }
-        
+
         public double selection_start {get; set;}
         public double selection_end {get; set;}
 
@@ -78,7 +78,7 @@ namespace Trimmer {
 
         construct {
             create_layout ();
-            
+
             var window = Gdk.get_default_root_window ();
             var display = window.get_display ();
             var default_cursor = new Gdk.Cursor.from_name (display, "default");
@@ -155,14 +155,14 @@ namespace Trimmer {
 
             notify ["start-time"].connect (() => {
                 if (playback_duration != 0) {
-                    selection_start = start_time/playback_duration;
+                    selection_start = start_time / playback_duration;
                     refresh_selection ();
                 }
             });
 
             notify ["end-time"].connect (() => {
                 if (playback_duration != 0) {
-                    selection_end = end_time/playback_duration;
+                    selection_end = end_time / playback_duration;
                     refresh_selection ();
                 }
             });
@@ -177,9 +177,9 @@ namespace Trimmer {
                 can_focus = true
             };
 
-            eventbox.add_events (Gdk.EventMask.POINTER_MOTION_MASK|
-                Gdk.EventMask.ENTER_NOTIFY_MASK|
-                Gdk.EventMask.BUTTON_PRESS_MASK|
+            eventbox.add_events (Gdk.EventMask.POINTER_MOTION_MASK |
+                Gdk.EventMask.ENTER_NOTIFY_MASK |
+                Gdk.EventMask.BUTTON_PRESS_MASK |
                 Gdk.EventType.LEAVE_NOTIFY);
 
             duration_label = new Gtk.Label (null);
@@ -254,14 +254,14 @@ namespace Trimmer {
                     (int) (playback_progress * playback_duration));
             progressbar_allocation.x = track_allocation.x + TIMELINE_BORDER;
             progressbar_allocation.y = track_allocation.y + TIMELINE_BORDER;
-            progressbar_allocation.height = Utils.max(0, track_allocation.height - 2 * TIMELINE_BORDER);
+            progressbar_allocation.height = Utils.max (0, track_allocation.height - 2 * TIMELINE_BORDER);
             var width = (int) (playback_progress * track_allocation.width);
-            progressbar_allocation.width = Utils.max(0, width - 2 * TIMELINE_BORDER);
+            progressbar_allocation.width = Utils.max (0, width - 2 * TIMELINE_BORDER);
             progressbar.size_allocate (progressbar_allocation);
         }
 
         private void move_point (SelectionPoints grabbed_point, double mouse_x) {
-            var unit_time_width = (track_allocation.width/(int) playback_duration);
+            var unit_time_width = (track_allocation.width / (int) playback_duration);
             var min_separation = get_position_on_timeline (unit_time_width);
             var mouse_timeline_pos = get_position_on_timeline (mouse_x);
             if (grabbed_point == SelectionPoints.SELECTION_START) {
@@ -290,7 +290,7 @@ namespace Trimmer {
                to a 0-1 coordinate system where 0 is beginning of track and 1 is
                the end */
             var offset = track_allocation.x;
-            return (pixel_coordinate - offset)/track_allocation.width;
+            return (pixel_coordinate - offset) / track_allocation.width;
         }
 
         private int get_pixel_coordinate (double timeline_position) {
