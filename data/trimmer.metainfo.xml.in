@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>com.github.adithyankv.trimmer</id>
+  <id>com.github.phoneybadger.trimmer</id>
   
   <name>Trimmer</name>
   <summary>Video trimming utility</summary>
@@ -14,10 +14,10 @@
     </p>
   </description>
   
-  <launchable type="desktop-id">com.github.adithyankv.trimmer.desktop</launchable>
+  <launchable type="desktop-id">com.github.phoneybadger.trimmer.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://github.com/adithyankv/trimmer/blob/main/data/screenshot-trim.png</image>
+      <image>https://github.com/phoneybadger/trimmer/blob/main/data/screenshot-trim.png</image>
     </screenshot>
   </screenshots>
   <content_rating type="oars-1.1" />

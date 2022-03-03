@@ -20,16 +20,16 @@ Quickly trim videos using start and end timestamps. Trimmer doesn't re-encode an
 ### Flatpak
 Flatpak is the recommended method of installation. Download or clone the repo,
 ```
-git clone https://github.com/adithyankv/trimmer.git
+git clone https://github.com/phoneybadger/trimmer.git
 cd trimmer
 ```
 then run
 ```
-flatpak-builder build com.github.adithyankv.trimmer.yml --user --install --force-clean
+flatpak-builder build com.github.phoneybadger.trimmer.yml --user --install --force-clean
 ```
 the program should now be installed and can be launched using
 ```
-flatpak run com.github.adithyankv.trimmer
+flatpak run com.github.phoneybadger.trimmer
 ```
 
 ### Build from source
@@ -49,10 +49,10 @@ meson build --prefix=/usr
 cd build
 ninja
 ```
-To install use `ninja install`, then execute with `com.github.adithyankv.trimmer`
+To install use `ninja install`, then execute with `com.github.phoneybadger.trimmer`
 ```
 sudo ninja install
-com.github.adithyankv.trimmer
+com.github.phoneybadger.trimmer
 ```
 
 ## Contributing
@@ -66,12 +66,12 @@ The code generally follows the [elementary code style guidelines](https://docs.e
 ### Translations
 Generate `.pot` translation template file using `po/LINGUAS` and `po/POTFILES`.
 ```
-ninja com.github.adithyankv.trimmer-pot
+ninja com.github.phoneybadger.trimmer-pot
 ```
 then use the template file to generate/update `.po` files for each of the 
 languages listed in `LINGUAS`
 ```
-ninja com.github.adithyankv.trimmer-update-po
+ninja com.github.phoneybadger.trimmer-update-po
 ```
 
 ## Credits

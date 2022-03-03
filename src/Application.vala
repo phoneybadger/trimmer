@@ -2,7 +2,7 @@ namespace Trimmer {
     public class Application : Gtk.Application {
         public Application () {
             Object (
-                application_id : "com.github.adithyankv.trimmer",
+                application_id : "com.github.phoneybadger.trimmer",
                 flags : ApplicationFlags.FLAGS_NONE
                 );
         }

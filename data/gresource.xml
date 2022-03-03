@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <gresources>
-  <gresource prefix="/com/github/adithyankv/trimmer">
+  <gresource prefix="/com/github/phoneybadger/trimmer">
     <file alias="timeline.css">timeline.css</file>
     <file alias="timeline-dark.css">timeline-dark.css</file>
   </gresource>

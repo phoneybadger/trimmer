@@ -1,4 +1,4 @@
-project('com.github.adithyankv.trimmer', 'c', 'vala')
+project('com.github.phoneybadger.trimmer', 'c', 'vala')
 
 subdir('src')
 subdir('data')

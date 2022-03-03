@@ -1,10 +1,10 @@
-app-id: com.github.adithyankv.trimmer
+app-id: com.github.phoneybadger.trimmer
 
 runtime: io.elementary.Platform
 runtime-version: '6.1'
 sdk: io.elementary.Sdk
 
-command: com.github.adithyankv.trimmer
+command: com.github.phoneybadger.trimmer
 
 finish-args:
   - '--share=ipc'

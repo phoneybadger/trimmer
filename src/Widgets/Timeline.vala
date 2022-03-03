@@ -228,11 +228,11 @@ namespace Trimmer {
             var css_provider = new Gtk.CssProvider ();
             if (theme == Granite.Settings.ColorScheme.DARK) {
                 css_provider.load_from_resource (
-                    "/com/github/adithyankv/trimmer/timeline-dark.css"
+                    "/com/github/phoneybadger/trimmer/timeline-dark.css"
                 );
             } else {
                 css_provider.load_from_resource (
-                    "/com/github/adithyankv/trimmer/timeline.css"
+                    "/com/github/phoneybadger/trimmer/timeline.css"
                 );
             }
 

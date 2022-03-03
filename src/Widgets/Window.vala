@@ -72,7 +72,7 @@ namespace Trimmer {
         }
 
         private void load_config_from_schema () {
-            settings = new Settings ("com.github.adithyankv.trimmer");
+            settings = new Settings ("com.github.phoneybadger.trimmer");
             int pos_x, pos_y;
             settings.get ("position", "(ii)", out pos_x, out pos_y);
             move (pos_x, pos_y);

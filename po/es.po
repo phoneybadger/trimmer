@@ -1,14 +1,14 @@
-# Spanish translations for com.github.adithyankv.trimmer package.
-# Copyright (C) 2022 THE com.github.adithyankv.trimmer'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the com.github.adithyankv.trimmer package.
+# Spanish translations for com.github.phoneybadger.trimmer package.
+# Copyright (C) 2022 THE com.github.phoneybadger.trimmer'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.phoneybadger.trimmer package.
 # Automatically generated, 2022.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: com.github.adithyankv.trimmer\n"
+"Project-Id-Version: com.github.phoneybadger.trimmer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-19 21:38+0530\n"
-"PO-Revision-Date: 2022-02-19 21:38+0530\n"
+"POT-Creation-Date: 2022-03-03 12:26+0530\n"
+"PO-Revision-Date: 2022-03-03 12:26+0530\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: es\n"
@@ -113,7 +113,7 @@ msgid "Video trimming utility"
 msgstr ""
 
 #: data/trimmer.desktop.in:10
-msgid "trimmer"
+msgid "com.github.phoneybadger.trimmer"
 msgstr ""
 
 #: data/trimmer.metainfo.xml.in:12
