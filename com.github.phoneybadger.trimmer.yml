@@ -23,19 +23,6 @@ modules:
   # this does however lead to large compile times while installing. so perhaps
   # should look into it further
   - name: ffmpeg
-    # Inspired by
-    # https://github.com/robertsanseries/ciano/blob/flatpak-packaging/com.github.robertsanseries.ciano.json
-    cleanup:
-      - /include
-      - /lib/pkgconfig
-      - /share/ffmpeg/examples
-    config-opts:
-      - --enable-shared
-      - --disable-static
-      - --disable-ffplay
-      - --disable-ffprobe
-      - --disable-doc
-      - --disable-network
     sources:
       - type: archive
         url: https://ffmpeg.org/releases/ffmpeg-5.0.tar.xz
