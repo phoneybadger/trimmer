@@ -32,7 +32,7 @@ namespace Trimmer.Utils {
                 critical ("Error parsing timestamp, timestamp:%s", timestamp);
                 break;
         }
-        return hours * 60 + minutes * 60 + seconds;
+        return hours * 3600 + minutes * 60 + seconds;
     }
 
     errordomain NoExtensionError {
