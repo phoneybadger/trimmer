@@ -11,6 +11,7 @@ namespace Trimmer {
         private Trimmer.TimeStampEntry start_entry;
         private Trimmer.TimeStampEntry end_entry;
         private Gtk.Button trim_button;
+        private Trimmer.TrimmingDialog trimming_dialog;
 
         public TrimView (Trimmer.Window window) {
             Object (
@@ -83,12 +84,24 @@ namespace Trimmer {
                     end_entry.text = Granite.DateTime.seconds_to_time (end_entry.time);
                 }
             });
+
+            trim_controller.notify ["trim-state"].connect (() => {
+                trimming_dialog.filename = Utils.get_filename (trim_controller.video_uri);
+                trimming_dialog.transient_for = window;
+                if (trim_controller.trim_state == Controllers.TrimController.TrimState.TRIMMING) {
+                    trimming_dialog.show ();
+                } else {
+                    trimming_dialog.close ();
+                }
+            });
         }
 
         private void create_layout () {
             message_area = new MessageArea ();
             video_player = new VideoPlayer (this);
             trim_controller = new Controllers.TrimController ();
+            trimming_dialog = new TrimmingDialog ();
+
 
             var timeline_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 valign = Gtk.Align.CENTER

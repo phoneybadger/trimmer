@@ -28,7 +28,14 @@ namespace Trimmer.Controllers {
         /* ffmpeg requires a file extension in the output path */
         private string file_extension;
 
+        public TrimState trim_state {get; set;}
+        public enum TrimState {
+            IDLE,
+            TRIMMING
+        }
+
         construct {
+            trim_state = TrimState.IDLE;
             notify ["duration"].connect (() => {
                 trim_start_time = (int) (DEFAULT_START * duration);
                 trim_end_time = (int) (DEFAULT_END * duration);
@@ -63,6 +70,7 @@ namespace Trimmer.Controllers {
         }
 
         private async void trim_with_ffmpeg () {
+            trim_state = TrimState.TRIMMING;
             input_uri = sanitize (video_uri);
             select_output_uri_with_filechooser ();
             if (output_uri == null) {
@@ -109,6 +117,7 @@ namespace Trimmer.Controllers {
                 critical (error_message);
                 trim_failed (error_message);
             }
+            trim_state = TrimState.IDLE;
         }
 
         private void select_output_uri_with_filechooser () {
