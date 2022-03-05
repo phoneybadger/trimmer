@@ -6,8 +6,8 @@ namespace Trimmer {
 
         public void add_message (Gtk.MessageType type, string message) {
             var message_bar = new Gtk.InfoBar () {
-                    message_type = type,
-                    show_close_button = true,
+                message_type = type,
+                show_close_button = true,
             };
             var message_label = new Gtk.Label (message) {
                 ellipsize = Pango.EllipsizeMode.END

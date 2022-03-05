@@ -119,7 +119,6 @@ namespace Trimmer.Controllers {
                     var success_message = _("Succesfully trimmed %s, saved as %s\n")
                         .printf (input_uri, output_uri);
                     debug (success_message);
-                    print (success_message);
                     trim_success (success_message);
                 }
             } catch (Error e) {

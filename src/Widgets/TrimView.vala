@@ -23,6 +23,7 @@ namespace Trimmer {
 
         construct {
             create_layout ();
+            trim_controller = new Controllers.TrimController ();
 
             play_button.clicked.connect (() => {
                 window.actions.lookup_action (Window.ACTION_PLAY_PAUSE).activate (null);
@@ -101,7 +102,6 @@ namespace Trimmer {
         private void create_layout () {
             message_area = new MessageArea ();
             video_player = new VideoPlayer (this);
-            trim_controller = new Controllers.TrimController ();
             trimming_dialog = new TrimmingDialog ();
 
 
