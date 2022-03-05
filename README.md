@@ -17,13 +17,15 @@ Quickly trim videos using start and end timestamps. Trimmer doesn't re-encode an
 
 ## Building, testing and installation
 
-### Flatpak
-Flatpak is the recommended method of installation. Download or clone the repo,
+### Build from source
+Download or clone the repo
 ```
 git clone https://github.com/phoneybadger/trimmer.git
 cd trimmer
 ```
-then run
+
+#### Flatpak
+Run `flatpak-builder` to build and install as a flatpak for the current user
 ```
 flatpak-builder build com.github.phoneybadger.trimmer.yml --user --install --force-clean
 ```
@@ -32,7 +34,7 @@ the program should now be installed and can be launched using
 flatpak run com.github.phoneybadger.trimmer
 ```
 
-### Build from source
+#### Without Flatpak
 You'll need the following dependencies
 - valac
 - meson
@@ -56,12 +58,13 @@ com.github.phoneybadger.trimmer
 ```
 
 ## Contributing
-Contributions are always welcome. Please do raise an issue if you come across
-a bug and please feel free to send in pull requests with features or bug fixes. 
-For making code contributions you can perhaps look at the `TODO` comments within
-the code and pick up one of those or go through the github issues.
+Contributions are always welcome. You can raise an issue if you come across a bug
+and feel free to send in pull requests with features or bug fixes.
 
-The code generally follows the [elementary code style guidelines](https://docs.elementary.io/develop/writing-apps/code-style)
+### Code
+The code generally follows the [elementary code style guidelines](https://docs.elementary.io/develop/writing-apps/code-style).
+The project uses [vala-lint](https://github.com/vala-lang/vala-lint) to check for
+code style issues.
 
 ### Translations
 Generate `.pot` translation template file using `po/LINGUAS` and `po/POTFILES`.
