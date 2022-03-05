@@ -3,6 +3,7 @@ src/Widgets/WelcomeView.vala
 src/Widgets/TrimView.vala
 src/Widgets/TrimView.vala
 src/Widgets/HeaderBar.vala
+src/Widgets/ProgressDialog.vala
 src/Controllers/TrimController.vala
 data/trimmer.desktop.in
 data/trimmer.metainfo.xml.in

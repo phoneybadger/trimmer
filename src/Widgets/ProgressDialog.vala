@@ -1,10 +1,11 @@
 namespace Trimmer {
-    public class TrimmingDialog : Granite.Dialog {
+    public class ProgressDialog : Granite.Dialog {
         public string filename {get; set;}
 
         construct {
             width_request = 400;
-            var label = new Gtk.Label ("Trimming %s".printf (filename));
+            string progress_message;
+            var label = new Gtk.Label (progress_message);
             label.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
             var spinner = new Gtk.Spinner () {
                 active = true,
@@ -24,7 +25,9 @@ namespace Trimmer {
             get_content_area ().add (layout);
 
             notify ["filename"].connect (() => {
-                label.set_text ("Trimming %s".printf (filename));
+                ///TRANSLATORS: where %s is the input video file name
+                progress_message = _("Trimming %s".printf (filename));
+                label.set_text (progress_message);
             });
         }
     }

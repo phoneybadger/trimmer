@@ -9,7 +9,7 @@ sources = files(
     'Widgets/TimeStampEntry.vala',
     'Widgets/Timeline.vala',
     'Widgets/MessageArea.vala',
-    'Widgets/TrimmingDialog.vala',
+    'Widgets/ProgressDialog.vala',
     'Controllers/TrimController.vala',
     'Utils/Utils.vala'
 )

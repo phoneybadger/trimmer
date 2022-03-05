@@ -11,7 +11,7 @@ namespace Trimmer {
         private Trimmer.TimeStampEntry start_entry;
         private Trimmer.TimeStampEntry end_entry;
         private Gtk.Button trim_button;
-        private Trimmer.TrimmingDialog trimming_dialog;
+        private Trimmer.ProgressDialog trimming_dialog;
 
         public TrimView (Trimmer.Window window) {
             Object (
@@ -102,7 +102,7 @@ namespace Trimmer {
         private void create_layout () {
             message_area = new MessageArea ();
             video_player = new VideoPlayer (this);
-            trimming_dialog = new TrimmingDialog ();
+            trimming_dialog = new ProgressDialog ();
 
 
             var timeline_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
