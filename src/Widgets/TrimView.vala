@@ -73,7 +73,9 @@ namespace Trimmer {
                 // the user. Perhaps a toast.
             });
 
-            trim_button.clicked.connect (trim_controller.trim);
+            trim_button.clicked.connect (() => {
+                trim_controller.trim.begin ();
+            });
 
             end_entry.notify ["time"].connect (() => {
                 if (end_entry.time > trim_controller.duration) {
