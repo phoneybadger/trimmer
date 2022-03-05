@@ -75,7 +75,7 @@ namespace Trimmer {
             });
 
             trim_button.clicked.connect (() => {
-                trim_controller.trim.begin ();
+                window.actions.lookup_action (Window.ACTION_TRIM).activate (null);
             });
 
             end_entry.notify ["time"].connect (() => {
@@ -86,12 +86,14 @@ namespace Trimmer {
             });
 
             trim_controller.notify ["trim-state"].connect (() => {
+                /* as longer videos can take some time to trim, show the user
+                an in-progress dialog */
                 trimming_dialog.filename = Utils.get_filename (trim_controller.video_uri);
                 trimming_dialog.transient_for = window;
                 if (trim_controller.trim_state == Controllers.TrimController.TrimState.TRIMMING) {
                     trimming_dialog.show ();
                 } else {
-                    trimming_dialog.close ();
+                    trimming_dialog.hide ();
                 }
             });
         }

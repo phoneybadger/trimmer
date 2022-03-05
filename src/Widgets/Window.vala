@@ -13,6 +13,7 @@ namespace Trimmer {
         public const string ACTION_OPEN = "action_open";
         public const string ACTION_PLAY_PAUSE = "action_play_pause";
         public const string ACTION_QUIT = "action_quit";
+        public const string ACTION_TRIM = "action_trim";
 
         public static Gee.MultiMap<string, string> action_accelerators = new Gee.HashMultiMap<string, string> ();
 
@@ -20,6 +21,7 @@ namespace Trimmer {
             {ACTION_OPEN, action_open},
             {ACTION_QUIT, action_quit},
             {ACTION_PLAY_PAUSE, action_play_pause, null, "false"}, //false if video is playing
+            {ACTION_TRIM, action_trim}
         };
 
         public Window (Gtk.Application app) {
@@ -143,6 +145,60 @@ namespace Trimmer {
         private void action_quit () {
             trim_view.video_player.stop_and_destroy ();
             destroy ();
+        }
+
+        private void action_trim () {
+            var trim_controller = trim_view.trim_controller;
+            var file_chooser = new Gtk.FileChooserNative (
+                _("Save video"),
+                null,
+                Gtk.FileChooserAction.SAVE,
+                _("Save"),
+                _("Cancel")
+            );
+            var video_files_filter = new Gtk.FileFilter ();
+            video_files_filter.set_filter_name (_("Video files"));
+            video_files_filter.add_mime_type ("video/*");
+            file_chooser.add_filter (video_files_filter);
+            file_chooser.do_overwrite_confirmation = true;
+
+            /* 
+               Suggest an output name of input_name-trimmed.extension
+               for example
+               video.mp4 becomes video-trimmed.mp4
+            */
+            var filename = trim_controller.filename;
+            var extension = trim_controller.file_extension;
+            /// TRANSLATORS: This is the default suggested file name when
+            /// the user tries to save a trimmed video file. The first %s
+            /// represents the original file name before trim and the 
+            /// second one is the file extension
+            var suggested_filename = _("%s-trimmed.%s").printf (filename, extension);
+            file_chooser.set_current_name (suggested_filename);
+
+            var response = file_chooser.run ();
+            file_chooser.destroy ();
+
+            if (response == Gtk.ResponseType.ACCEPT) {
+                var uri = file_chooser.get_uri ();
+                if (uri == null) {
+                    return;
+                }
+                /* we are suggesting the user a file extension in the 
+                   name field of the file chooser. But if the user goes
+                   out of their way to remove it, we'll re-add the file
+                   extension. Not foolproof, the user could've replaced
+                   the extension with an invalid one. But in that case
+                   I guess it is acceptable to just let the trim fail. */
+                try {
+                    Utils.get_file_extension (uri);
+                } catch (Utils.NoExtensionError e) {
+                    debug ("User inputed no extension. Adding extension");
+                    uri = "%s.%s".printf (uri, extension);
+                }
+                trim_controller.save_file_uri = uri;
+            }
+            trim_controller.trim.begin ();
         }
     }
 }

@@ -1,10 +1,10 @@
 namespace Trimmer {
     public class TrimmingDialog : Granite.Dialog {
-        public string filename;
-       
+        public string filename {get; set;}
+
         construct {
             width_request = 400;
-            var label = new Gtk.Label ("Trimming %s".printf(filename));
+            var label = new Gtk.Label ("Trimming %s".printf (filename));
             label.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
             var spinner = new Gtk.Spinner () {
                 active = true,
@@ -22,6 +22,10 @@ namespace Trimmer {
 
             layout.show_all ();
             get_content_area ().add (layout);
+
+            notify ["filename"].connect (() => {
+                label.set_text ("Trimming %s".printf (filename));
+            });
         }
     }
 }
