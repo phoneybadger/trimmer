@@ -16,3 +16,16 @@ timestamp_test_exe = executable(
     dependencies: test_deps
 )
 test(timestamp_test, timestamp_test_exe)
+
+filename_test = 'filename-parsing-test'
+filename_test_sources = [
+    'TestFilenameParser.vala',
+    meson.source_root() + '/src/Utils/Utils.vala',
+    meson.source_root() + '/src/Timestamp.vala'
+]
+filename_test_exe = executable(
+    filename_test,
+    filename_test_sources,
+    dependencies: test_deps
+)
+test(filename_test, filename_test_exe)
