@@ -197,8 +197,8 @@ namespace Trimmer {
                     uri = "%s.%s".printf (uri, extension);
                 }
                 trim_controller.save_file_uri = uri;
+                trim_controller.trim.begin ();
             }
-            trim_controller.trim.begin ();
         }
     }
 }
