@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2021 Adithyan K V <adithyankv@protonmail.com>
+ */
 namespace Trimmer {
     public class WelcomeView : Granite.Widgets.Welcome {
         public Trimmer.Window window {get; set;}
