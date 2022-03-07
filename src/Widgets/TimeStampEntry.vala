@@ -4,21 +4,20 @@
  */
 namespace Trimmer {
     public class TimeStampEntry : Gtk.Entry {
-        private Regex timestamp_regex;
-
         public bool is_valid {get; set;}
         public int time {get; set;}
+        public Timestamp timestamp;
 
         construct {
-            setup_timestamp_regex ();
+            timestamp = new Timestamp ();
 
             notify ["is-valid"].connect (() => {
                 update_style ();
             });
 
             activate.connect (() => {
-                if (is_valid_timestamp ()) {
-                    text = format_timestamp (text);
+                if (timestamp.is_valid ()) {
+                    text = timestamp.format ();
                 }
             });
 
@@ -27,9 +26,10 @@ namespace Trimmer {
             });
 
             changed.connect (() => {
-                if (is_valid_timestamp ()) {
+                timestamp.text = text;
+                if (timestamp.is_valid ()) {
                     is_valid = true;
-                    time = Utils.convert_timestamp_to_seconds (text);
+                    time = timestamp.convert_to_seconds ();
                 } else {
                     is_valid = false;
                 }
@@ -45,19 +45,6 @@ namespace Trimmer {
             });
         }
 
-        private string format_timestamp (string timestamp) {
-            var time = Utils.convert_timestamp_to_seconds (timestamp);
-            return Granite.DateTime.seconds_to_time (time);
-        }
-
-        public bool is_valid_timestamp () {
-            if (timestamp_regex.match (text)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
         public void update_style () {
             /* change UI style to invalid or valid styles depending on state */
             var style_context = get_style_context ();
@@ -67,26 +54,6 @@ namespace Trimmer {
             } else {
                 secondary_icon_name = "process-error-symbolic";
                 style_context.add_class (Gtk.STYLE_CLASS_ERROR);
-            }
-        }
-
-        private void setup_timestamp_regex () {
-            try {
-                // Regex for hours:minutes:seconds
-                /*
-
-                ^                                       start of string
-                    (
-                        ([0-9]+:)?                      optionally match hours:
-                        ([0-5]?[0-9]:)                  match mm: or m: with mm < 60, m <10
-                    )?                                  optionally match hours:mm
-                    ([0-5]?[0-9])                       match ss or s. ss < 60, s < 10
-                $                                       end of string
-
-                */
-                timestamp_regex = new Regex ("^(([0-9]+:)?([0-5]?[0-9]:))?([0-5]?[0-9])$");
-            } catch (RegexError e) {
-                critical (e.message);
             }
         }
     }

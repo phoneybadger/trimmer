@@ -1,6 +1,7 @@
 sources = files(
     'Main.vala',
     'Application.vala',
+    'Timestamp.vala',
     'Widgets/Window.vala',
     'Widgets/WelcomeView.vala',
     'Widgets/TrimView.vala',
@@ -11,5 +12,5 @@ sources = files(
     'Widgets/MessageArea.vala',
     'Widgets/ProgressDialog.vala',
     'Controllers/TrimController.vala',
-    'Utils/Utils.vala'
+    'Utils/Utils.vala',
 )

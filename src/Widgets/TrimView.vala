@@ -154,14 +154,14 @@ namespace Trimmer {
         }
 
         private void check_trim_validity () {
-            if (start_entry.is_valid_timestamp () &&
-                end_entry.is_valid_timestamp ()) {
+            if (start_entry.timestamp.is_valid () &&
+                end_entry.timestamp.is_valid ()) {
 
                 /* both entries being marked as invalid to distinguish this from
                 the case where a timestamp is invalid, in which case only the
                 entry with invalid timestamp will be marked invalid */
-                var start_time = Utils.convert_timestamp_to_seconds (start_entry.text);
-                var end_time = Utils.convert_timestamp_to_seconds (end_entry.text);
+                var start_time = start_entry.timestamp.convert_to_seconds ();
+                var end_time = end_entry.timestamp.convert_to_seconds ();
                 bool is_start_before_end = (start_time < end_time);
                 start_entry.is_valid = is_start_before_end;
                 end_entry.is_valid = is_start_before_end;
