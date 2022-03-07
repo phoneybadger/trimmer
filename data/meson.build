@@ -44,3 +44,11 @@ foreach i : icon_sizes
         rename: meson.project_name() + '.svg'
     )
 endforeach
+
+# compile gresources to include the custom css files
+gnome = import('gnome')
+
+trimmer_resources = gnome.compile_resources(
+    'trimmer-resources', 'gresource.xml',
+    source_dir: '.',
+)

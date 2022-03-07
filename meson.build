@@ -10,13 +10,6 @@ gtk_dep = [dependency('gtk+-3.0')]
 granite_dep = [dependency('granite')]
 gst_deps = [dependency('clutter-gst-3.0'), dependency('clutter-gtk-1.0')]
 
-gnome = import('gnome')
-
-trimmer_resources = gnome.compile_resources(
-    'trimmer-resources', 'data/gresource.xml',
-    source_dir: 'data',
-)
-
 executable (
     meson.project_name(),
     trimmer_resources,
