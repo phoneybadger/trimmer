@@ -46,7 +46,8 @@ namespace Trimmer.Utils {
         public string get_file_extension (string uri) throws NoExtensionError {
             /* assuming the piece of text after the last "." is the file 
                extension. Not foolproof but must be good enough for now */
-            var basename = get_basename (uri);
+            var uri_with_spaces = Uri.unescape_string (uri);
+            var basename = get_basename (uri_with_spaces);
             var name_parts = basename.split (".");
             if (name_parts.length < 2) {
                 debug ("couldn't find file extension");
@@ -63,9 +64,10 @@ namespace Trimmer.Utils {
         }
 
         public string get_filename (string uri) {
-            var basename = get_basename (uri);
+            var uri_with_spaces = Uri.unescape_string (uri);
+            var basename = get_basename (uri_with_spaces);
             try {
-                get_file_extension (uri);
+                get_file_extension (uri_with_spaces);
             } catch (NoExtensionError e) {
                 return basename;
             }
@@ -81,7 +83,8 @@ namespace Trimmer.Utils {
             /* assuming the text after the last forward slash is the name of 
             the file. As slashes are not allowed in file names, this should hold
             true */
-            var parts = uri.split ("/");
+            var uri_with_spaces = Uri.unescape_string (uri);
+            var parts = uri_with_spaces.split ("/");
             var basename = parts [parts.length - 1];
             return basename;
         }
