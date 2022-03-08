@@ -184,6 +184,7 @@ namespace Trimmer {
             file_chooser.destroy ();
 
             if (response == Gtk.ResponseType.ACCEPT) {
+                var parser = new Utils.FilenameParser ();
                 var uri = file_chooser.get_uri ();
                 if (uri == null) {
                     return;
@@ -191,11 +192,9 @@ namespace Trimmer {
                 /* we are suggesting the user a file extension in the 
                    name field of the file chooser. But if the user goes
                    out of their way to remove it, we'll re-add the file
-                   extension. Not foolproof, the user could've replaced
-                   the extension with an invalid one. But in that case
-                   I guess it is acceptable to just let the trim fail. */
+                   extension. */
                 try {
-                    Utils.get_file_extension (uri);
+                    parser.get_file_extension (uri);
                 } catch (Utils.NoExtensionError e) {
                     debug ("User inputed no extension. Adding extension");
                     uri = "%s.%s".printf (uri, extension);

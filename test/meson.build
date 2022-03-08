@@ -20,7 +20,7 @@ test(timestamp_test, timestamp_test_exe)
 filename_test = 'filename-parsing-test'
 filename_test_sources = [
     'TestFilenameParser.vala',
-    meson.source_root() + '/src/Utils/Utils.vala',
+    meson.source_root() + '/src/Utils/FilenameParser.vala',
     meson.source_root() + '/src/Timestamp.vala'
 ]
 filename_test_exe = executable(

@@ -39,6 +39,7 @@ namespace Trimmer.Controllers {
         }
 
         construct {
+            var parser = new Utils.FilenameParser ();
             trim_state = TrimState.IDLE;
             notify ["duration"].connect (() => {
                 trim_start_time = (int) (DEFAULT_START * duration);
@@ -46,9 +47,9 @@ namespace Trimmer.Controllers {
             });
 
             notify ["video-uri"].connect (() => {
-                filename = Utils.get_filename (video_uri);
+                filename = parser.get_filename (video_uri);
                 try {
-                    file_extension = Utils.get_file_extension (video_uri);
+                    file_extension = parser.get_file_extension (video_uri);
                 } catch (Utils.NoExtensionError e) {
                     /* defaulting to mp4 if no extension is found. There could
                     be a better way to do this using MIME types or something */

@@ -13,4 +13,5 @@ sources = files(
     'Widgets/ProgressDialog.vala',
     'Controllers/TrimController.vala',
     'Utils/Utils.vala',
+    'Utils/FilenameParser.vala',
 )
