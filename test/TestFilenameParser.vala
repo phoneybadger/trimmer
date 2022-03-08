@@ -30,8 +30,10 @@ namespace Trimmer {
         var map = new Gee.HashMap<string,string> ();
         map.set ("file:///home/video", "video");
         map.set ("file:///home/user name/Downloads/video", "video");
+        map.set ("file:///home/user%20name/Downloads/video", "video");
         map.set ("file:///home/user-name/video.mp4", "video.mp4");
         map.set ("file:///folder/video file.mp4", "video file.mp4");
+        map.set ("file:///folder/video%20file.mp4", "video file.mp4");
         foreach (var entry in map.entries) {
             var uri = entry.key;
             var basename = entry.value;
@@ -53,6 +55,8 @@ namespace Trimmer {
         // testing names with spaces on different extensions
         map_with_ext.set ("file:///directory name/video name.avi", "avi");
         map_with_ext.set ("file:///directory name/video-name.mkv", "mkv");
+        // uri with escaped spaces
+        map_with_ext.set ("file:///directory%20name/video.mkv", "mkv");
         foreach (var entry in map_with_ext.entries) {
             try {
                 var uri = entry.key;
@@ -114,6 +118,8 @@ namespace Trimmer {
         assert_true (parser.get_filename ("file///video") == "video");
         // filename with spaces
         assert_true (parser.get_filename ("file///file name") == "file name");
+        /// filename with escaped spaces
+        assert_true (parser.get_filename ("file///file%20name") == "file name");
         // filename in path with spaces
         assert_true (parser.get_filename ("file///a b c/video") == "video");
         // filename with dots
