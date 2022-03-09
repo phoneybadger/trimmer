@@ -8,6 +8,7 @@ namespace Trimmer {
 
         construct {
             width_request = 400;
+            set_modal (true);
             string progress_message;
             var label = new Gtk.Label (progress_message);
             label.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
