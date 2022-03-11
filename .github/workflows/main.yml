@@ -5,9 +5,9 @@ on: [push, pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "flatpak"
+  # build a flatpak
   flatpak:
-    # The type of runner that the job will run on
+    name: Flatpak
     runs-on: ubuntu-latest
 
     # This job runs in a special container designed for building Flatpaks for AppCenter
@@ -15,20 +15,19 @@ jobs:
       image: ghcr.io/elementary/flatpak-platform/runtime:6
       options: --privileged
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - name: Checkout
       # Checks-out your repository under $GITHUB_WORKSPACE, so the job can access it
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
 
       # Builds your flatpak manifest using the Flatpak Builder action
-    - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v3
+    - name: Flatpak
+      uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v3
       with:
-        # This is the name of the Bundle file we're building and can be anything you like
+        # This is the name of the Bundle file we're building
         bundle: Trimmer.flatpak
-        # This uses your app's RDNN ID
         manifest-path: com.github.phoneybadger.trimmer.yml
 
-        # You can automatically run any of the tests you've created as part of this workflow
         run-tests: true
 
         # These lines specify the location of the elementary Runtime and Sdk
