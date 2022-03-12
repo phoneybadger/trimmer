@@ -12,8 +12,8 @@ Quickly trim videos using start and end timestamps. Trimmer doesn't re-encode an
 
 ## Screenshots
 
-![Welcome screen screenshot](data/screenshot-welcome.png)
-![Trimming screen screenshot](data/screenshot-trim.png)
+![Welcome screen screenshot](data/screenshots/screenshot-welcome.png)
+![Trimming screen screenshot](data/screenshots/screenshot-trim.png)
 
 ## Building, testing and installation
 
