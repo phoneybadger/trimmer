@@ -9,3 +9,4 @@ Categories=AudioVideo;AudioVideoEditing;
 Icon=com.github.phoneybadger.trimmer
 Exec=com.github.phoneybadger.trimmer
 Terminal=false
+Keywords=video;trim;
