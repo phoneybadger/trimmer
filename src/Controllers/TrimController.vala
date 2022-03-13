@@ -96,12 +96,12 @@ namespace Trimmer.Controllers {
                 "ffmpeg",
                 "-loglevel",
                 "error",
-                "-i",   //input
-                input_uri,
                 "-ss",
                 Granite.DateTime.seconds_to_time (trim_start_time),
                 "-to",
                 Granite.DateTime.seconds_to_time (trim_end_time),
+                "-i",   //input
+                input_uri,
                 "-c", //copy without reencoding
                 "copy",
                 /* 
