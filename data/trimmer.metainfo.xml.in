@@ -38,6 +38,10 @@
   <custom>
     <value key="x-appcenter-color-primary">#3689e6</value>
     <value key="x-appcenter-color-primary-text">#1a1a1a</value>
+    <value key="x-appcenter-suggested-price">5</value>
+    <value key="x-appcenter-stripe">
+      pk_live_51K6UjqSJM8FG91Z93JZ80ArUClZjs3dRpnoxqjX6CeN5y8yfoTXopF8JYw9ZsyVIiuahH0Ot2glFIVinx4bqTLEU00ksNhDmsH
+    </value>
   </custom>
 
   <developer_name>Phoney Badger</developer_name>
