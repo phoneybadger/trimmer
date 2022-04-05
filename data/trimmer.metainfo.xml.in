@@ -29,11 +29,18 @@
     </screenshot>
   </screenshots>
 
-  <release date="2022-03-13" version="1.0.0">
-    <description>
-      <p>Initial release</p>
-    </description>
-  </release>
+  <releases>
+    <release date="2022-04-5" version="1.0.1">
+      <description>
+        <p>Add stripe key</p>
+      </description>
+    </release>
+    <release date="2022-03-13" version="1.0.0">
+      <description>
+        <p>Initial release</p>
+      </description>
+    </release>
+  </releases>
 
   <custom>
     <value key="x-appcenter-color-primary">#3689e6</value>
