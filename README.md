@@ -5,6 +5,9 @@
   <h1 align="center">Trimmer</h1>
   <div align="center">A video trimming utility for elementary OS. </div>
 </div>
+<p align="center">
+  <a href="https://appcenter.elementary.io/com.github.phoneybadger.trimmer"><img src="https://appcenter.elementary.io/badge.svg" alt="Get it on AppCenter" /></a>
+</p>
 
 ## Usage
 
@@ -15,16 +18,30 @@ Quickly trim videos using start and end timestamps. Trimmer doesn't re-encode an
 ![Welcome screen screenshot](data/screenshots/screenshot-welcome.png)
 ![Trimming screen screenshot](data/screenshots/screenshot-trim.png)
 
-## Building, testing and installation
+## Installation
+### On Elementary OS
+On elementary OS you can get Trimmer from the appcenter
 
-### Build from source
+### On other distros
+Trimmer is developed targetting and tested on elementary OS. However you can
+always install Trimmer as flatpak on any distro from the elementary flatpak
+repository.
+```
+flatpak install https://flatpak.elementary.io/repo/appstream/com.github.phoneybadger.trimmer.flatpakref
+```
+If you're using GNOME you can also consider using Ivan Molodetskikh's 
+[Video Trimmer](https://gitlab.gnome.org/YaLTeR/video-trimmer) which this app
+was directly  inspired by.
+
+## Building and running
+
 Download or clone the repo
 ```
 git clone https://github.com/phoneybadger/trimmer.git
 cd trimmer
 ```
 
-#### Flatpak
+#### Build with Flatpak
 Run `flatpak-builder` to build and install as a flatpak for the current user
 ```
 flatpak-builder build com.github.phoneybadger.trimmer.yml --user --install --force-clean
