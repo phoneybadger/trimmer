@@ -56,7 +56,7 @@ flatpak run com.github.phoneybadger.trimmer
 You'll need the following dependencies
 - valac
 - meson
-- libgtk3-dev
+- libgtk-3-dev
 - libgranite-dev
 - libclutter-gst-3.0-dev
 - libclutter-gtk-1.0-dev

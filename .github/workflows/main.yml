@@ -19,7 +19,7 @@ jobs:
 
       - name: Install Dependencies
         env:
-          dependency_packages: libvala-dev valac meson libgtk3-dev libgranite-dev libclutter-gst-3.0-dev libclutter-gtk-1.0-dev libgstreamer1.0-dev
+          dependency_packages: libvala-dev valac meson libgtk-3-dev libgranite-dev libclutter-gst-3.0-dev libclutter-gtk-1.0-dev libgstreamer1.0-dev
         run: apt-get update && apt-get -y install ${dependency_packages}
 
       - name: Build
