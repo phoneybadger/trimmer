@@ -28,7 +28,7 @@ jobs:
         bundle: Trimmer.flatpak
         manifest-path: com.github.phoneybadger.trimmer.yml
 
-        run-tests: true
+        run-tests: false
 
         # These lines specify the location of the elementary Runtime and Sdk
         repository-name: appcenter
