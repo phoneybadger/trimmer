@@ -3,13 +3,6 @@ app-id: com.github.phoneybadger.trimmer
 runtime: io.elementary.Platform
 runtime-version: '6.1'
 sdk: io.elementary.Sdk
-add-extensions: 
-  org.freedesktop.Platform.ffmpeg-full:
-    directory: lib/ffmpeg
-    version: '21.08'
-    add-ld-path: .
-cleanup-commands:
-  - mkdir -p ${FLATPAK_DEST}/lib/ffmpeg
 
 command: com.github.phoneybadger.trimmer
 
@@ -26,3 +19,12 @@ modules:
     sources:
       - type: dir
         path: .
+  # Adding ffmpeg separately as adding the freedesktop runtime ffmpeg-full is
+  # running into some issues. This approach causes much longer build times, so
+  # this should be a temporary solution and eventually should figure out a way
+  # to use the runtime.
+  - name: ffmpeg
+    sources:
+      - type: archive
+        url: https://ffmpeg.org/releases/ffmpeg-5.0.tar.xz
+        sha256: 51e919f7d205062c0fd4fae6243a84850391115104ccf1efc451733bc0ac7298
