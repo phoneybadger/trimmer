@@ -60,7 +60,7 @@ You'll need the following dependencies
 - libgranite-dev
 - libclutter-gst-3.0-dev
 - libclutter-gtk-1.0-dev
-- libgstreamer-1.0-dev
+- libgstreamer1.0-dev
 - ffmpeg
 
 Run `meson` to configure the build environment and then use `ninja` to build
