@@ -5,10 +5,32 @@ on: [push, pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # build from source. separated out this step from build as flatpak as build
+  # as flatpak might include longer steps when compiling external modules
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    container:
+      image: elementary/docker:unstable
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install Dependencies
+        env:
+          dependency_packages: libvala-dev valac meson libgtk3-dev libgranite-dev libclutter-gst-3.0-dev libclutter-gtk-1.0-dev libgstreamer1.0-dev
+        run: apt-get update && apt-get -y install ${dependency_packages}
+
+      - name: Build
+        run: meson build && ninja -C build
+
   # build a flatpak
   flatpak:
     name: Flatpak
     runs-on: ubuntu-latest
+    # no point in running packaging if normal build has failed
+    needs: build
 
     # This job runs in a special container designed for building Flatpaks for AppCenter
     container:
