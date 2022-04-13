@@ -19,11 +19,14 @@ jobs:
 
       - name: Install Dependencies
         env:
-          dependency_packages: libvala-dev valac meson libgtk-3-dev libgranite-dev libclutter-gst-3.0-dev libclutter-gtk-1.0-dev libgstreamer1.0-dev
+          dependency_packages: libvala-dev valac meson libgtk-3-dev libgranite-dev libclutter-gst-3.0-dev libclutter-gtk-1.0-dev libgstreamer1.0-dev appstream
         run: apt-get update && apt-get -y install ${dependency_packages}
 
       - name: Build
-        run: meson build && ninja -C build
+        run: |
+          meson build --prefix=/usr
+          ninja -C build
+          ninja -C build install
 
   # build a flatpak
   flatpak:
